@@ -152,9 +152,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-	    "Model"                     "models/props_debris/shop_set_cage001.vmdl"
+	    "Model"                     "models/tent.vmdl"
 		"precache"{
-			"model"     "models/props_debris/shop_set_cage001.vmdl"
+			"model"     "models/tent.vmdl"
 		}
 	    "ModelScale"                "1.5"
 	    "ModelRotation"             "90"
@@ -225,9 +225,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/secretshop_dire001.vmdl"
+		"Model"						"models/tent_2.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/secretshop_dire001.vmdl"
+			"model"						"models/tent_2.vmdl"
 	    }
 		"ModelScale"                "0.5"
 	    "ModelRotation"             "90"
@@ -296,9 +296,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-	    "Model"                     "models/props_structures/sideshop_radiant001.vmdl"
+	    "Model"                     "models/tent_3.vmdl"
 	    "precache"{
-			"model"                     "models/props_structures/sideshop_radiant001.vmdl"
+			"model"                     "models/tent_3.vmdl"
 	    }
 		"ModelScale"                "0.4"
 	    "ModelRotation"             "90"
@@ -366,9 +366,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/secretshop_radiant001.vmdl"
+		"Model"						"models/tent_4.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/secretshop_radiant001.vmdl"
+			"model"						"models/tent_4.vmdl"
 	    }
 		"ModelScale"                "0.4"
 	    "ModelRotation"             "90"
@@ -436,9 +436,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/tent_dk_small.vmdl"
+		"Model"						"models/tent_5.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/tent_dk_small.vmdl"
+			"model"						"models/tent_5.vmdl"
 	    }
 		"ModelScale"                "0.85"
 	    "ModelRotation"             "90"
@@ -506,9 +506,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/tent_dk_med.vmdl"
+		"Model"						"models/tent_6.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/tent_dk_med.vmdl"
+			"model"						"models/tent_6.vmdl"
 	    }
 		"ModelScale"                "0.7"
 	    "ModelRotation"             "90"
@@ -576,9 +576,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/tent_dk_large.vmdl"
+		"Model"						"models/tent_7.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/tent_dk_large.vmdl"
+			"model"						"models/tent_7.vmdl"
 	    }
 		"ModelScale"                "0.5"
 	    "ModelRotation"             "90"
@@ -646,9 +646,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/good_barracks_melee002_lvl1.vmdl"
+		"Model"						"models/barracks_1.vmdl"
 		"precache"{
-			"model"     "models/props_structures/good_barracks_melee002_lvl1.vmdl"
+			"model"     "models/barracks_1.vmdl"
 		}
 	    "ModelScale"                "0.55"
 	    "ModelRotation"             "90"
@@ -716,9 +716,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/good_barracks_melee002_lvl2.vmdl"
+		"Model"						"models/barracks_2.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/good_barracks_melee002_lvl2.vmdl"
+			"model"						"models/barracks_2.vmdl"
 	    }
 		"ModelScale"                "0.55"
 	    "ModelRotation"             "90"
@@ -786,10 +786,10 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/good_barracks_melee001.vmdl"
+		"Model"						"models/barracks_3.vmdl"
 		
 	    "precache"{
-			"model"						"models/props_structures/good_barracks_melee001.vmdl"
+			"model"						"models/barracks_3.vmdl"
 		
 	    }
 		"ModelScale"                "0.65"
@@ -849,9 +849,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_rock/riveredge_rocks_small001.vmdl"
+		"Model"						"models/rock_1.vmdl"
 		"precache"{
-			"model"     "models/props_rock/riveredge_rocks_small001.vmdl"
+			"model"     "models/rock_1.vmdl"
 		}
 	    "ModelScale"                "1"
 	    "ModelRotation"             "90"
@@ -937,9 +937,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_rock/riveredge_rocks_small006.vmdl"
+		"Model"						"models/rock_2.vmdl"
 	    "precache"{
-			"model"						"models/props_rock/riveredge_rocks_small006.vmdl"
+			"model"						"models/rock_2.vmdl"
 	    }
 		"ModelScale"                "0.7"
 	    "ModelRotation"             "90"
@@ -1007,9 +1007,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_rock/riveredge_rocks_small007.vmdl"
+		"Model"						"models/rock_3.vmdl"
 	    "precache"{
-			"model"						"models/props_rock/riveredge_rocks_small007.vmdl"
+			"model"						"models/rock_3.vmdl"
 	    }
 		"ModelScale"                "3"
 	    "ModelRotation"             "90"
@@ -1077,9 +1077,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_rock/riveredge_rocks_small008.vmdl"
+		"Model"						"models/rock_4.vmdl"
 	    "precache"{
-			"model"						"models/props_rock/riveredge_rocks_small008.vmdl"
+			"model"						"models/rock_4.vmdl"
 	    }
 		"ModelScale"                "5"
 	    "ModelRotation"             "90"
@@ -1147,9 +1147,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_rock/riveredge_rocks_small009.vmdl"
+		"Model"						"models/rock_5.vmdl"
 	    "precache"{
-			"model"						"models/props_rock/riveredge_rocks_small009.vmdl"
+			"model"						"models/rock_5.vmdl"
 	    }
 		"ModelScale"                "5"
 	    "ModelRotation"             "90"
@@ -1217,9 +1217,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/radiant_statue001.vmdl"
+		"Model"						"models/ultra_wall_1.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/radiant_statue001.vmdl"
+			"model"						"models/ultra_wall_1.vmdl"
 	    }
 		"ModelScale"                "0.7"
 	    "ModelRotation"             "90"
@@ -1287,9 +1287,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/good_statue008.vmdl"
+		"Model"						"models/ultra_wall_2.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/good_statue008.vmdl"
+			"model"						"models/ultra_wall_2.vmdl"
 	    }
 		"ModelScale"                "0.7"
 	    "ModelRotation"             "90"
@@ -1357,9 +1357,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/radiant_statue002.vmdl"
+		"Model"						"models/ultra_wall_3.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/radiant_statue002.vmdl"
+			"model"						"models/ultra_wall_3.vmdl"
 	    }
 		"ModelScale"                "0.7"
 	    "ModelRotation"             "90"
@@ -1427,9 +1427,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/good_statue010.vmdl"
+		"Model"						"models/ultra_wall_4.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/good_statue010.vmdl"
+			"model"						"models/ultra_wall_4.vmdl"
 	    }
 		"ModelScale"                "0.7"
 	    "ModelRotation"             "90"
@@ -1497,9 +1497,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/rock_statue001.vmdl"
+		"Model"						"models/ultra_wall_5.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/rock_statue001.vmdl"
+			"model"						"models/ultra_wall_5.vmdl"
 	    }
 		"ModelScale"                "0.7"
 	    "ModelRotation"             "90"
@@ -1567,9 +1567,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/dire_statue001.vmdl"
+		"Model"						"models/demonic_wall_1.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/dire_statue001.vmdl"
+			"model"						"models/demonic_wall_1.vmdl"
 	    }
 		"ModelScale"                "0.7"
 	    "ModelRotation"             "90"
@@ -1637,9 +1637,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/bad_statue001.vmdl"
+		"Model"						"models/demonic_wall_2.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/bad_statue001.vmdl"
+			"model"						"models/demonic_wall_2.vmdl"
 	    }
 		"ModelScale"                "0.7"
 	    "ModelRotation"             "90"
@@ -1707,9 +1707,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/dire_statue002.vmdl"
+		"Model"						"models/demonic_wall_3.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/dire_statue002.vmdl"
+			"model"						"models/demonic_wall_3.vmdl"
 	    }
 		"ModelScale"                "0.7"
 	    "ModelRotation"             "90"
@@ -1777,9 +1777,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/bad_statue002.vmdl"
+		"Model"						"models/demonic_wall_4.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/bad_statue002.vmdl"
+			"model"						"models/demonic_wall_4.vmdl"
 	    }
 		"ModelScale"                "0.7"
 	    "ModelRotation"             "90"
@@ -1847,9 +1847,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/bridge_statue001.vmdl"
+		"Model"						"models/demonic_wall_5.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/bridge_statue001.vmdl"
+			"model"						"models/demonic_wall_5.vmdl"
 	    }
 		"ModelScale"                "1.3"
 	    "ModelRotation"             "90"
@@ -1917,9 +1917,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/dragon_statue001.vmdl"
+		"Model"						"models/dragon_wall_1.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/dragon_statue001.vmdl"
+			"model"						"models/dragon_wall_1.vmdl"
 	    }
 		"ModelScale"                "1.0"
 	    "ModelRotation"             "90"
@@ -1988,9 +1988,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/statue_dragon003.vmdl"
+		"Model"						"models/dragon_wall_2.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/statue_dragon003.vmdl"
+			"model"						"models/dragon_wall_2.vmdl"
 	    }
 		"ModelScale"                "1.0"
 	    "ModelRotation"             "90"
@@ -2059,9 +2059,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/statue_dragon001.vmdl"
+		"Model"						"models/golden_dragon_wall.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/statue_dragon001.vmdl"
+			"model"						"models/golden_dragon_wall.vmdl"
 	    }
 		"ModelScale"                "1.0"
 	    "ModelRotation"             "90"
@@ -2121,9 +2121,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/wooden_sentry_tower001.vmdl"
+		"Model"						"models/tower_1.vmdl"
 		"precache"{
-			"model"     			"models/props_structures/wooden_sentry_tower001.vmdl"
+			"model"     			"models/tower_1.vmdl"
 			"particle"     			"particles/units/heroes/hero_mirana/mirana_base_attack.vpcf"
 		}
 	    "ModelScale"				"0.4"
@@ -2231,9 +2231,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/dire_tower002.vmdl"
+		"Model"						"models/tower_2.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/dire_tower002.vmdl"
+			"model"						"models/tower_2.vmdl"
 	    }
 		"ModelScale"                "0.6"
 	    "ModelRotation"             "0"
@@ -2317,9 +2317,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/tower_bad.vmdl"
+		"Model"						"models/tower_3.vmdl"
 	     "precache"{
-			"model"						"models/props_structures/tower_bad.vmdl"
+			"model"						"models/tower_3.vmdl"
 	     }
 		"ModelScale"                "0.6"
 	    "ModelRotation"             "90"
@@ -2402,9 +2402,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/tower_dragon_black.vmdl"
+		"Model"						"models/tower_4.vmdl"
 	     "precache"{
-			"model"						"models/props_structures/tower_dragon_black.vmdl"
+			"model"						"models/tower_4.vmdl"
 	     }
 		"ModelScale"                "0.6"
 	    "ModelRotation"             "90"
@@ -2487,9 +2487,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/radiant_tower001.vmdl"
+		"Model"						"models/tower_5.vmdl"
 	     "precache"{
-			"model"						"models/props_structures/radiant_tower001.vmdl"
+			"model"						"models/tower_5.vmdl"
 	     }
 		"ModelScale"                "0.6"
 	    "ModelRotation"             "90"
@@ -2572,9 +2572,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/tower_good.vmdl"
+		"Model"						"models/tower_6.vmdl"
 	     "precache"{
-			"model"						"models/props_structures/tower_good.vmdl"
+			"model"						"models/tower_6.vmdl"
 	     }
 		"ModelScale"                "0.6"
 	    "ModelRotation"             "90"
@@ -2657,9 +2657,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/tower_dragon_white.vmdl"
+		"Model"						"models/tower_7.vmdl"
 	     "precache"{
-			"model"						"models/props_structures/tower_dragon_white.vmdl"
+			"model"						"models/tower_7.vmdl"
 	     }
 		"ModelScale"                "0.6"
 	    "ModelRotation"             "90"
@@ -2742,9 +2742,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/tower_good2.vmdl"
+		"Model"						"models/tower_8.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/tower_good2.vmdl"
+			"model"						"models/tower_8.vmdl"
 	    }
 		"ModelScale"                "0.6"
 	    "ModelRotation"             "90"
@@ -2827,9 +2827,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/tower_good4.vmdl"
+		"Model"						"models/tower_9.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/tower_good4.vmdl"
+			"model"						"models/tower_9.vmdl"
 	    }
 		"ModelScale"                "0.6"
 	    "ModelRotation"             "90"
@@ -2912,9 +2912,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/props_structures/bad_tower_destruction.vmdl"
+		"Model"						"models/tower_10.vmdl"
 	    "precache"{
-			"model"						"models/props_structures/bad_tower_destruction.vmdl"
+			"model"						"models/tower_10.vmdl"
 	    }
 		"ModelScale"                "0.6"
 	    "ModelRotation"             "90"
@@ -2997,9 +2997,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/heroes/venomancer/venomancer.vmdl"
+		"Model"						"models/tower_11.vmdl"
 	    "precache"{
-			"model"						"models/heroes/venomancer/venomancer.vmdl"
+			"model"						"models/tower_11.vmdl"
 	    }
 		"DisableTurning"			"0"
 		"ModelScale"                "0.7"
@@ -3095,9 +3095,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/heroes/drow/drow.vmdl"
+		"Model"						"models/tower_12.vmdl"
 	    "precache"{
-			"model"						"models/heroes/drow/drow.vmdl"
+			"model"						"models/tower_12.vmdl"
 	    }
 		"DisableTurning"			"0"
 		"ModelScale"                "1"
@@ -3196,9 +3196,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/heroes/windrunner/windrunner.vmdl"
+		"Model"						"models/tower_13.vmdl"
 	    "precache"{
-			"model"						"models/heroes/windrunner/windrunner.vmdl"
+			"model"						"models/tower_13.vmdl"
 	    }
 		"ModelScale"                "1"
 	    "ModelRotation"             "90"
@@ -3282,10 +3282,10 @@
 		// Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-	    "Model"                     "models/items/wards/ward_clockwerk_watcher/ward_clockwerk_watcher.vmdl"
+	    "Model"                     "models/true_sight_tower.vmdl"
 		
 	    "precache"{
-			"model"                     "models/items/wards/ward_clockwerk_watcher/ward_clockwerk_watcher.vmdl"
+			"model"                     "models/true_sight_tower.vmdl"
 		
 	    }
 		"ModelScale"                "1.2"

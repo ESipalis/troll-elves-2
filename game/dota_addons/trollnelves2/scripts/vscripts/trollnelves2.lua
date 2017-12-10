@@ -157,8 +157,8 @@ function trollnelves2:OnGameRulesStateChange()
 			trollPlayer = math.random(playerCount) - 1
 		end
 		GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS , 12)
-		PlayerResource:SetCustomTeamAssignment( trollPlayer , DOTA_TEAM_BADGUYS )
-		GameRules.trollID = trollPlayer
+		-- PlayerResource:SetCustomTeamAssignment( trollPlayer , DOTA_TEAM_BADGUYS )
+		-- GameRules.trollID = trollPlayer
 	elseif newState == DOTA_GAMERULES_STATE_PRE_GAME then
 		self:PreStart()
 	end
