@@ -459,12 +459,30 @@ function RegisterGNV(msg){
     var boundX = msg.boundX
     var boundY = msg.boundY
     $.Msg("Registering GNV ["+squareX+","+squareY+"] ","Min Bounds: X="+boundX+", Y="+boundY)
-
-    $.Msg("GNV:" + msg.gnv + "\n");
+    $.Msg("gnvRLELen: ", msg.gnv.length)
     var arr = [];
+    // Running-length decoding
+    var strlength = "";
+    for (var i=0; i<msg.gnv.length; i++){
+        var chr = msg.gnv.charCodeAt(i);
+        if (chr >= 48 && chr <= 57) {
+            strlength = strlength + String.fromCharCode(chr);
+        } else {
+            var num = parseInt(strlength);
+            if (isNaN(num)) {
+                num = 1
+            }
+            for (var j=0; j<num; j++) {
+                arr.push(String.fromCharCode(chr));
+            }
+            strlength = "";
+        }
+    }
+    msg.gnv = arr.join("");
+    arr = [];
     // Thanks to BMD for this method
     for (var i=0; i<msg.gnv.length; i++){
-        var code = msg.gnv.charCodeAt(i)-32;
+        var code = msg.gnv.charCodeAt(i)-58;
         for (var j=4; j>=0; j-=2){
             var g = (code & (3 << j)) >> j;
             if (g != 0)
@@ -505,7 +523,7 @@ function RegisterGNV(msg){
     {
         tab[arr[i].toString()]++;
     }
-    $.Msg("Free: ",tab["1"]," Blocked: ",tab["2"])
+    $.Msg("Free: ",tab["1"]," Blocked: ",tab["2"], " gnvLen: ", msg.gnv.length)
 }
 
 // Ask the server for the Terrain grid

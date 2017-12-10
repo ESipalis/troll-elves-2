@@ -502,14 +502,14 @@ function BuildingHelper:InitGNV()
             shift = shift - 2
 
             if shift == -2 then
-                gnv[#gnv+1] = string.char(byte+32)
+                gnv[#gnv+1] = string.char(byte+58)
                 shift = 4
                 byte = 0
             end
         end
 
         if shift ~= 4 then
-            gnv[#gnv+1] = string.char(byte+32)
+            gnv[#gnv+1] = string.char(byte+58)
         end
 
         if ASCII_ART then
@@ -519,6 +519,27 @@ function BuildingHelper:InitGNV()
     end
 
     local gnv_string = table.concat(gnv,'')
+
+    -- Running-length encoding
+    local last
+    local count = 0
+    local gnvRLE = {}
+    for i=1,string.len(gnv_string) do
+        local c = gnv_string:sub(i,i)
+        if last then
+            if last == c then
+                count = count + 1
+            else
+                gnvRLE[#gnvRLE+1] = (count == 1 and "" or count) .. last
+                last = c
+                count = 1
+            end
+        else
+            last = c
+            count = count + 1
+        end
+    end
+    local gnvRLE_string = table.concat(gnvRLE,'')
 
     local squareX = boundX2 - boundX1 + 1
     local squareY = boundY2 - boundY1 + 1
@@ -530,7 +551,7 @@ function BuildingHelper:InitGNV()
     -- The construction grid is only known by the server
     BuildingHelper.Grid = BuildingHelper.Terrain
 
-    BuildingHelper.Encoded = gnv_string
+    BuildingHelper.Encoded = gnvRLE_string
     BuildingHelper.squareX = squareX
     BuildingHelper.squareY = squareY
     BuildingHelper.minBoundX = boundX1
@@ -543,6 +564,8 @@ function BuildingHelper:SendGNV(args)
         local player = PlayerResource:GetPlayer(playerID)
         if player then
             BuildingHelper:print("Sending GNV to player "..playerID)
+            BuildingHelper:print("GNV Length: " .. string.len(BuildingHelper.Encoded))
+            BuildingHelper:print("Sending GNV: " .. BuildingHelper.Encoded)
             CustomGameEventManager:Send_ServerToPlayer(player, "gnv_register", {gnv=BuildingHelper.Encoded, squareX = BuildingHelper.squareX, squareY = BuildingHelper.squareY, boundX = BuildingHelper.minBoundX, boundY = BuildingHelper.minBoundY })
         end
     end
