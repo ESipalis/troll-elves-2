@@ -1,0 +1,29 @@
+<root>
+	<styles>
+		<include src="file://{resources}/styles/custom_game/vote_hud.css" />
+		<include src="file://{resources}/styles/dotastyles.css" />
+		<include src="file://{resources}/styles/play.css" />
+	</styles>
+	<scripts>
+		<include src="file://{resources}/scripts/custom_game/vote_hud.js" />
+	</scripts>
+	<Panel hittest="false">
+			<Panel id="vote_hud_panel" hittest="false">
+					<Panel id="content" hittest="false">
+							<Label id="label" text="Choose your side: "/>
+							<RadioButton checked="checked" onactivate="ChooseTeam('elf')" group="team" id="team1" text="Elf"/>
+							<RadioButton group="team" onactivate="ChooseTeam('troll')" id="team2" text="Troll"/>
+					</Panel>
+					<Panel id = "PlayButtonsPanel">
+						<Button id="LockAndStartButton" class="PlayButton" onactivate="OnLockAndStartPressed()">
+							<Label text="#custom_game_team_select_lock_start" />
+						</Button>
+						<Button id="CancelAndUnlockButton" class="PlayButton" onactivate="OnCancelAndUnlockPressed()">
+							<Label text="#custom_game_team_select_cancel_unlock" />
+						</Button>
+					</Panel>
+
+			</Panel>
+	</Panel>
+</root>
+

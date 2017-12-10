@@ -1,0 +1,22 @@
+"AddonInfo"
+{
+  "TeamCount" "1"
+  "maps"      "winter winter2x standard standard2x"
+  "IsPlayable"  "1"
+  "winter"
+  {
+          "MaxPlayers"                    "12"
+  }
+  "winter2x"
+  {
+          "MaxPlayers"                    "12"
+  }
+  "standard"
+  {
+          "MaxPlayers"                    "8"
+  }
+  "standard2x"
+  {
+          "MaxPlayers"                    "8"
+  }
+}

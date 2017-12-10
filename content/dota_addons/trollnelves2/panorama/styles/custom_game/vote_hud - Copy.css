@@ -1,0 +1,42 @@
+#vote_hud_panel{
+        flow-children:down;
+        horizontal-align:center;
+        background-color: gradient(linear,100% 0%,100% 100%,from(#111111),color-stop(0.01,#202327),color-stop(0.2,#141619ff),to(#000000dd));
+        box-shadow: black -4px -4px 8px 8px;
+        animation-name:TeamsListAppear;
+        animation-duration: 0.75s;
+        width: 320px;
+        height: 100%;
+}
+#content{
+margin-top:500px;
+margin-left:50px;
+	height:200px;
+	flow-children:down;
+}
+#label{
+        font-size: 22px;
+}
+#team1{
+        font-size: 25px;
+		color:white;
+}
+#team2{
+        font-size: 25px;
+}
+#PlayButtonsPanel{
+	margin-bottom:0px;
+	flow-children:down;
+}
+@keyframes 'TeamsListAppear'
+{
+        0%
+        {
+                transform: translatex( 100% );
+        }
+
+        100%
+        {
+                transform: translatex( 0px );
+        }
+}

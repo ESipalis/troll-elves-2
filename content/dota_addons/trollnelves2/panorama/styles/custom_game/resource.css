@@ -1,0 +1,171 @@
+.ResourceContainer{
+	width:100%;
+	height:100%;
+}
+.GoldnLumber{
+	flow-children:right;
+	margin-top:30px;
+}
+.ResourcePanel
+{
+    width: 200px;
+    height: 165px;
+	flow-children:down;
+	vertical-align:bottom;
+	horizontal-align:right;
+	margin-right:5px;
+	margin-bottom:55px;
+}
+
+.AspectRatio5x4 .ResourcePanel{
+	margin-right:25px;
+	margin-bottom:85px;
+}
+.AspectRatio4x3 .ResourcePanel{
+	margin-right:45px;
+	margin-bottom:85px;
+}
+.AspectRatio16x10 .ResourcePanel{
+	margin-right:5px;
+	margin-bottom:70px;
+} 
+
+.Hidden 
+{ 
+    visibility: collapse;
+    opacity: 0;
+}
+
+.ResourcePanels
+{
+    width: 100px;
+    height: 40px;
+}
+.Texts{
+    font-size: 16px;
+    font-family: Radiance;
+  	font-weight: bold;
+    text-align: center;
+    text-shadow: 0px 0px 3px 3.0 #000000;
+    font-family: Radiance;
+    margin-left: 38px;
+    margin-top: 3px;
+}
+
+#LumberText{
+	color: green;
+}
+#LumberIcon {	
+	width:36px; 
+	height:26px;
+}
+
+#GoldText{
+	color: #d9ca00;
+}
+#GoldIcon {	
+	margin-top:-7px;
+	width:36px; 
+	height:36px; 
+}
+
+#CheeseLumberPricePanel{
+	margin-top:-10px;
+	margin-left:5px;
+	flow-children:right;
+}
+#CheeseText{
+	color: #c1b400;
+}
+#CheeseIcon {	
+	margin-top:0px;
+	width:36px; 
+	height:29px; 
+}
+
+#LumberPriceIcon{
+	width:32px;
+	height:32px;
+}
+
+#LumberPriceText{
+	color:brown;
+}
+
+#GiveResources{
+	position:1600px 100px 0;
+	flow-children:right;
+}
+.ResourceTabs{
+	width:100px;
+}
+#GiveResourcesButton{
+	width:200px;
+	height:36px;
+	text-align:center;
+	horizontal-align:center;
+	vertical-align:middle;
+	background-color:gradient( linear, 0% 0%, 0% 100%, from( #111111FF ), to( #222222FF ) );
+	border:1px solid baseBorder;
+}
+
+.ChooseHelpPanel{
+	width:100%;
+	height:100%;
+}
+
+.ChooseHelpContainer{
+	flow-children:down;
+	vertical-align:middle;
+	horizontal-align:center;
+	margin-top:-25%;
+	width:500px;
+	visibility:collapse;
+}
+.ChooseHelpButtons{
+	flow-children:right;
+}
+#GiveResourcesButton{
+	width:200px;
+	height:36px;
+	text-align:center;
+	horizontal-align:center;
+	vertical-align:middle;
+	background-color:gradient( linear, 0% 0%, 0% 100%, from( #111111FF ), to( #222222FF ) );
+	border:1px solid baseBorder;
+}
+.ChooseButton{
+	width:250px;
+	height:36px;
+	text-align:center;
+	horizontal-align:center;
+	vertical-align:middle;
+	background-color:gradient( linear, 0% 0%, 0% 100%, from( #111111FF ), to( #222222FF ) );
+	border:1px solid #005C09;
+	border-radius:3px;
+}
+.ChooseButton Label{
+	text-align:center;
+	horizontal-align:center;
+	font-size:24px;
+	color:white;
+}
+
+.ElfButton{
+	background-color:gradient( linear, 0% 0%, 0% 100%, from( #0FD100 ), to( #098400 ) );
+	box-shadow:0 1px 0 rgba(255, 255, 255, .5) inset, 0 -1px 0 rgba(255, 255, 255, .1) inset, 0 4px 0 #AD4257, 0 4px 2px rgba(0, 0, 0, .5);
+}
+.ElfButton:hover{
+	background-color:gradient( linear, 0% 0%, 0% 100%, from( #098400 ), to( #0FD100 ) );
+}
+
+.TrollButton{
+	background-color:gradient( linear, 0% 0%, 0% 100%, from( #D10000 ), to( #910000 ) );
+	box-shadow:0 1px 0 rgba(255, 255, 255, .5) inset, 0 -1px 0 rgba(255, 255, 255, .1) inset, 0 4px 0 #AD4257, 0 4px 2px rgba(0, 0, 0, .5);
+}
+.TrollButton:hover{
+	background-color:gradient( linear, 0% 0%, 0% 100%, from( #910000 ), to( #D10000 ) );
+}
+
+.FlyoutScoreboardPanel{
+}

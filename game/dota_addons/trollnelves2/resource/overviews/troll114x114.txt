@@ -1,0 +1,8 @@
+troll114x114
+{
+	material materials/overviews/troll114x114.vmat
+	pos_x -14592
+	pos_y 14592
+	scale 28.500
+}
+

@@ -1,0 +1,70 @@
+
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/dotastyles.vcss_c" />
+		<include src="file://{resources}/styles/custom_game/item_tooltip.css" />
+	</styles>
+
+	<script>
+
+		function setupTooltip()
+		{
+			$.Schedule(0.1,function(){
+			var item = $.GetContextPanel().item;
+			var itemName = Abilities.GetAbilityName(item) || "";
+			var locName = $.Localize("DOTA_Tooltip_ability_" + itemName) || "";
+			var locDescription = $.Localize("DOTA_Tooltip_ability_" + itemName + "_Description") || "";
+			var manaCost = Abilities.GetManaCost(item) || 0;
+			var item_stats = CustomNetTables.GetTableValue("items", "buy_"+itemName);
+			var stats_name = item_stats && $.Localize(item_stats.bonus_stats) || "";
+			var stats_amount = item_stats && item_stats.bonus_value || "";
+			var gold_cost = item_stats && item_stats.gold_cost || 0;
+			var lumber_cost = item_stats && item_stats.lumber_cost || 0;
+
+			SetText("name",locName);
+			SetText("manaCost",manaCost>0 && "<img src='file://{images}/custom_game/manaCost.png'/>" + manaCost || "");
+			SetText("description",locDescription);
+			SetText("stats",stats_name+":"+stats_amount);
+			SetText("gold_cost",gold_cost>0&&"<img src='file://{images}/custom_game/gold_icon32.png'/>" + gold_cost);
+			SetText("lumber_cost",lumber_cost>0&&"<img src='file://{images}/custom_game/lumber_icon32.png'/>" + lumber_cost);
+			$("#topText").style.width = "fit-children";
+			var parentWidth = $("#topText").GetParent().actuallayoutwidth;
+			var tries = 0;
+			$.Schedule(0.05,function setWidth(){
+					if($("#topText").GetParent().actuallayoutwidth == parentWidth && tries<3){
+						tries++;
+						$.Schedule(0.05,setWidth);
+					}else{
+						if($("#topText").actuallayoutwidth < $("#description").actuallayoutwidth){
+							$("#topText").style.width = $("#description").actuallayoutwidth + "px";
+						}
+						tries = 0;
+					}
+			});
+			});
+		}
+		
+		function SetText(panelID,text){
+			var panel = $("#"+panelID);
+			panel.text = text;
+			panel.style.width = "fit-children";
+			if(text.length > 2){
+				panel.style.maxHeight = "500px";
+			}else{
+				panel.style.maxHeight = "0";
+			}
+		}
+		
+
+	</script>
+	
+	<Panel class="ItemTooltip" ontooltiploaded="setupTooltip()">
+		<Panel id = "topText"><Label id = "name" html = "true"/><Label id = "manaCost" html = "true"/></Panel>
+		<Label id = "description" html = "true"/>
+		<Label id = "stats" html = "true"/>
+		<Label id = "gold_cost" html = "true"/>
+		<Label id = "lumber_cost" html = "true"/>
+	</Panel>
+</root>
+
+

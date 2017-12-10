@@ -1,0 +1,23 @@
+<root>
+	<styles>
+		<include src="file://{resources}/styles/custom_game/minimap_hud.css" />
+	</styles>
+	<scripts>
+	</scripts>
+	<Panel class = "hud" hittest="false">
+		<Panel class = "hud_background" hittest="false">
+			<!-- <Image hittest="false" src="file://{images}/custom_game/hud.png" /> -->
+		</Panel>
+		<Panel id = "hud_blocker" hittest="false">
+			<Panel id = "blocker_minimap">				
+			</Panel>
+			<Panel id = "blocker_hero">	
+			</Panel>
+			<Panel id = "blocker_skill_bar">
+			</Panel>
+			<Panel id = "blocker_right_side">
+			</Panel>
+		</Panel>
+	</Panel>
+</root>
+

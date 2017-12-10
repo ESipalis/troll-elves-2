@@ -1,0 +1,16 @@
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/dotastyles.vcss_c" />
+		<include src="file://{resources}/styles/custom_game/container.css" />
+		<include src="file://{resources}/styles/custom_game/container_skins.css" />
+	</styles>
+	<scripts>
+		<include src="file://{resources}/scripts/custom_game/dota_inventory_context_menu.js" />
+	</scripts>
+	<Panel class="ItemMenu">
+		<Button class="ItemMenuButton" id="Sell" onactivate="OnSell()">
+			<Label text="Sell" />
+		</Button>
+	</Panel>
+</root>
+ 

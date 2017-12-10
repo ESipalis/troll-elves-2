@@ -1,0 +1,49 @@
+<root>
+	<styles>
+		<include src="file://{resources}/styles/custom_game/resource.css" />
+		<include src="s2r://panorama/styles/dotastyles.css" />
+		<include src="s2r://panorama/styles/play.css" />
+	</styles>
+	<scripts>
+		<include src="file://{resources}/scripts/resource.js" />
+	</scripts>
+	<script>
+		$.Msg( "Compiled Panorama Resource!" );
+	</script>
+	<Panel class = "ResourceContainer" hittest="false">
+		<Panel class = "ChooseHelpPanel" hittest="false">
+			<Panel id = "ChooseHelpContainer" class ="ChooseHelpContainer" visible="false">
+				<Label text = "Choose your side:" style = "horizontal-align:center;font-size:36px;color:white;"/>
+				<Panel class ="ChooseHelpButtons">
+					<Button class ="ChooseButton ElfButton" onactivate="ChooseSide(2)"><Label text="Elf!" /></Button>
+					<Button class ="ChooseButton TrollButton" onactivate="ChooseSide(3)"><Label text="Troll!" /></Button>
+				</Panel>
+			</Panel>
+		</Panel>
+		<Panel hittest="false" class='ResourcePanel'>
+			<Panel class = "GoldnLumber">
+				<Panel class="ResourcePanels">
+					<Label id="GoldText" class="Texts" text="" html="true"/>
+					<Image hittest="false" id="GoldIcon" src="s2r://panorama/images/hud/icon_gold.psd" />
+				</Panel>
+				<Panel class="ResourcePanels">
+					<Label id="LumberText" class="Texts" text="" html="true"/>
+					<Image hittest="false" id="LumberIcon" src="file://{images}/custom_game/lumber_icon.png" />
+				</Panel>
+			</Panel>
+			<Panel id = "CheeseLumberPricePanel">
+				<Panel class="ResourcePanels" id = "CheesePanel">
+					<Label id = "CheeseText" class="Texts" text="" html="true"/>
+					<Image hittest="false" id="CheeseIcon" src="file://{images}/custom_game/cheese_icon.png" />
+				</Panel>
+				<Panel class="ResourcePanels" id = "LumberPricePanel">
+					<Label id = "LumberPriceText" class="Texts" text="" html="true"/>
+					<Image hittest="false" id="LumberPriceIcon" src="file://{images}/custom_game/lumberprice_icon.png" />
+				</Panel>
+			</Panel> 
+			
+
+		</Panel>
+
+	</Panel>
+</root>
