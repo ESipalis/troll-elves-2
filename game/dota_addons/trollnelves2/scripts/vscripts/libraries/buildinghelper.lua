@@ -447,10 +447,11 @@ function BuildingHelper:InitGNV()
 
     local gnv = {}
     local line = {}
-    local ASCII_ART = true
+    local ASCII_ART = false
 
     -- Trigger zones named "bh_blocked" will block the terrain for construction
     local blocked_map_zones = Entities:FindAllByName("*bh_blocked")
+    local entities = Entities:FindAllByClassname("npc_dota_creature")
 
     for y=boundY1,boundY2 do
         local shift = 4
@@ -473,6 +474,15 @@ function BuildingHelper:InitGNV()
                 for _,ent in pairs(blocked_map_zones) do
                     local triggerBlocked = BuildingHelper:IsInsideEntityBounds(ent, position)
                     if triggerBlocked then
+                        terrainBlocked = true
+                        break
+                    end
+                end
+            end
+            if not terrainBlocked then
+                for _, entity in pairs(entities) do
+                    local isInside = BuildingHelper:IsInsideEntityConstructionArea(entity, position)
+                    if isInside then
                         terrainBlocked = true
                         break
                     end
@@ -3136,6 +3146,25 @@ function BuildingHelper:IsInsideEntityBounds(entity, location)
     local minY = min.y + origin.y
     local maxX = max.x + origin.x
     local maxY = max.y + origin.y
+    local betweenX = X >= minX and X <= maxX
+    local betweenY = Y >= minY and Y <= maxY
+
+    return betweenX and betweenY
+end
+
+function BuildingHelper:IsInsideEntityConstructionArea(entity, location)
+    local origin = entity:GetAbsOrigin()
+    local constructionSize = GetUnitKV(entity:GetUnitName(), "ConstructionSize")
+    if constructionSize == nil then
+        return false
+    else 
+    end
+    local X = location.x
+    local Y = location.y
+    local minX = origin.x - (constructionSize/2*64)
+    local minY = origin.y - (constructionSize/2*64)
+    local maxX = origin.x + (constructionSize/2*64)
+    local maxY = origin.y + (constructionSize/2*64)
     local betweenX = X >= minX and X <= maxX
     local betweenY = Y >= minY and Y <= maxY
 

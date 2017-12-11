@@ -310,7 +310,7 @@ function InitializeTroll(hero)
 								hero.buildings[unit:GetUnitName()] = 1
 						end
 						BuildingHelper:AddModifierBuilding(unit)
-						--BuildingHelper:BlockGridSquares(GetUnitKV(unit_name,"ConstructionSize"), 0, unit:GetAbsOrigin())
+						BuildingHelper:BlockGridSquares(GetUnitKV(unit_name,"ConstructionSize"), 0, unit:GetAbsOrigin())
 					end
 				end
 			end

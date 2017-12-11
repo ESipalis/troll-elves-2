@@ -2997,9 +2997,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/tower_11.vmdl"
+		"Model"						"models/heroes/venomancer/venomancer.vmdl"
 	    "precache"{
-			"model"						"models/tower_11.vmdl"
+			"model"						"models/heroes/venomancer/venomancer.vmdl"
 	    }
 		"DisableTurning"			"0"
 		"ModelScale"                "0.7"
@@ -3095,9 +3095,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/tower_12.vmdl"
+		"Model"						"models/heroes/drow/drow.vmdl"
 	    "precache"{
-			"model"						"models/tower_12.vmdl"
+			"model"						"models/heroes/drow/drow.vmdl"
 	    }
 		"DisableTurning"			"0"
 		"ModelScale"                "1"
@@ -3196,9 +3196,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/tower_13.vmdl"
+		"Model"						"models/heroes/windrunner/windrunner.vmdl"
 	    "precache"{
-			"model"						"models/tower_13.vmdl"
+			"model"						"models/heroes/windrunner/windrunner.vmdl"
 	    }
 		"ModelScale"                "1"
 	    "ModelRotation"             "90"
