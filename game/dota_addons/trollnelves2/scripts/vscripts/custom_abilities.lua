@@ -582,6 +582,23 @@ function HpRegenModifier(keys)
 	end
 end
 
+function HpRegenDestroy(keys)
+	keys.Amount = keys.Amount * (-1)
+	HpRegenModifier(keys)
+end
+function dump(o)
+   if type(o) == 'table' then
+      local s = '{ '
+      for k,v in pairs(o) do
+         if type(k) ~= 'number' then k = '"'..k..'"' end
+         s = s .. '['..k..'] = ' .. dump(v) .. ','
+      end
+      return s .. '} '
+   else
+      return tostring(o)
+   end
+end
+
 function HealBuilding(event)
 	local caster = event.caster
 	local target = event.target
