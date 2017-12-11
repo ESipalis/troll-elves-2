@@ -157,8 +157,10 @@ function trollnelves2:OnGameRulesStateChange()
 			trollPlayer = math.random(playerCount) - 1
 		end
 		GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS , 12)
-		-- PlayerResource:SetCustomTeamAssignment( trollPlayer , DOTA_TEAM_BADGUYS )
-		-- GameRules.trollID = trollPlayer
+		if not GameRules.test then
+			PlayerResource:SetCustomTeamAssignment( trollPlayer , DOTA_TEAM_BADGUYS )
+			GameRules.trollID = trollPlayer
+		end
 	elseif newState == DOTA_GAMERULES_STATE_PRE_GAME then
 		self:PreStart()
 	end
@@ -287,6 +289,12 @@ function InitializeTroll(hero)
 				if ability then ability:SetLevel(ability:GetMaxLevel()) end
 			end
 			hero:SetAbilityPoints(0)
+			-- Clear inventory
+			local item_count = hero:GetNumItemsInInventory()
+			for i=0, item_count do
+				local item = hero:GetItemInSlot(i)
+				hero:RemoveItem(item)
+			end
 			PlayerResource:modifyGold(hero,0)
 			PlayerResource:modifyLumber(hero,0) -- Secondary resource of the player
 			local player = hero:GetPlayerOwner()
