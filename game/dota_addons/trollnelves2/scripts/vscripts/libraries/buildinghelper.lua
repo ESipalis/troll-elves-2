@@ -782,6 +782,7 @@ function BuildingHelper:ChooseHelpSide(event)
         UTIL_Remove(hero)
         hero = PlayerResource:GetSelectedHeroEntity(pID)
         if hero then
+            hero:ClearInventory()
             hero:AddItemByName("item_blink_datadriven")
             hero:SetAbsOrigin(Vector(0,0,0))
             RespawnHelper(hero)
@@ -793,6 +794,7 @@ function BuildingHelper:ChooseHelpSide(event)
         UTIL_Remove(hero)
         hero = PlayerResource:GetSelectedHeroEntity(pID)
         if hero then
+            hero:ClearInventory()
             RespawnHelper(hero)
             local trollHero = PlayerResource:GetSelectedHeroEntity(GameRules.trollID)
             local lumber = math.floor(GetNetworth(trollHero)/64000*0.3)
@@ -826,8 +828,9 @@ function GetNetworth(hero)
         local item = hero:GetItemInSlot(i)
         if item then
             local item_name = item:GetAbilityName()
-            local gold_cost = GetItemKV(item_name)["AbilitySpecial"]["02"]["gold_cost"];
-            local lumber_cost = GetItemKV(item_name)["AbilitySpecial"]["03"]["lumber_cost"];
+            DebugPrint("Item name: " .. item_name)
+            local gold_cost = GetItemKV(item_name)["AbilitySpecial"]["02"]["gold_cost"]
+            local lumber_cost = GetItemKV(item_name)["AbilitySpecial"]["03"]["lumber_cost"]
             sum = sum + gold_cost + lumber_cost * 64000
         end
     end
@@ -860,7 +863,7 @@ function RespawnHelper(hero)
                 countdown = countdown - 1
                 return 1.0
             else
-                hero:RespawnHero(false,false,false)
+                hero:RespawnHero(false,false)
                 if invul == true then
                     hero:AddNewModifier(hero,nil,"modifier_invulnerable",{duration = 5}) 
                 end

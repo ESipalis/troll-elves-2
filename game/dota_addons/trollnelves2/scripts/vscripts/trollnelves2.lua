@@ -163,6 +163,12 @@ function trollnelves2:OnGameRulesStateChange()
 		end
 	elseif newState == DOTA_GAMERULES_STATE_PRE_GAME then
 		self:PreStart()
+		-- Remove TP Scrolls
+		GameRules:GetGameModeEntity():SetItemAddedToInventoryFilter(function(ctx, event)
+		    local item = EntIndexToHScript(event.item_entindex_const)
+		    if item:GetAbilityName() == "item_tpscroll" and item:GetPurchaser() == nil then return false end
+		    return true
+		end, self)
 	end
 end
 
@@ -214,12 +220,13 @@ function InitializeBuilder(hero)
 	PlayerResource:SetCustomPlayerColor(pID, GameRules.playersColors[GameRules.colorCounter][1], GameRules.playersColors[GameRules.colorCounter][2], GameRules.playersColors[GameRules.colorCounter][3])
 	GameRules.colorCounter = GameRules.colorCounter + 1
 
+	hero:ClearInventory()
+
 	local root = CreateItem("item_root_ability",hero,hero)
 	local silence = CreateItem("item_silence_ability",hero,hero)
 	local glyph = CreateItem("item_glyph_ability",hero,hero)
 	local night = CreateItem("item_night_ability",hero,hero)
 	local blink = CreateItem("item_blink_datadriven",hero,hero)
-	hero:AddItem(rock)
 	hero:AddItem(root)
 	hero:AddItem(silence)
 	hero:AddItem(glyph)
@@ -290,11 +297,7 @@ function InitializeTroll(hero)
 			end
 			hero:SetAbilityPoints(0)
 			-- Clear inventory
-			local item_count = hero:GetNumItemsInInventory()
-			for i=0, item_count do
-				local item = hero:GetItemInSlot(i)
-				hero:RemoveItem(item)
-			end
+			hero:ClearInventory()
 			PlayerResource:modifyGold(hero,0)
 			PlayerResource:modifyLumber(hero,0) -- Secondary resource of the player
 			local player = hero:GetPlayerOwner()
@@ -333,6 +336,14 @@ function InitializeTroll(hero)
 		end, 
 	pID)
 
+end
+
+function CDOTA_BaseNPC:ClearInventory()
+	local item_count = self:GetNumItemsInInventory()
+	for i=0, item_count do
+		local item = self:GetItemInSlot(i)
+		self:RemoveItem(item)
+	end
 end
 
 
