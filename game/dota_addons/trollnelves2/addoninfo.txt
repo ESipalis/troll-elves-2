@@ -1,6 +1,6 @@
 "AddonInfo"
 {
-  "TeamCount" "1"
+  "TeamCount" "2"
   "maps"      "winter winter2x standard standard2x"
   "IsPlayable"  "1"
   "winter"
