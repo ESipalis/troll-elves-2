@@ -3,13 +3,13 @@
 function OnPlayerLumberChanged ( args ) {
 	var iPlayerID = Players.GetLocalPlayer();
 	var lumber = args.lumber;
-	$('#LumberText').text = lumber;
+	$('#LumberText').text = Math.floor(lumber);
 }
 
 function OnPlayerGoldChanged ( args ) {
 	var iPlayerID = Players.GetLocalPlayer();
 	var gold = args.gold;
-	$('#GoldText').text = gold;
+	$('#GoldText').text = Math.floor(gold);
 }
 
 function OnPlayerFoodChanged ( args ) {

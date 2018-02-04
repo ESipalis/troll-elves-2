@@ -233,6 +233,14 @@ function InitializeBuilder(hero)
 	hero:AddItem(night)
 	hero:AddItem(blink)
 
+	hero.goldPerSecond = 0
+	hero.lumberPerSecond = 0
+	Timers:CreateTimer(0.03, function() 
+		PlayerResource:modifyGold(hero, hero.goldPerSecond)
+		PlayerResource:modifyLumber(hero, hero.lumberPerSecond)
+		return 1
+	end)
+
 
 	-- Learn all abilities (this isn't necessary on creatures)
 	for i=0,15 do
@@ -246,6 +254,7 @@ function InitializeBuilder(hero)
 	PlayerResource:setGold(hero,30)
 	PlayerResource:setLumber(hero,0) -- Secondary resource of the player
 	PlayerResource:modifyFood(hero,0)
+
 	hero:NotifyWearablesOfModelChange(false)
 end
 

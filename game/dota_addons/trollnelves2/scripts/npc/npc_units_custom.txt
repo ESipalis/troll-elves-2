@@ -4333,7 +4333,7 @@
 		"AttackRate"                            "1.00"
 		
 		"AbilityLayout"				"4"
-		"Ability1" 					"gather_lumber_8"
+		"Ability1" 					"gather_lumber"
 		"Ability2"					"commit_suicide"
 		"Ability3"					""
 		"Ability4"					""
@@ -4400,7 +4400,7 @@
 		"AttackRate"                            "1.00"
 		
 		"AbilityLayout"							"4"
-		"Ability1" 								"gather_lumber_4"
+		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
 		"Ability3"								""
 		"Ability4"								""
@@ -4468,7 +4468,7 @@
 		"AttackRate"                            "1.00"
 		
 		"AbilityLayout"							"4"
-		"Ability1" 								"gather_lumber_2"
+		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
 		"Ability3"								""
 		"Ability4"								""
@@ -4536,7 +4536,7 @@
 		"AttackRate"                            "1.00"
 		
 		"AbilityLayout"							"4"
-		"Ability1" 								"gather_lumber_1"
+		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
 		"Ability3"								""
 		"Ability4"								""
@@ -4604,7 +4604,7 @@
 		"AttackRate"                            "1.00"
 		
 		"AbilityLayout"							"4"
-		"Ability1" 								"gather_lumber_1"
+		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
 		"Ability3"								""
 		"Ability4"								""
@@ -4672,7 +4672,7 @@
 		"AttackRate"                            "1.00"
 		
 		"AbilityLayout"							"4"
-		"Ability1" 								"gather_lumber_1"
+		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
 		"Ability3"								""
 		"Ability4"								""
@@ -4740,7 +4740,7 @@
 		"AttackRate"                            "1.00"
 		
 		"AbilityLayout"							"4"
-		"Ability1" 								"gather_lumber_1"
+		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
 		"Ability3"								""
 		"Ability4"								""
@@ -4808,7 +4808,7 @@
 		"AttackRate"                            "1.00"
 		
 		"AbilityLayout"							"4"
-		"Ability1" 								"gather_lumber_1"
+		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
 		"Ability3"								""
 		"Ability4"								""

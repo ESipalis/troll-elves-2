@@ -242,7 +242,6 @@ function GatherLumber(event)
     ParticleManager:SetParticleControl(particle, 1, Vector(0,255,0))
     Timers:CreateTimer(3, function() 
         ParticleManager:DestroyParticle(particle, true)
-        UTIL_Remove(particle)
     end)
 
     caster.target_tree = tree
@@ -256,7 +255,7 @@ function GatherLumber(event)
     end
 
     -- Recieving another order will cancel this
-    ability:ApplyDataDrivenModifier(caster, caster, "modifier_on_order_cancel_lumber", {})
+    -- ability:ApplyDataDrivenModifier(caster, caster, "modifier_on_order_cancel_lumber", {})
     tree_pos.z = tree_pos.z - 28
     caster:SetAbsOrigin(tree_pos)
     tree.wisp_gathering = true
@@ -264,13 +263,26 @@ function GatherLumber(event)
 
 end
 
+function LumberGain( event )
+    local ability = event.ability
+    local caster = event.caster
+	local lumberGain = GetUnitKV(caster:GetUnitName(), "LumberAmount") * GameRules.MapSpeed
+	local lumberInterval = GetUnitKV(caster:GetUnitName(), "LumberInterval")
+    local playerID = caster:GetPlayerOwnerID()
+	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
+	ModifyLumberPerSecond(hero, lumberGain, lumberInterval)
+end
+
+function ModifyLumberPerSecond(hero, amount, interval) 
+	hero.lumberPerSecond = hero.lumberPerSecond + (amount/interval)
+end
 
 function CancelGather(event)
 
+	DebugPrint("Cancel gather---------------------------------------------------------------------")
   	local caster = event.caster
     local ability = event.ability
 
-    caster:RemoveModifierByName("modifier_on_order_cancel_lumber")
     caster:RemoveModifierByName("modifier_gathering_lumber")
 
     ability.cancelled = true
@@ -289,21 +301,77 @@ function CancelGather(event)
     Timers:CreateTimer(0.03,function() 
         caster:SetMoveCapability(DOTA_UNIT_CAP_MOVE_GROUND)
         caster:AddNewModifier(caster, nil, "modifier_phased", {duration=0.03})
-    end)
-    
-end
-
-function LumberGain( event )
-    local ability = event.ability
-    local caster = event.caster
-    local lumber_gain = GetUnitKV(caster:GetUnitName(),"LumberAmount") * GameRules.MapSpeed
+	end)
+	local lumberGain = GetUnitKV(caster:GetUnitName(), "LumberAmount") * GameRules.MapSpeed
+	local lumberInterval = GetUnitKV(caster:GetUnitName(), "LumberInterval")
     local playerID = caster:GetPlayerOwnerID()
-    local hero = PlayerResource:GetSelectedHeroEntity(playerID)
-    PlayerResource:modifyLumber(hero,lumber_gain)
-    PopupLumber( caster, lumber_gain)
+	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
+	ModifyLumberPerSecond(hero, -lumberGain, lumberInterval)
 end
 
 
+function GoldMine(event)
+    Timers:CreateTimer(0.03,
+    function()
+    	if(event.caster:GetOwner()) then      
+			local caster = event.caster
+			local hero = caster:GetOwner()
+			local level = caster:GetLevel()
+			local amount = GetUnitKV(caster:GetUnitName()).GoldAmount * GameRules.MapSpeed
+			local maxGold = GetUnitKV(caster:GetUnitName(),"MaxGold") or 2000000
+			PlayerResource:modifyGold(hero,amount)
+			caster.goldLeft = caster.goldLeft and caster.goldLeft - amount or maxGold
+			PopupGoldGain(caster,amount)
+			if caster.goldLeft < 1 then
+				caster:ForceKill(false)
+			end
+			local player = caster:GetPlayerOwner()
+			if player then
+				CustomGameEventManager:Send_ServerToPlayer(player, "gold_remaining_update", { unit = caster:GetEntityIndex() , amount = caster.goldLeft , maxGold = maxGold })
+			end
+		end
+    end)
+end
+
+function GoldMineCreate(keys)
+	local caster = keys.caster
+	local hero = caster:GetOwner()
+	local amountPerSecond = GetUnitKV(caster:GetUnitName()).GoldAmount * GameRules.MapSpeed
+	local maxGold = GetUnitKV(caster:GetUnitName(),"MaxGold") or 2000000
+	DebugPrint("Amount: " .. amountPerSecond)
+	DebugPrint("Current GPS: " .. hero.goldPerSecond)
+	hero.goldPerSecond = hero.goldPerSecond + amountPerSecond
+	DebugPrint("After GPS: " .. hero.goldPerSecond)
+	local secondsToLive = maxGold/amountPerSecond;
+	Timers:CreateTimer(secondsToLive, 
+	function()
+		caster:ForceKill(false)
+	end)
+end
+
+function GoldMineDestroy(keys)
+	DebugPrint("Gold mine destroy")
+	local caster = keys.caster
+	local hero = caster:GetOwner()
+	local amountPerSecond = GetUnitKV(caster:GetUnitName()).GoldAmount * GameRules.MapSpeed
+	hero.goldPerSecond = hero.goldPerSecond - amountPerSecond
+end
+
+
+function HpRegenModifier(keys)
+	local caster = keys.caster
+	if caster and caster.hpReg then
+		DebugPrint("Current:" .. caster.hpReg .. " Adding: " .. keys.Amount)
+		caster.hpReg = caster.hpReg + keys.Amount
+		DebugPrint("Result:" .. caster.hpReg)
+		CustomGameEventManager:Send_ServerToAllClients("custom_hp_reg", { value=(caster.hpReg-caster.hpRegDebuff),unit=caster:GetEntityIndex() })
+	end
+end
+
+function HpRegenDestroy(keys)
+	keys.Amount = keys.Amount * (-1)
+	HpRegenModifier(keys)
+end
 
 
 
@@ -357,30 +425,6 @@ function SellItem(event)
 		PlayerResource:modifyGold(hero,gold_cost,true)
 		PlayerResource:modifyLumber(hero,lumber_cost,true)
 	--end
-end
-
-function GoldMine(event)
-
-    Timers:CreateTimer(0.03,
-    function()
-    	if(event.caster:GetOwner()) then      
-			local caster = event.caster
-			local hero = caster:GetOwner()
-			local level = caster:GetLevel()
-			local amount = GetUnitKV(caster:GetUnitName()).GoldAmount * GameRules.MapSpeed
-			local maxGold = GetUnitKV(caster:GetUnitName(),"MaxGold") or 2000000
-			PlayerResource:modifyGold(hero,amount)
-			caster.goldLeft = caster.goldLeft and caster.goldLeft - amount or maxGold
-			PopupGoldGain(caster,amount)
-			if caster.goldLeft < 1 then
-				caster:ForceKill(false)
-			end
-			local player = caster:GetPlayerOwner()
-			if player then
-				CustomGameEventManager:Send_ServerToPlayer(player, "gold_remaining_update", { unit = caster:GetEntityIndex() , amount = caster.goldLeft , maxGold = maxGold })
-			end
-		end
-    end)
 end
 
 function FountainRegen(event)
@@ -572,20 +616,6 @@ function CheckNightInvis(keys)
 	end
 end
 
-function HpRegenModifier(keys)
-	local caster = keys.caster
-	if caster and caster.hpReg then
-		DebugPrint("Current:" .. caster.hpReg .. " Adding: " .. keys.Amount)
-		caster.hpReg = caster.hpReg + keys.Amount
-		DebugPrint("Result:" .. caster.hpReg)
-		CustomGameEventManager:Send_ServerToAllClients("custom_hp_reg", { value=(caster.hpReg-caster.hpRegDebuff),unit=caster:GetEntityIndex() })
-	end
-end
-
-function HpRegenDestroy(keys)
-	keys.Amount = keys.Amount * (-1)
-	HpRegenModifier(keys)
-end
 function dump(o)
    if type(o) == 'table' then
       local s = '{ '

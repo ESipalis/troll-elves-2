@@ -320,37 +320,34 @@
 			}
 		}
 	}
+
 	"gold_mine_ability"{
 		"BaseClass"						"ability_datadriven"
 		"AbilityBehavior"       		"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL | DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"AbilityTextureName"    		"alchemist_goblins_greed"
-		"MaxLevel"						"10"
-		
-		"OnCreated"{
-			"ApplyModifier"{
-				"ModifierName"			"modifier_gold_mine"
-				"Target"				"CASTER"
-			}
-		}
-		"OnOwnerDied"{
-			"RemoveModifier"{
-				"ModifierName"			"modifier_gold_mine"
-				"Target"				"CASTER"
-			}
-		}
-		"Modifiers"{
-			"modifier_gold_mine"{
-				"ThinkInterval"			"1"
-				"OnIntervalThink"{
+		"MaxLevel"						"1"
+
+		"ConstructionCompleteModifiers"{
+			"1"							"modifier_gold_mine"
+		}	
+		"Modifiers" {
+			"modifier_gold_mine" {
+				"OnCreated"{
 					"RunScript"{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"GoldMine"
-						"Target" 		"CASTER"
+						"ScriptFile"			"custom_abilities.lua"
+						"Function"				"GoldMineCreate"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"{
+						"ScriptFile"			"custom_abilities.lua"
+						"Function"				"GoldMineDestroy"
 					}
 				}
 			}
 		}
 	}
+
 	"build_rock"{
 		"BaseClass"				"ability_datadriven"
 		"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
@@ -1891,11 +1888,9 @@
 			
 		}
 	}
+
 	
-	
-	
-	
-	"gather_lumber_8"{
+	"gather_lumber"{
 	
 		"BaseClass"					"ability_datadriven"
 		"AbilityTextureName"		"treant_living_armor"
@@ -1906,19 +1901,6 @@
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_TREE | DOTA_UNIT_TARGET_BUILDING | DOTA_UNIT_TARGET_HERO"
 		"AbilityUnitTargetFlags"		"DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
 		"AbilityCastRange"				"150"
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"lumber_interval"	"8"
-			}
-			"02"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"lumber_per_interval"	"1"
-			}			
-		}
 		
 		"OnSpellStart"
 		{
@@ -1931,23 +1913,6 @@
 		
 		"Modifiers"
 		{
-			"modifier_on_order_cancel_lumber"
-			{
-				"IsHidden"				"1"
-				"OnOrder"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"CancelGather"
-					}
-				}
-	
-				"States"
-				{
-					"MODIFIER_STATE_NO_UNIT_COLLISION"		"MODIFIER_STATE_VALUE_ENABLED"
-				}
-			}
 	
 			"modifier_gathering_lumber"
 			{			
@@ -1969,282 +1934,7 @@
 					}
 				}
 	
-				"ThinkInterval"  "%lumber_interval"
-				"OnIntervalThink"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"LumberGain"
-					}
-				}
-	
-				"States"
-				{
-					"MODIFIER_STATE_FLYING"		"MODIFIER_STATE_VALUE_ENABLED"
-				}	
-			}
-		}
-	}	
-	"gather_lumber_4"{
-	
-		"BaseClass"					"ability_datadriven"
-		"AbilityTextureName"		"treant_living_armor"
-		"MaxLevel"					"1"
-			
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
-		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_TREE | DOTA_UNIT_TARGET_BUILDING | DOTA_UNIT_TARGET_HERO"
-		"AbilityUnitTargetFlags"		"DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
-		"AbilityCastRange"				"150"
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"lumber_interval"	"4"
-			}
-			"02"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"lumber_per_interval"	"1"
-			}			
-		}
-		
-		"OnSpellStart"
-		{
-			"RunScript"
-			{
-				"ScriptFile"	"custom_abilities.lua"
-				"Function"		"GatherLumber"
-			}
-		}
-		
-		"Modifiers"
-		{
-			"modifier_on_order_cancel_lumber"
-			{
-				"IsHidden"				"1"
-				"OnOrder"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"CancelGather"
-					}
-				}
-	
-				"States"
-				{
-					"MODIFIER_STATE_NO_UNIT_COLLISION"		"MODIFIER_STATE_VALUE_ENABLED"
-				}
-			}
-	
-			"modifier_gathering_lumber"
-			{			
-				"OnOrder"
-				{			
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"CancelGather"
-					}
-				}
-	
-				"OnDeath"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"CancelGather"
-					}
-				}
-	
-				"ThinkInterval"  "%lumber_interval"
-				"OnIntervalThink"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"LumberGain"
-					}
-				}
-	
-				"States"
-				{
-					"MODIFIER_STATE_FLYING"		"MODIFIER_STATE_VALUE_ENABLED"
-				}	
-			}
-		}
-	}	
-	"gather_lumber_2"{
-	
-		"BaseClass"					"ability_datadriven"
-		"AbilityTextureName"		"treant_living_armor"
-		"MaxLevel"					"1"
-			
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
-		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_TREE | DOTA_UNIT_TARGET_BUILDING | DOTA_UNIT_TARGET_HERO"
-		"AbilityUnitTargetFlags"		"DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
-		"AbilityCastRange"				"150"
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"lumber_interval"	"2"
-			}
-			"02"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"lumber_per_interval"	"1"
-			}			
-		}
-		
-		"OnSpellStart"
-		{
-			"RunScript"
-			{
-				"ScriptFile"	"custom_abilities.lua"
-				"Function"		"GatherLumber"
-			}
-		}
-		
-		"Modifiers"
-		{
-			"modifier_on_order_cancel_lumber"
-			{
-				"IsHidden"				"1"
-				"OnOrder"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"CancelGather"
-					}
-				}
-	
-				"States"
-				{
-					"MODIFIER_STATE_NO_UNIT_COLLISION"		"MODIFIER_STATE_VALUE_ENABLED"
-				}
-			}
-	
-			"modifier_gathering_lumber"
-			{			
-				"OnOrder"
-				{			
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"CancelGather"
-					}
-				}
-	
-				"OnDeath"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"CancelGather"
-					}
-				}
-	
-				"ThinkInterval"  "%lumber_interval"
-				"OnIntervalThink"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"LumberGain"
-					}
-				}
-	
-				"States"
-				{
-					"MODIFIER_STATE_FLYING"		"MODIFIER_STATE_VALUE_ENABLED"
-				}	
-			}
-		}
-	}	
-	"gather_lumber_1"{
-	
-		"BaseClass"					"ability_datadriven"
-		"AbilityTextureName"		"treant_living_armor"
-		"MaxLevel"					"1"
-			
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
-		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_TREE | DOTA_UNIT_TARGET_BUILDING | DOTA_UNIT_TARGET_HERO"
-		"AbilityUnitTargetFlags"		"DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
-		"AbilityCastRange"				"150"
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"lumber_interval"	"1"
-			}
-			"02"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"lumber_per_interval"	"1"
-			}			
-		}
-		
-		"OnSpellStart"
-		{
-			"RunScript"
-			{
-				"ScriptFile"	"custom_abilities.lua"
-				"Function"		"GatherLumber"
-			}
-		}
-		
-		"Modifiers"
-		{
-			"modifier_on_order_cancel_lumber"
-			{
-				"IsHidden"				"1"
-				"OnOrder"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"CancelGather"
-					}
-				}
-	
-				"States"
-				{
-					"MODIFIER_STATE_NO_UNIT_COLLISION"		"MODIFIER_STATE_VALUE_ENABLED"
-				}
-			}
-	
-			"modifier_gathering_lumber"
-			{			
-				"OnOrder"
-				{			
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"CancelGather"
-					}
-				}
-	
-				"OnDeath"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"CancelGather"
-					}
-				}
-	
-				"ThinkInterval"  "%lumber_interval"
-				"OnIntervalThink"
-				{
+				"OnCreated" {
 					"RunScript"
 					{
 						"ScriptFile"	"custom_abilities.lua"

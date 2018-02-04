@@ -364,6 +364,10 @@
 		"DOTA_Tooltip_ability_gather_lumber_1_Description"                                "Use this ability on tree.Gives a certain amount of lumber every lumber interval seconds.Tree can be occupied by only one wisp!"
 		"DOTA_Tooltip_ability_gather_lumber_1_lumber_interval"                            "LUMBER INTERVAL:"
 
+		"DOTA_Tooltip_ability_gather_lumber"                                            "Gather Lumber"
+		"DOTA_Tooltip_ability_gather_lumber_Description"                                "Use this ability on tree.Gives a certain amount of lumber every lumber interval seconds.Tree can be occupied by only one wisp!"
+		"DOTA_Tooltip_ability_gather_lumber_lumber_interval"                            "LUMBER INTERVAL:"
+
 		"DOTA_Tooltip_ability_train_worker_1"                                             "Train Worker 1"
 		"DOTA_Tooltip_ability_train_worker_1_Description"                                 "Train worker.Workers are great for repairing buildings!"
 		"DOTA_Tooltip_ability_train_worker_1_gold_cost"                                   "GOLD COST:"

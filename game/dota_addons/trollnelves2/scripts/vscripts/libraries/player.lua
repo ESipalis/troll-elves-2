@@ -24,9 +24,9 @@ function CDOTA_PlayerResource:modifyGold(hero,gold,noGain)
     if gold > 0 and not noGain then
       PlayerResource:modifyGoldGained(pID,gold)
     end
-    if GameRules.test then
-      PlayerResource:setGold(hero,1000000)
-    end
+    -- if GameRules.test then
+    --   PlayerResource:setGold(hero,1000000)
+    -- end
 end
 
 function CDOTA_PlayerResource:getGold(pID)
@@ -39,7 +39,7 @@ end
 
 function CDOTA_PlayerResource:setLumber(hero,lumber)
     local pID = hero:GetPlayerOwnerID()
-    lumber = math.floor(string.match(lumber,"[-]?%d+")) or 0
+		lumber = lumber or 0
     lumber = lumber <= 1000000 and lumber or 1000000
     GameRules.lumber[pID] = lumber
     CustomNetTables:SetTableValue("resources", tostring(pID), { gold = PlayerResource:getGold(pID),lumber = PlayerResource:getLumber(pID) })
@@ -48,18 +48,18 @@ end
 function CDOTA_PlayerResource:modifyLumber(hero,lumber,noGain)
     noGain = noGain or false
     local pID = hero:GetPlayerOwnerID()
-    lumber = math.floor(string.match(lumber,"[-]?%d+")) or 0
+    lumber = lumber or 0
     PlayerResource:setLumber(hero,PlayerResource:getLumber(pID) + lumber)
     if lumber > 0 and not noGain then
       PlayerResource:modifyLumberGained(pID,lumber)
     end
-    if GameRules.test then
-      PlayerResource:setLumber(hero,1000000)
-    end
+    -- if GameRules.test then
+    --   PlayerResource:setLumber(hero,1000000)
+    -- end
 end
 
 function CDOTA_PlayerResource:getLumber(pID)
-  return math.floor(GameRules.lumber[pID] or 0)
+  return GameRules.lumber[pID] or 0
 end
 
 function CDOTA_PlayerResource:modifyGoldGained(pID,amount)

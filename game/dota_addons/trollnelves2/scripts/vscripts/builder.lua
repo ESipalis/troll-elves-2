@@ -113,6 +113,19 @@ function Build( event )
         local item = CreateItem("item_building_destroy", nil, nil)
         unit:AddItem(item)
         unit.attackers = {}
+
+        for i=0, unit:GetAbilityCount()-1 do
+            local ability = unit:GetAbilityByIndex(i)
+            if ability then
+                local constructionCompleModifiers = GetAbilityKV(ability:GetAbilityName(), "ConstructionCompleteModifiers")
+                if constructionCompleModifiers then
+                    for k,modifier in pairs(constructionCompleModifiers) do
+                        ability:ApplyDataDrivenModifier(unit, unit, modifier, {})
+                    end
+                end
+            end
+        end
+
         local player = unit:GetPlayerOwner()
         if player then
             CustomGameEventManager:Send_ServerToPlayer(player, "unit_upgrade_complete", { })
@@ -129,6 +142,19 @@ function Build( event )
     event:OnAboveHalfHealth(function(unit)
         --BuildingHelper:print("" ..unit:GetUnitName().. " is above half health.")        
     end)
+end
+
+function dump(o)
+   if type(o) == 'table' then
+      local s = '{ '
+      for k,v in pairs(o) do
+         if type(k) ~= 'number' then k = '"'..k..'"' end
+         s = s .. '['..k..'] = ' .. dump(v) .. ','
+      end
+      return s .. '} '
+   else
+      return tostring(o)
+   end
 end
 
 -- Called when the Cancel ability-item is used
