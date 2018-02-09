@@ -144,19 +144,6 @@ function Build( event )
     end)
 end
 
-function dump(o)
-   if type(o) == 'table' then
-      local s = '{ '
-      for k,v in pairs(o) do
-         if type(k) ~= 'number' then k = '"'..k..'"' end
-         s = s .. '['..k..'] = ' .. dump(v) .. ','
-      end
-      return s .. '} '
-   else
-      return tostring(o)
-   end
-end
-
 -- Called when the Cancel ability-item is used
 function CancelBuilding( keys )
     DebugPrint("Trying to cancel!")

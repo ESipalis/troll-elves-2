@@ -268,9 +268,15 @@ function LumberGain( event )
     local caster = event.caster
 	local lumberGain = GetUnitKV(caster:GetUnitName(), "LumberAmount") * GameRules.MapSpeed
 	local lumberInterval = GetUnitKV(caster:GetUnitName(), "LumberInterval")
-    local playerID = caster:GetPlayerOwnerID()
+	local playerID = caster:GetPlayerOwnerID()
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
 	ModifyLumberPerSecond(hero, lumberGain, lumberInterval)
+	local player = PlayerResource:GetPlayer(playerID)
+	if player then
+		local dataTable = { entityIndex = caster:GetEntityIndex(),
+							amount = lumberGain, interval = lumberInterval }
+		CustomGameEventManager:Send_ServerToPlayer(player, "tree_wisp_harvest_start", dataTable)
+	end
 end
 
 function ModifyLumberPerSecond(hero, amount, interval) 
@@ -307,6 +313,11 @@ function CancelGather(event)
     local playerID = caster:GetPlayerOwnerID()
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
 	ModifyLumberPerSecond(hero, -lumberGain, lumberInterval)
+	local player = PlayerResource:GetPlayer(playerID)
+	if player then
+		local dataTable = { entityIndex = caster:GetEntityIndex() }
+		CustomGameEventManager:Send_ServerToPlayer(player, "tree_wisp_harvest_stop", dataTable)
+	end
 end
 
 
@@ -338,15 +349,17 @@ function GoldMineCreate(keys)
 	local hero = caster:GetOwner()
 	local amountPerSecond = GetUnitKV(caster:GetUnitName()).GoldAmount * GameRules.MapSpeed
 	local maxGold = GetUnitKV(caster:GetUnitName(),"MaxGold") or 2000000
-	DebugPrint("Amount: " .. amountPerSecond)
-	DebugPrint("Current GPS: " .. hero.goldPerSecond)
 	hero.goldPerSecond = hero.goldPerSecond + amountPerSecond
-	DebugPrint("After GPS: " .. hero.goldPerSecond)
 	local secondsToLive = maxGold/amountPerSecond;
 	Timers:CreateTimer(secondsToLive, 
-	function()
-		caster:ForceKill(false)
-	end)
+		function()
+			caster:ForceKill(false)
+		end)
+	local player = caster:GetPlayerOwner()
+	if player then
+		local dataTable = { entityIndex = caster:GetEntityIndex(), amount = amountPerSecond, interval = 1 }
+		CustomGameEventManager:Send_ServerToPlayer(player, "gold_gain_start", dataTable)
+	end
 end
 
 function GoldMineDestroy(keys)
@@ -355,6 +368,11 @@ function GoldMineDestroy(keys)
 	local hero = caster:GetOwner()
 	local amountPerSecond = GetUnitKV(caster:GetUnitName()).GoldAmount * GameRules.MapSpeed
 	hero.goldPerSecond = hero.goldPerSecond - amountPerSecond
+	local player = caster:GetPlayerOwner()
+	if player then
+		local dataTable = { entityIndex = caster:GetEntityIndex() }
+		CustomGameEventManager:Send_ServerToPlayer(player, "gold_gain_stop", dataTable)
+	end
 end
 
 
@@ -614,19 +632,6 @@ function CheckNightInvis(keys)
 			caster:RemoveModifierByName("modifier_stand_invis")
 		end
 	end
-end
-
-function dump(o)
-   if type(o) == 'table' then
-      local s = '{ '
-      for k,v in pairs(o) do
-         if type(k) ~= 'number' then k = '"'..k..'"' end
-         s = s .. '['..k..'] = ' .. dump(v) .. ','
-      end
-      return s .. '} '
-   else
-      return tostring(o)
-   end
 end
 
 function HealBuilding(event)

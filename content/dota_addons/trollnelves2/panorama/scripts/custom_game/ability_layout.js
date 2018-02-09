@@ -113,9 +113,6 @@ function AbilityBar(elementId) {
         var count = this.provider.GetAbilityCount();
 		this.element = $("#AbilityPanel");
         for (var i = 0; i < count; i++) {
-			if(i==6){
-				this.element = $("#AbilityPanel2");
-			}
             this.UpdateSlot(i);
         }
 
@@ -336,7 +333,7 @@ var CurrentBonusDmg = null;
 var CurrentArmor = null;
 
 function UpdateUI(){
-    $.Schedule(0.025, UpdateUI);
+    // $.Schedule(0.025, UpdateUI);
 
     var localHero = Players.GetLocalPlayerPortraitUnit();
 
@@ -470,5 +467,5 @@ function CenterCamera(){
 	GameEvents.Subscribe( "item_sold", UpdateStats);
 	GameEvents.Subscribe( "unit_upgrade_complete", function(){LoadHeroUI(Players.GetLocalPlayerPortraitUnit());});
 	GameEvents.Subscribe( "custom_hp_reg", function(args){customHpReg[args.unit] = args.value;UpdateStats();});
-	GameEvents.Subscribe( "gold_remaining_update", function(args){goldRemaining[args.unit] = args.amount;maxGold[args.unit] = args.maxGold;});
+    GameEvents.Subscribe( "gold_remaining_update", function(args){goldRemaining[args.unit] = args.amount;maxGold[args.unit] = args.maxGold;});
 })();

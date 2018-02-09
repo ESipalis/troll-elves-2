@@ -2764,6 +2764,7 @@
 				"Function"			"BuyItem"
 			}
 		}
+
 	}
 	"buy_item_dmg_2"
 	{

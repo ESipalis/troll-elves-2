@@ -24,9 +24,9 @@ function CDOTA_PlayerResource:modifyGold(hero,gold,noGain)
     if gold > 0 and not noGain then
       PlayerResource:modifyGoldGained(pID,gold)
     end
-    -- if GameRules.test then
-    --   PlayerResource:setGold(hero,1000000)
-    -- end
+    if GameRules.test then
+      PlayerResource:setGold(hero,1000000)
+    end
 end
 
 function CDOTA_PlayerResource:getGold(pID)
@@ -53,9 +53,9 @@ function CDOTA_PlayerResource:modifyLumber(hero,lumber,noGain)
     if lumber > 0 and not noGain then
       PlayerResource:modifyLumberGained(pID,lumber)
     end
-    -- if GameRules.test then
-    --   PlayerResource:setLumber(hero,1000000)
-    -- end
+    if GameRules.test then
+      PlayerResource:setLumber(hero,1000000)
+    end
 end
 
 function CDOTA_PlayerResource:getLumber(pID)

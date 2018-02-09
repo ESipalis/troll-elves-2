@@ -979,7 +979,8 @@
 		"DOTA_Tooltip_ability_item_upgrade_to_tent_2"                                     "Upgrade To Tent 2"
 		"DOTA_Tooltip_ability_item_upgrade_to_tent_2_Description"                         ""
 
-		"DOTA_Tooltip_ability_item_root_ability"                                          "Root Ability"
+		"DOTA_Tooltip_ability_item_root_ability"                                          "Root Ability?Hello?"
+		"DOTA_Tooltip_ability_item_root_ability_ability"                                          "Root Ability"
 		"DOTA_Tooltip_ability_item_root_ability_Description"                              "Roots the troll.The troll is unable to move and is visible throughout the duration,but still can cast spells."
 
 		"DOTA_Tooltip_ability_item_silence_ability"                                       "Silence Ability"

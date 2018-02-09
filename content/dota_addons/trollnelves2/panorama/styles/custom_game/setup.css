@@ -1,0 +1,7 @@
+.CustomTooltipStyle .SellPriceLabel {
+    opacity: 0;
+}
+
+.CustomTooltipStyle {
+    color: red;
+}

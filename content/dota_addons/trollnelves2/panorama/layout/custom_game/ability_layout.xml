@@ -113,42 +113,6 @@
 				<Image hittest="false" src="file://{images}/spellicons/cancel.png" />
 			</Panel>
 		</Panel>
-		<Panel id = "Bars">
-			<Panel id = "HealthBar" class = "Bar">
-				<Panel id = "CurrentHealth">
-				</Panel>
-				<Label class = "HPMPText" id = "HealthText">
-				</Label>
-				<Label class = "RegText" id = "HpRegText">
-				</Label>
-			</Panel>
-			<Panel id = "ManaBar" class = "Bar">
-				<Panel id = "CurrentMana">
-				</Panel>
-				<Label class = "HPMPText" id = "ManaText">
-				</Label>
-				<Label class = "RegText" id = "MpRegText">
-				</Label>
-			</Panel>
-			<Panel id = "GoldBar" class = "Bar">
-				<Panel id = "CurrentGold">
-				</Panel>
-				<Label class = "HPMPText" id = "GoldText">
-				</Label>
-				<Label class = "RegText" id = "MpRegText">
-				</Label>
-			</Panel>
-		</Panel>
-		<Panel id = "Stats">
-			<Panel id = "Attack">
-				<Label id = "AttackText" html = "true">
-				</Label>
-			</Panel>
-			<Panel id = "Armor">
-				<Label id = "ArmorText" html = "true">
-				</Label>
-			</Panel>
-		</Panel>
 		<Panel id = "Inventory">
 			<Panel id = "InventoryTop"></Panel>
 			<Panel id = "InventoryBottom"></Panel>
