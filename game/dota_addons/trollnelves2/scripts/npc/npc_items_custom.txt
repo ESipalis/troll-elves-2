@@ -224,6 +224,7 @@
 		"ItemSellable"					"0"
 		"ItemDisplayCharges"			"0"
 		"ItemDroppable"					"0"
+		"ItemPurchasable" 				"0"
 		
 
 		// Special  
@@ -2227,11 +2228,11 @@
 		// Item Info
 		//-------------------------------------------------------------------------------------------------------------
 		"ItemShopTags"                  "hp regen"
-		"ItemQuality"                   "component"
 		"ItemAliases"                   "hp regen Lv1"
 		"ItemStackable"                 "0"
 		"ItemSellable" 					"1"
 		"ItemPermanent"                 "1"
+		"ItemPurchasable"               "0"
 		
 		"AbilitySpecial"
 		{
@@ -2259,10 +2260,21 @@
 				"Passive"           "1"
 				"IsHidden"          "1"
 				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"        "%bonus_hp_regen"
+				"OnCreated"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenModifier"
+						"Amount"		"%bonus_hp_regen"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenDestroy"
+						"Amount"		"%bonus_hp_regen"
+					}
 				}
 			}
 		}
@@ -2307,7 +2319,7 @@
 				"lumber_cost"			"0"
 			}
 		}
-		
+
 		"Modifiers"
 		{
 			"modifier_hp_reg"
@@ -2315,10 +2327,21 @@
 				"Passive"           "1"
 				"IsHidden"          "1"
 				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"        "%bonus_hp_regen"
+				"OnCreated"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenModifier"
+						"Amount"		"%bonus_hp_regen"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenDestroy"
+						"Amount"		"%bonus_hp_regen"
+					}
 				}
 			}
 		}
@@ -2363,7 +2386,7 @@
 				"lumber_cost"			"0"
 			}
 		}
-		
+
 		"Modifiers"
 		{
 			"modifier_hp_reg"
@@ -2371,10 +2394,21 @@
 				"Passive"           "1"
 				"IsHidden"          "1"
 				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"        "%bonus_hp_regen"
+				"OnCreated"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenModifier"
+						"Amount"		"%bonus_hp_regen"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenDestroy"
+						"Amount"		"%bonus_hp_regen"
+					}
 				}
 			}
 		}
@@ -2427,10 +2461,21 @@
 				"Passive"           "1"
 				"IsHidden"          "1"
 				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"        "%bonus_hp_regen"
+				"OnCreated"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenModifier"
+						"Amount"		"%bonus_hp_regen"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenDestroy"
+						"Amount"		"%bonus_hp_regen"
+					}
 				}
 			}
 		}
@@ -2483,10 +2528,21 @@
 				"Passive"           "1"
 				"IsHidden"          "1"
 				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"        "%bonus_hp_regen"
+				"OnCreated"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenModifier"
+						"Amount"		"%bonus_hp_regen"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenDestroy"
+						"Amount"		"%bonus_hp_regen"
+					}
 				}
 			}
 		}
@@ -2539,10 +2595,21 @@
 				"Passive"           "1"
 				"IsHidden"          "1"
 				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"        "%bonus_hp_regen"
+				"OnCreated"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenModifier"
+						"Amount"		"%bonus_hp_regen"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenDestroy"
+						"Amount"		"%bonus_hp_regen"
+					}
 				}
 			}
 		}
@@ -2595,10 +2662,21 @@
 				"Passive"           "1"
 				"IsHidden"          "1"
 				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"        "%bonus_hp_regen"
+				"OnCreated"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenModifier"
+						"Amount"		"%bonus_hp_regen"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenDestroy"
+						"Amount"		"%bonus_hp_regen"
+					}
 				}
 			}
 		}
@@ -2651,10 +2729,21 @@
 				"Passive"           "1"
 				"IsHidden"          "1"
 				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"        "%bonus_hp_regen"
+				"OnCreated"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenModifier"
+						"Amount"		"%bonus_hp_regen"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenDestroy"
+						"Amount"		"%bonus_hp_regen"
+					}
 				}
 			}
 		}
@@ -2707,10 +2796,21 @@
 				"Passive"           "1"
 				"IsHidden"          "1"
 				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"        "%bonus_hp_regen"
+				"OnCreated"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenModifier"
+						"Amount"		"%bonus_hp_regen"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenDestroy"
+						"Amount"		"%bonus_hp_regen"
+					}
 				}
 			}
 		}
@@ -2755,7 +2855,7 @@
 				"lumber_cost"			"2"
 			}
 		}
-		
+
 		"Modifiers"
 		{
 			"modifier_hp_reg"
@@ -2763,10 +2863,21 @@
 				"Passive"           "1"
 				"IsHidden"          "1"
 				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"        "%bonus_hp_regen"
+				"OnCreated"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenModifier"
+						"Amount"		"%bonus_hp_regen"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenDestroy"
+						"Amount"		"%bonus_hp_regen"
+					}
 				}
 			}
 		}
@@ -2819,10 +2930,21 @@
 				"Passive"           "1"
 				"IsHidden"          "1"
 				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"        "%bonus_hp_regen"
+				"OnCreated"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenModifier"
+						"Amount"		"%bonus_hp_regen"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"
+					{
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"HpRegenDestroy"
+						"Amount"		"%bonus_hp_regen"
+					}
 				}
 			}
 		}

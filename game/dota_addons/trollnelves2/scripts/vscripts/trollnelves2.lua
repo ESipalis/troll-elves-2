@@ -182,7 +182,25 @@ function trollnelves2:OnAllPlayersLoaded()
 end
 
 function trollnelves2:InventoryUpdated(keys)
+	DebugPrint("Inventory updated!!!")
+	DebugPrintTable(keys)
+end
 
+function trollnelves2:OnActionItem(keys) 
+	DebugPrint("ON ACTION ITEM")
+	DebugPrintTable(keys)
+end
+function trollnelves2:OnItemPurchased(keys) 
+	DebugPrint("ON ACTION ITEM")
+	DebugPrintTable(keys)
+end
+function trollnelves2:OnItemPurchased2(keys) 
+	DebugPrint("ON ACTION ITEM")
+	DebugPrintTable(keys)
+end
+function trollnelves2:InventoryChanged(keys) 
+	DebugPrint("ON ACTION ITEM")
+	DebugPrintTable(keys)
 end
 
 function OnPlayerVote(eventSourceIndex, args)

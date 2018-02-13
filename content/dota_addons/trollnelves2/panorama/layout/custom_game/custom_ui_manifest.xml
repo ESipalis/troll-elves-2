@@ -1,11 +1,19 @@
 
 <root>
+	<snippets>
+		<snippet name="CustomHealthRegenLabelSnippet">
+      <Panel>
+        <Label id="CustomHealthRegenLabel" style="color:white; z-index:4;" text="hello"/>
+      </Panel>
+		</snippet>
+	</snippets>
 	<scripts>
 		<include src="file://{resources}/scripts/custom_game/setup.js" />
 	</scripts>
 	<styles>
 		<include src="file://{resources}/styles/custom_game/setup.css" />
 	</styles>
+
   <Panel>
     <!-- CustomUIElements go here.-->
     <CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/barebones_notifications.xml" /> 
@@ -18,4 +26,5 @@
     <CustomUIElement type="FlyoutScoreboard"    layoutfile="file://{resources}/layout/custom_game/multiteam_flyout_scoreboard.xml" />
     <CustomUIElement type="EndScreen"           layoutfile="file://{resources}/layout/custom_game/multiteam_end_screen.xml" />
   </Panel>
+
 </root>

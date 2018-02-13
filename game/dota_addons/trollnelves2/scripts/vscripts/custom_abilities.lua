@@ -271,12 +271,9 @@ function LumberGain( event )
 	local playerID = caster:GetPlayerOwnerID()
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
 	ModifyLumberPerSecond(hero, lumberGain, lumberInterval)
-	local player = PlayerResource:GetPlayer(playerID)
-	if player then
-		local dataTable = { entityIndex = caster:GetEntityIndex(),
+	local dataTable = { entityIndex = caster:GetEntityIndex(),
 							amount = lumberGain, interval = lumberInterval }
-		CustomGameEventManager:Send_ServerToPlayer(player, "tree_wisp_harvest_start", dataTable)
-	end
+	CustomGameEventManager:Send_ServerToTeam(hero:GetTeamNumber(), "tree_wisp_harvest_start", dataTable)
 end
 
 function ModifyLumberPerSecond(hero, amount, interval) 
@@ -313,36 +310,10 @@ function CancelGather(event)
     local playerID = caster:GetPlayerOwnerID()
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
 	ModifyLumberPerSecond(hero, -lumberGain, lumberInterval)
-	local player = PlayerResource:GetPlayer(playerID)
-	if player then
-		local dataTable = { entityIndex = caster:GetEntityIndex() }
-		CustomGameEventManager:Send_ServerToPlayer(player, "tree_wisp_harvest_stop", dataTable)
-	end
+	local dataTable = { entityIndex = caster:GetEntityIndex() }
+	CustomGameEventManager:Send_ServerToTeam(hero:GetTeamNumber(), "tree_wisp_harvest_stop", dataTable)
 end
 
-
-function GoldMine(event)
-    Timers:CreateTimer(0.03,
-    function()
-    	if(event.caster:GetOwner()) then      
-			local caster = event.caster
-			local hero = caster:GetOwner()
-			local level = caster:GetLevel()
-			local amount = GetUnitKV(caster:GetUnitName()).GoldAmount * GameRules.MapSpeed
-			local maxGold = GetUnitKV(caster:GetUnitName(),"MaxGold") or 2000000
-			PlayerResource:modifyGold(hero,amount)
-			caster.goldLeft = caster.goldLeft and caster.goldLeft - amount or maxGold
-			PopupGoldGain(caster,amount)
-			if caster.goldLeft < 1 then
-				caster:ForceKill(false)
-			end
-			local player = caster:GetPlayerOwner()
-			if player then
-				CustomGameEventManager:Send_ServerToPlayer(player, "gold_remaining_update", { unit = caster:GetEntityIndex() , amount = caster.goldLeft , maxGold = maxGold })
-			end
-		end
-    end)
-end
 
 function GoldMineCreate(keys)
 	local caster = keys.caster
@@ -355,33 +326,24 @@ function GoldMineCreate(keys)
 		function()
 			caster:ForceKill(false)
 		end)
-	local player = caster:GetPlayerOwner()
-	if player then
-		local dataTable = { entityIndex = caster:GetEntityIndex(), amount = amountPerSecond, interval = 1 }
-		CustomGameEventManager:Send_ServerToPlayer(player, "gold_gain_start", dataTable)
-	end
+	local dataTable = { entityIndex = caster:GetEntityIndex(), amount = amountPerSecond, interval = 1 }
+	CustomGameEventManager:Send_ServerToTeam(hero:GetTeamNumber(), "gold_gain_start", dataTable)
 end
 
 function GoldMineDestroy(keys)
-	DebugPrint("Gold mine destroy")
 	local caster = keys.caster
 	local hero = caster:GetOwner()
 	local amountPerSecond = GetUnitKV(caster:GetUnitName()).GoldAmount * GameRules.MapSpeed
 	hero.goldPerSecond = hero.goldPerSecond - amountPerSecond
-	local player = caster:GetPlayerOwner()
-	if player then
-		local dataTable = { entityIndex = caster:GetEntityIndex() }
-		CustomGameEventManager:Send_ServerToPlayer(player, "gold_gain_stop", dataTable)
-	end
+	local dataTable = { entityIndex = caster:GetEntityIndex() }
+	CustomGameEventManager:Send_ServerToTeam(hero:GetTeamNumber(), "gold_gain_stop", dataTable)
 end
 
 
 function HpRegenModifier(keys)
 	local caster = keys.caster
 	if caster and caster.hpReg then
-		DebugPrint("Current:" .. caster.hpReg .. " Adding: " .. keys.Amount)
 		caster.hpReg = caster.hpReg + keys.Amount
-		DebugPrint("Result:" .. caster.hpReg)
 		CustomGameEventManager:Send_ServerToAllClients("custom_hp_reg", { value=(caster.hpReg-caster.hpRegDebuff),unit=caster:GetEntityIndex() })
 	end
 end
@@ -656,17 +618,32 @@ function HealBuilding(event)
 	end)
 end
 
-function TowerPoison( keys )
+function StackModifierCreated(keys)
     local caster = keys.caster
     local target = keys.target
     local ability = keys.ability
     local modifier = keys.Modifier
-    
+	
+	local stack_count = 0
     if target:HasModifier(modifier) then
-	    local stack_count = target:GetModifierStackCount(modifier, ability)
-        target:SetModifierStackCount(modifier, ability, stack_count + 1)
-	else
-	    target:AddNewModifier(nil, nil, "modifier_poison", {})
-	    target:SetModifierStackCount(modifier, ability, 1)
+	    stack_count = target:GetModifierStackCount(modifier, ability)
+	else 
+		ability:ApplyDataDrivenModifier(caster, target, modifier, {})
 	end
+	target:SetModifierStackCount(modifier, ability, stack_count + 1)
+end
+
+function StackModifierExpired(keys)
+    local caster = keys.caster
+    local target = keys.target
+    local ability = keys.ability
+	local modifier = keys.Modifier
+	
+	local stackCount = target:GetModifierStackCount(modifier, ability)
+	if stackCount <= 1 then
+		target:RemoveModifierByName(modifier)
+	else
+		target:SetModifierStackCount(modifier, ability, stackCount-1)
+	end
+
 end

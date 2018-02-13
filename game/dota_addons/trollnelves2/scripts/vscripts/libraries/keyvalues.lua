@@ -195,4 +195,101 @@ function GetAbilitySpecial(name, key, level)
     else return t end
 end
 
+function WriteObjectAsKV(object, indentLevel)
+    for key, value in pairs(object) do
+        local indentString = string.rep("    ", indentLevel)
+        io.write(indentString, "\"", tostring(key), "\"")
+        if type(value) == "table" then
+            io.write(" {\n")
+            WriteObjectAsKV(value, indentLevel+1)
+            io.write(indentString, "}\n")
+        else
+            local numberOfSpaces = 60 - #tostring(key) - 4 * indentLevel
+            io.write(string.rep(" ", numberOfSpaces), "\"", value, "\"\n")
+        end
+    end
+end
+
+function GenerateKV()
+    for name,info in pairs(KeyValues.All) do
+        if type(info) == "table" then
+            local isBuilding = info["ConstructionSize"]
+            local isBuildingAbility = info["Building"]
+            if isBuilding then
+                -- Build NetTable with the building properties
+                local values = {}
+
+                if info['ConstructionSize'] then
+                    values.size = info['ConstructionSize']
+                end
+
+                if info['Limit'] then
+                    values.limit = info['Limit']
+                end
+
+                
+                if info['Requirements'] then
+                    values.requirements = info["Requirements"]
+                end
+
+                if info['Upgrades'] then
+                    local count = info['Upgrades']['Count']
+                    for i = 1,count do
+                        local unit_name = info['Upgrades'][tostring(i)]['unit_name']
+                        values[unit_name] = {}
+                        values[unit_name].gold_cost = info['Upgrades'][tostring(i)]['gold_cost']
+                        values[unit_name].lumber_cost = info['Upgrades'][tostring(i)]['lumber_cost']
+                    end
+                end
+
+                if info['GoldAmount'] then
+                    values.gold_gain = info['GoldAmount']
+                end
+                CustomNetTables:SetTableValue("buildings", name, values)
+
+            elseif isBuildingAbility then
+
+                if info['UnitName'] then
+                    local values = {}
+                    values.upgradeUnitName = info['UnitName']
+                    values.gold_cost = info['AbilitySpecial']['01']['gold_cost']
+                    values.lumber_cost = info['AbilitySpecial']['02']['lumber_cost']
+                    CustomNetTables:SetTableValue("buildings",name, values)
+                elseif info['OnSpellStart'] then
+                    if info['OnSpellStart']['RunScript'] then
+                        if info['OnSpellStart']['RunScript']['NewName'] then
+                            CustomNetTables:SetTableValue("buildings",name, { upgradeUnitName = info['OnSpellStart']['RunScript']['NewName']})
+                        end
+                    end
+                end
+
+            elseif info["BuyItem"] then
+                local itemName = info["ItemName"]
+                local bonus_attr
+                if GetItemKV(itemName)["AbilitySpecial"]["01"] then
+                    for key,value in pairs(GetItemKV(itemName)["AbilitySpecial"]["01"]) do
+                        if string.match(key,"bonus") then
+                            bonus_attr = key
+                        end
+                    end
+                    local bonus_values = GetItemKV(itemName)["AbilitySpecial"]["01"][bonus_attr]
+                    local gold = GetItemKV(itemName)["AbilitySpecial"]["02"]["gold_cost"]
+                    local lumber = GetItemKV(itemName)["AbilitySpecial"]["03"]["lumber_cost"]
+                    CustomNetTables:SetTableValue("items",name, { bonus_stats = bonus_attr , bonus_value = bonus_values , gold_cost = gold , lumber_cost = lumber })
+                else
+                    local gold = GetItemKV(itemName)["AbilitySpecial"]["02"]["gold_cost"]
+                    local lumber = GetItemKV(itemName)["AbilitySpecial"]["03"]["lumber_cost"]
+                    CustomNetTables:SetTableValue("items",name, { gold_cost = gold , lumber_cost = lumber })
+                end
+            elseif info["LumberAmount"] and info["LumberInterval"] then
+                CustomNetTables:SetTableValue("abilities",name, { lumber_interval = info["LumberInterval"],amount = info["LumberAmount"] })
+            elseif string.match(name,"train_") then
+                CustomNetTables:SetTableValue("abilities",name, { gold_cost = info['AbilitySpecial']['01']['gold_cost'],lumber_cost = info['AbilitySpecial']['02']['lumber_cost'],food_cost = info['AbilitySpecial']['03']['food_cost'] })
+            elseif info["RepairSpeed"] then
+                CustomNetTables:SetTableValue("abilities",name, { speed = info["RepairSpeed"] })
+            end
+        end
+    end
+end
+
 if not KeyValues.All then LoadGameKeyValues() end

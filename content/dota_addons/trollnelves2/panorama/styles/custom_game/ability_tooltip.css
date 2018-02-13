@@ -1,19 +1,33 @@
-.AbilityTooltip{
+.AbilityTooltip {
 	flow-children:down;
 	max-width:450px;
 	width:fit-children;
 }
 
-#name{
+#AbilityName {
 	horizontal-align:left;
 	color:white;
 }
-#costs{
-	horizontal-align:right;
+
+#AbilityDetails {
+	width: 100%;
+	flow-children: down;
 }
-#topText{
+
+#Header {
+	width: 100%;
 	flow-children:right;
 }
+#AbilityHeader{
+	width: 100%;
+	flow-children:right;
+}
+
+#AbilityCoreDetails{
+	flow-children: down;
+	margin-top: 15px;
+}
+
 #requirements{
 	color:orange;
 }

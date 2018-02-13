@@ -4252,26 +4252,33 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"AbilityTextureName"			"venomancer_poison_sting"
 		
-		"OnCreated"{
-			"ApplyModifier"{
-				"Target"				"CASTER"
-				"ModifierName"			"modifier_poison_attack"
-			}
-		}
-
 		"Modifiers"{
-			"modifier_poison_attack"{
+			
+			"modifier_poison_attack" {
 				"Passive"			"1"
-				"IsHidden"			"1"
+				"IsHidden"			"0"
 				"IsDebuff"			"0"
 
 				"OnAttack"{
-					"ApplyModifier"{
-						"ModifierName"	"modifier_poison"
-						"Target"		"TARGET"
-						"Duration"		"2"
+					"ApplyModifier" {
+						"Target"        "TARGET"
+						"ModifierName"  "modifier_poison_target"
+					}
+					"ApplyModifier" {
+						"Target"        "TARGET"
+						"ModifierName"  "modifier_poison"
+						"Duration"		"3"
 					}
 				}
+			}
+
+			"modifier_poison_counter" {
+				"Attributes"		"MODIFIER_ATTRIBUTE_PERMANENT"
+				"IsPurgable"		"0"
+				"Passive"			"0"
+				"IsDebuff"			"1"
+				"IsHidden"          "0"
+
 			}
 			"modifier_poison_target"{
 				"Attributes"		"MODIFIER_ATTRIBUTE_MULTIPLE"
@@ -4279,20 +4286,21 @@
 				"Duration"			"3"
 				"Passive"			"0"
 				"IsDebuff"			"1"
-				
-				"OnCreated"{
-					"RunScript"{
-						"ScriptFile"		"custom_abilities.lua"
-						"Function"			"TowerPoison"
-						"Modifier"			"modifier_poison"
+				"IsHidden"          "1"
+
+				"OnCreated" {
+					"RunScript" {
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"StackModifierCreated"
+						"Modifier"      "modifier_poison_counter"
 					}
 				}
 				
-				"OnRefresh"{
-					"RunScript"{
-						"ScriptFile"		"custom_abilities.lua"
-						"Function"			"TowerPoison"
-						"Modifier"			"modifier_poison"
+				"OnDestroy" {
+					"RunScript" {
+						"ScriptFile"	"custom_abilities.lua"
+						"Function"		"StackModifierExpired"
+						"Modifier"      "modifier_poison_counter"
 					}
 				}
 			}

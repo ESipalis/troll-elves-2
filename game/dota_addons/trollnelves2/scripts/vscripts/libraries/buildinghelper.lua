@@ -41,7 +41,6 @@ function BuildingHelper:Init()
     CustomGameEventManager:RegisterListener("rightclick_order", Dynamic_Wrap(BuildingHelper, "RightClickOrder"))
     CustomGameEventManager:RegisterListener("give_resources", Dynamic_Wrap(BuildingHelper, "GiveResources"))
     CustomGameEventManager:RegisterListener("choose_help_side", Dynamic_Wrap(BuildingHelper, "ChooseHelpSide"))
-    CustomGameEventManager:RegisterListener("sell_item", Dynamic_Wrap(BuildingHelper, "SellItem"))
      -- Game Event Listeners
     ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(BuildingHelper, 'OnGameRulesStateChange'), self)
     ListenToGameEvent('npc_spawned', Dynamic_Wrap(BuildingHelper, 'OnNPCSpawned'), self)
@@ -874,23 +873,19 @@ function RespawnHelper(hero)
 end
 
 function BuildingHelper:SellItem(args)
-    local item = EntIndexToHScript(args.item)
+    local item = EntIndexToHScript(args.itemIndex)
     if item then
+        if not item:IsSellable() then
+            SendErrorMessage(issuerID,"#error_item_not_sellable")
+        end
         local gold_cost = item:GetSpecialValueFor("gold_cost")
         local lumber_cost = item:GetSpecialValueFor("lumber_cost")
         local hero = item:GetCaster()
-        local distance = (hero:GetAbsOrigin() - Vector(0,0,256)):Length2D()
-        if distance > 1500 then
-            SendErrorMessage(hero:GetPlayerOwnerID(), "#error_shop_out_of_range")
-            return false
-        end
         UTIL_Remove(item)
         PlayerResource:modifyGold(hero,gold_cost,true)
         PlayerResource:modifyLumber(hero,lumber_cost,true)
         local player = hero:GetPlayerOwner()
-        if player then
-            CustomGameEventManager:Send_ServerToPlayer(player, "item_sold", { })
-        end
+        EmitSoundOnClient("DOTA_Item.Hand_Of_Midas", player)
     end
 
 end
@@ -1040,6 +1035,11 @@ function BuildingHelper:OrderFilter(order)
     end
     if order_type == DOTA_UNIT_ORDER_RADAR then
         SendErrorMessage(issuerID,"#error_no_radar")
+        return false
+    end
+    if order_type == DOTA_UNIT_ORDER_SELL_ITEM then
+        local args = {itemIndex = abilityIndex}
+        BuildingHelper:SellItem(args)
         return false
     end
 
