@@ -369,6 +369,11 @@ function BuyItem(event)
 	local lumber_cost = GetItemKV(item_name)["AbilitySpecial"]["03"]["lumber_cost"];
 	local playerID = caster.buyer
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
+
+	if not IsInsideShopArea(hero) then
+		SendErrorMessage(playerID, "#error_shop_out_of_range")
+		return false
+	end
 	if gold_cost > PlayerResource:getGold(playerID) then
         SendErrorMessage(playerID, "#error_not_enough_gold")
         return false
@@ -381,16 +386,38 @@ function BuyItem(event)
 		SendErrorMessage(playerID, "#error_full_inventory")
         return false
     end
-    local distance = (Vector(96,-640,128) - hero:GetAbsOrigin()):Length()
-    if distance > 1000 then
-		SendErrorMessage(playerID, "#error_shop_out_of_range")
-        return false
-    end
     PlayerResource:modifyLumber(hero,-lumber_cost)
     PlayerResource:modifyGold(hero,-gold_cost)
 	local item = CreateItem(item_name, hero, hero)
 	hero:AddItem(item)
 	return true
+end
+
+function IsInsideShopArea(unit) 
+	for index, shopTrigger in ipairs(GameRules.shops) do
+		if IsInsideBoxEntity(shopTrigger, unit) then
+			return true
+		end
+	end
+	return false
+end
+
+function IsInsideBoxEntity(box, unit)
+    local boxOrigin = box:GetAbsOrigin()
+	local bounds = box:GetBounds()
+    local min = bounds.Mins
+	local max = bounds.Maxs
+	local unitOrigin = unit:GetAbsOrigin()
+    local X = unitOrigin.x
+    local Y = unitOrigin.y
+    local minX = min.x + boxOrigin.x
+    local minY = min.y + boxOrigin.y
+    local maxX = max.x + boxOrigin.x
+    local maxY = max.y + boxOrigin.y
+    local betweenX = X >= minX and X <= maxX
+    local betweenY = Y >= minY and Y <= maxY
+
+    return betweenX and betweenY
 end
 
 function SellItem(event)
