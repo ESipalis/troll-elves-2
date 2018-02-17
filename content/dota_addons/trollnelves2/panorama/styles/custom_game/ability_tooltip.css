@@ -1,12 +1,18 @@
 .AbilityTooltip {
 	flow-children:down;
-	max-width:450px;
-	width:fit-children;
+	max-width:650px;
 }
 
 #AbilityName {
 	horizontal-align:left;
 	color:white;
+}
+
+
+#costs {
+	width: 100%;
+	text-align: right;
+	vertical-align: center;
 }
 
 #AbilityDetails {
@@ -16,11 +22,9 @@
 
 #Header {
 	width: 100%;
-	flow-children:right;
 }
 #AbilityHeader{
 	width: 100%;
-	flow-children:right;
 }
 
 #AbilityCoreDetails{

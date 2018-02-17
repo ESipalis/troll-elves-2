@@ -13,8 +13,8 @@
 		<Panel id="AbilityDetails">
 			<Panel id="Header">
 				<Panel id = "AbilityHeader">
-					<Label id = "AbilityName"/>
-					<Label id = "costs" text = "testfasdfsad" html="true"/>
+					<Label id = "AbilityName" text="testt"/>
+					<Label id = "costs" text = "test" html="true"/>
 				</Panel>
 			</Panel>
 			<Panel id="AbilityCoreDetails">

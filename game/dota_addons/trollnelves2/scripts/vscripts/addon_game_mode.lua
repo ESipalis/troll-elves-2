@@ -115,7 +115,7 @@ function Activate()
   GameRules.players = {}
   GameRules.firstHero = true
   GameRules.stunHeroes = true
-  GameRules.trollSpawned = false
+  GameRules.trollSpawned = true
   GameRules.dcedChoosers = {}
   GameRules.test = false
   GameRules.trollTps = {Vector(-320,0,256),Vector(0,0,256),Vector(320,0,256),Vector(-320,-320,256),Vector(0,-320,256),Vector(320,-320,256),Vector(-320,-640,256),Vector(0,-640,256),Vector(320,-640,256)}

@@ -46,14 +46,13 @@ function setupTooltip() {
     SetText("lumber_interval", lumber_interval > 0 && "Gather interval: " + lumber_interval || "");
     SetText("lumber_amount", lumber_amount > 0 && "Lumber amount: " + lumber_amount || "");
     SetText("repair_speed", repair_speed > 0 && "Repair speed: " + repair_speed || "");
-    // $("#AbilityHeader").style.width = "fit-children";
 
 }
 
 function SetText(panelID, text) {
     var panel = $("#" + panelID);
     panel.text = text;
-    panel.style.width = "fit-children";
+    // panel.style.width = "fit-children";
     if (text.length > 2) {
         panel.style.maxHeight = "500px";
     } else {
