@@ -12,16 +12,8 @@ end
 
 -- This library allow for easily delayed/timed actions
 require('libraries/timers')
--- This library can be used for advancted physics/motion/collision of units.  See PhysicsReadme.txt for more information.
-require('libraries/physics')
--- This library can be used for advanced 3D projectile systems.
-require('libraries/projectiles')
 -- This library can be used for sending panorama notifications to the UIs of players/teams/everyone
 require('libraries/notifications')
--- This library can be used for starting customized animations on units from lua
-require('libraries/animations')
--- This library can be used for performing "Frankenstein" attachments on units
-require('libraries/attachments')
 require('libraries/popups')
 require('libraries/team')
 require('libraries/player')
@@ -141,26 +133,8 @@ end
 function trollnelves2:OnGameRulesStateChange()
 	local newState = GameRules:State_Get()
 	if newState == DOTA_GAMERULES_STATE_HERO_SELECTION then
-		GameRules.trolls = {}
-		local playerCount = PlayerResource:GetPlayerCountForTeam( DOTA_TEAM_GOODGUYS )
-		for i=1,playerCount do
-			local pID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS, i)
-			local player_choise = GameRules.players[pID] or 1
-			if player_choise == 2 then
-				table.insert(GameRules.trolls,pID)
-			end
-		end
-		local trollPlayer
-		if #GameRules.trolls > 0 then
-			trollPlayer = GameRules.trolls[math.random(#GameRules.trolls)]
-		else
-			trollPlayer = math.random(playerCount) - 1
-		end
 		GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS , 12)
-		if not GameRules.test then
-			PlayerResource:SetCustomTeamAssignment( trollPlayer , DOTA_TEAM_BADGUYS )
-			GameRules.trollID = trollPlayer
-		end
+		InitializeTrollIDFromVoting()
 	elseif newState == DOTA_GAMERULES_STATE_PRE_GAME then
 		self:PreStart()
 		-- Remove TP Scrolls
@@ -179,6 +153,28 @@ end
 function trollnelves2:OnAllPlayersLoaded()
 	DebugPrint("[TROLLNELVES2] All Players have loaded into the game")
 	
+end
+
+function InitializeTrollIDFromVoting()
+	GameRules.trolls = {}
+	local playerCount = PlayerResource:GetPlayerCountForTeam( DOTA_TEAM_GOODGUYS )
+	for i=1,playerCount do
+		local pID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS, i)
+		local player_choise = GameRules.players[pID] or 1
+		if player_choise == 2 then
+			table.insert(GameRules.trolls,pID)
+		end
+	end
+	local trollPlayer
+	if #GameRules.trolls > 0 then
+		trollPlayer = GameRules.trolls[math.random(#GameRules.trolls)]
+	else
+		trollPlayer = math.random(playerCount) - 1
+	end
+	if not GameRules.test then
+		PlayerResource:SetCustomTeamAssignment( trollPlayer , DOTA_TEAM_BADGUYS )
+		GameRules.trollID = trollPlayer
+	end
 end
 
 function OnPlayerVote(eventSourceIndex, args)
@@ -246,9 +242,7 @@ function InitializeBuilder(hero)
 		if ability then ability:SetLevel(ability:GetMaxLevel()) end
 	end
 	hero:SetAbilityPoints(0)
-	Timers.CreateTimer(0.03,function()
-			UpdateSpells(hero)
-		end)
+	UpdateSpells(hero)
 	PlayerResource:setGold(hero,30)
 	PlayerResource:setLumber(hero,0) -- Secondary resource of the player
 	PlayerResource:modifyFood(hero,0)
@@ -453,10 +447,6 @@ function trollnelves2:Inittrollnelves2()
 	DebugPrint('[TROLLNELVES2] Done loading trollnelves2 trollnelves2!\n\n')
 end
 
-function trollnelves2:OnPlayerChat(keys)
-
-end
-
 function modifyLumberPrice(amount)
 	amount = string.match(amount,"[-]?%d+") or 0
 	if GameRules.lumber_price + amount < 10 then
@@ -643,7 +633,6 @@ end
 function CDOTA_BaseNPC:GetCollisionSize()
 	if GetUnitKV(self:GetUnitName()) then
 		return GetUnitKV(self:GetUnitName(),"CollisionSize")
-	elseif GetUnitKV(self:GetUnitName()) then
-		return GetUnitKV(self:GetUnitName(), "CollisionSize")
 	end
+	return nil
 end
