@@ -5765,7 +5765,7 @@
 		//----------------------------------------------------------------
 		"AbilityLayout"				"4"
 		"Ability1"					"upgrade_to_troll_hut_2"
-		"Ability2"					"gain_gold"
+		"Ability2"					"gain_gold_team"
 		"Ability3"					"fountain_ability"
 		"Ability4"					"buy_lumber_1"
 		"Ability5"					"buy_lumber_8"
@@ -5838,7 +5838,7 @@
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"4"
-		"Ability1"					"gain_gold"
+		"Ability1"					"gain_gold_team"
 		"Ability2"					"fountain_ability"
 		"Ability3"					"buy_lumber_1"
 		"Ability4"					"buy_lumber_8"
@@ -5912,7 +5912,7 @@
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"4"
-		"Ability1"					"gain_gold"
+		"Ability1"					"gain_gold_team"
 		"Ability2"					"fountain_ability"
 		"Ability3"					"buy_lumber_1"
 		"Ability4"					"buy_lumber_8"
@@ -5977,7 +5977,7 @@
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"4"
-		"Ability1"					"gain_gold"
+		"Ability1"					"gain_gold_team"
 		"Ability2"					"fountain_ability"
 		"Ability3"					"buy_lumber_1"
 		"Ability4"					"buy_lumber_8"

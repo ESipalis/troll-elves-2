@@ -296,24 +296,41 @@
 		"AbilityTextureName"    		"alchemist_goblins_greed"
 		"MaxLevel"						"10"
 		
-		"OnCreated"{
-			"ApplyModifier"{
-				"ModifierName"			"modifier_gain_gold"
-				"Target"				"CASTER"
+		"ConstructionStartModifiers" {
+			"1"									"modifier_gain_gold"
+		}
+
+		"Modifiers" {
+			"modifier_gain_gold" {
+				"OnCreated"{
+					"RunScript"{
+						"ScriptFile"			"custom_abilities.lua"
+						"Function"				"GainGoldCreate"
+					}
+				}
+				"OnDestroy"{
+					"RunScript"{
+						"ScriptFile"			"custom_abilities.lua"
+						"Function"				"GainGoldDestroy"
+					}
+				}
 			}
 		}
-		"OnOwnerDied"{
-			"RemoveModifier"{
-				"ModifierName"			"modifier_gain_gold"
-			}
-		}
-		"Modifiers"{
-			"modifier_gain_gold"{
+	}
+	"gain_gold_team"{
+		"BaseClass"						"ability_datadriven"
+		"AbilityBehavior"       		"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL | DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityTextureName"    		"alchemist_goblins_greed"
+		"MaxLevel"						"10"
+		
+		"Modifiers" {
+			"modifier_gain_gold_team"{
+				"Passive"				"1"
 				"ThinkInterval"			"1"
 				"OnIntervalThink"{
 					"RunScript"{
 						"ScriptFile"	"custom_abilities.lua"
-						"Function"		"GainGold"
+						"Function"		"GainGoldTeamThinker"
 						"Target" 		"CASTER"
 					}
 				}

@@ -1,28 +1,43 @@
 --Ability for tents to give gold
-function GainGold( event )
-    Timers:CreateTimer(0.03,
-    function()
-    	if(event.caster:GetOwner()) then
-    		local caster = event.caster
-    		local level = caster:GetLevel()
-    		local amount = 2^(level-1) * GameRules.MapSpeed
-    		local team = GetUnitKV(caster:GetUnitName())["TeamGainGold"] or false
-    		if team then      
-				for i=1,PlayerResource:GetPlayerCountForTeam(caster:GetTeamNumber()) do
-		            local playerID = PlayerResource:GetNthPlayerIDOnTeam(caster:GetTeamNumber(), i)
-		            local hero = PlayerResource:GetSelectedHeroEntity(playerID) or false
-		            if hero then
-		            	PlayerResource:modifyGold(hero,amount)
-		            end
-		        end
-			else
-				local hero = caster:GetOwner()				
-				PlayerResource:modifyGold(hero,amount)				
-			end
-				PopupGoldGain(caster,amount)
-		end
-    end)
+function GainGoldCreate(event)
+	local caster = event.caster
+	local hero = caster:GetOwner()				
+	if not hero then
+		return
+	end
+	local level = caster:GetLevel()
+	local amountPerSecond = 2^(level-1) * GameRules.MapSpeed
+	hero.goldPerSecond = hero.goldPerSecond + amountPerSecond
+	local dataTable = { entityIndex = caster:GetEntityIndex(), amount = amountPerSecond, interval = 1 }
+	CustomGameEventManager:Send_ServerToTeam(caster:GetTeamNumber(), "gold_gain_start", dataTable)
 end
+
+function GainGoldDestroy(event)
+	local caster = event.caster
+	local hero = caster:GetOwner()				
+	local level = caster:GetLevel()
+	local amountPerSecond = 2^(level-1) * GameRules.MapSpeed
+	hero.goldPerSecond = hero.goldPerSecond - amountPerSecond
+	local dataTable = { entityIndex = caster:GetEntityIndex() }
+	CustomGameEventManager:Send_ServerToTeam(caster:GetTeamNumber(), "gold_gain_stop", dataTable)
+end
+
+function GainGoldTeamThinker(event)
+	if event.caster then
+		local caster = event.caster
+		local level = caster:GetLevel()
+		local amount = 2^(level-1) * GameRules.MapSpeed
+		for i=1,PlayerResource:GetPlayerCountForTeam(caster:GetTeamNumber()) do
+			local playerID = PlayerResource:GetNthPlayerIDOnTeam(caster:GetTeamNumber(), i)
+			local hero = PlayerResource:GetSelectedHeroEntity(playerID) or false
+			if hero then
+				PlayerResource:modifyGold(hero,amount)
+			end
+		end
+		PopupGoldGain(caster,amount)
+	end
+end
+
 
 function RevealArea( event )
 
@@ -273,7 +288,10 @@ function LumberGain( event )
 	ModifyLumberPerSecond(hero, lumberGain, lumberInterval)
 	local dataTable = { entityIndex = caster:GetEntityIndex(),
 							amount = lumberGain, interval = lumberInterval }
-	CustomGameEventManager:Send_ServerToTeam(hero:GetTeamNumber(), "tree_wisp_harvest_start", dataTable)
+	local player = hero:GetPlayerOwner()
+	if player then
+		CustomGameEventManager:Send_ServerToPlayer(player, "tree_wisp_harvest_start", dataTable)
+	end
 end
 
 function ModifyLumberPerSecond(hero, amount, interval) 
@@ -311,7 +329,10 @@ function CancelGather(event)
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
 	ModifyLumberPerSecond(hero, -lumberGain, lumberInterval)
 	local dataTable = { entityIndex = caster:GetEntityIndex() }
-	CustomGameEventManager:Send_ServerToTeam(hero:GetTeamNumber(), "tree_wisp_harvest_stop", dataTable)
+	local player = hero:GetPlayerOwner()
+	if player then
+		CustomGameEventManager:Send_ServerToPlayer(player, "tree_wisp_harvest_stop", dataTable)
+	end
 end
 
 
@@ -327,7 +348,10 @@ function GoldMineCreate(keys)
 			caster:ForceKill(false)
 		end)
 	local dataTable = { entityIndex = caster:GetEntityIndex(), amount = amountPerSecond, interval = 1 }
-	CustomGameEventManager:Send_ServerToTeam(hero:GetTeamNumber(), "gold_gain_start", dataTable)
+	local player = hero:GetPlayerOwner()
+	if player then
+		CustomGameEventManager:Send_ServerToPlayer(player, "gold_gain_start", dataTable)
+	end
 end
 
 function GoldMineDestroy(keys)
@@ -336,7 +360,10 @@ function GoldMineDestroy(keys)
 	local amountPerSecond = GetUnitKV(caster:GetUnitName()).GoldAmount * GameRules.MapSpeed
 	hero.goldPerSecond = hero.goldPerSecond - amountPerSecond
 	local dataTable = { entityIndex = caster:GetEntityIndex() }
-	CustomGameEventManager:Send_ServerToTeam(hero:GetTeamNumber(), "gold_gain_stop", dataTable)
+	local player = hero:GetPlayerOwner()
+	if player then
+		CustomGameEventManager:Send_ServerToPlayer(player, "gold_gain_stop", dataTable)
+	end
 end
 
 

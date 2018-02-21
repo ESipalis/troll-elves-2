@@ -104,9 +104,9 @@ end
 
 -- Create the game mode when we activate
 function Activate()
+  GameRules.MapSpeed = string.match(GetMapName(),"%d+") or 1
   GameRules.trollnelves2 = trollnelves2()
   GameRules.trollnelves2:Inittrollnelves2()
-  GameRules.MapSpeed = string.match(GetMapName(),"%d+") or 1
   GameRules.lumber_price = 150
   GameRules.max_food = 20
   GameRules.TrollWin = false

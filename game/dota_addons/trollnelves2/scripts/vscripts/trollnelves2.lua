@@ -181,28 +181,6 @@ function trollnelves2:OnAllPlayersLoaded()
 	
 end
 
-function trollnelves2:InventoryUpdated(keys)
-	DebugPrint("Inventory updated!!!")
-	DebugPrintTable(keys)
-end
-
-function trollnelves2:OnActionItem(keys) 
-	DebugPrint("ON ACTION ITEM")
-	DebugPrintTable(keys)
-end
-function trollnelves2:OnItemPurchased(keys) 
-	DebugPrint("ON ACTION ITEM")
-	DebugPrintTable(keys)
-end
-function trollnelves2:OnItemPurchased2(keys) 
-	DebugPrint("ON ACTION ITEM")
-	DebugPrintTable(keys)
-end
-function trollnelves2:InventoryChanged(keys) 
-	DebugPrint("ON ACTION ITEM")
-	DebugPrintTable(keys)
-end
-
 function OnPlayerVote(eventSourceIndex, args)
 	local playerID = args["pID"]
 	local vote = args["team"]
@@ -254,9 +232,11 @@ function InitializeBuilder(hero)
 	hero.goldPerSecond = 0
 	hero.lumberPerSecond = 0
 	Timers:CreateTimer(0.03, function() 
-		PlayerResource:modifyGold(hero, hero.goldPerSecond)
-		PlayerResource:modifyLumber(hero, hero.lumberPerSecond)
-		return 1
+		if hero and not hero:IsNull() then
+			PlayerResource:modifyGold(hero, hero.goldPerSecond)
+			PlayerResource:modifyLumber(hero, hero.lumberPerSecond)
+			return 1
+		end
 	end)
 
 

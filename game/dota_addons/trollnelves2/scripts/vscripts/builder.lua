@@ -84,6 +84,18 @@ function Build( event )
 
         local item = CreateItem("item_building_cancel", unit, unit)
         unit:AddItem(item)
+
+        for i=0, unit:GetAbilityCount()-1 do
+            local ability = unit:GetAbilityByIndex(i)
+            if ability then
+                local constructionStartModifiers = GetAbilityKV(ability:GetAbilityName(), "ConstructionStartModifiers")
+                if constructionStartModifiers then
+                    for k,modifier in pairs(constructionStartModifiers) do
+                        ability:ApplyDataDrivenModifier(unit, unit, modifier, {})
+                    end
+                end
+            end
+        end
     end)
 
     -- A building finished construction
@@ -229,6 +241,23 @@ function UpgradeBuilding( event )
     
     PlayerResource:modifyGold(hero,-gold_cost)
     PlayerResource:modifyLumber(hero,-lumber_cost)
+    for i=0, newBuilding:GetAbilityCount()-1 do
+        local ability = newBuilding:GetAbilityByIndex(i)
+        if ability then
+            local constructionCompleModifiers = GetAbilityKV(ability:GetAbilityName(), "ConstructionCompleteModifiers")
+            if constructionCompleModifiers then
+                for k,modifier in pairs(constructionCompleModifiers) do
+                    ability:ApplyDataDrivenModifier(newBuilding, newBuilding, modifier, {})
+                end
+            end
+            local constructionStartModifiers = GetAbilityKV(ability:GetAbilityName(), "ConstructionStartModifiers")
+            if constructionStartModifiers then
+                for k,modifier in pairs(constructionStartModifiers) do
+                    ability:ApplyDataDrivenModifier(newBuilding, newBuilding, modifier, {})
+                end
+            end
+        end
+    end
     Timers:CreateTimer(buildTime,function()
         for key,value in pairs(hero.units) do
             UpdateUpgrades(value)
