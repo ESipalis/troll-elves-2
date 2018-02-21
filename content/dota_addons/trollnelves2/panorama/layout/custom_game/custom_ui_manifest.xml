@@ -10,7 +10,6 @@
   <Panel>
     <!-- CustomUIElements go here.-->
     <CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/barebones_notifications.xml" /> 
-    <CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/barebones_attachments.xml" />
     <CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/building_helper.xml" />
     <CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/selection.xml" /> 
     <CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/choose_help_side.xml" /> 
