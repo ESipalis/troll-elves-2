@@ -1,8 +1,0 @@
-troll114x114_overlays
-{
-	material materials/overviews/troll114x114_overlays.vmat
-	pos_x -14592
-	pos_y 14592
-	scale 28.500
-}
-
