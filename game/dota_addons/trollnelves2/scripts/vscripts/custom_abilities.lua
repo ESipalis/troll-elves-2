@@ -31,7 +31,7 @@ function GainGoldTeamThinker(event)
 			local playerID = PlayerResource:GetNthPlayerIDOnTeam(caster:GetTeamNumber(), i)
 			local hero = PlayerResource:GetSelectedHeroEntity(playerID) or false
 			if hero then
-				PlayerResource:modifyGold(hero,amount)
+				PlayerResource:ModifyGold(hero,amount)
 			end
 		end
 		PopupGoldGain(caster,amount)
@@ -76,7 +76,7 @@ end
 function GoldOnAttack (event)
 	local caster = event.caster
 	local dmg = math.floor(event.DamageDealt) * GameRules.MapSpeed
-	PlayerResource:modifyGold(caster,dmg)
+	PlayerResource:ModifyGold(caster,dmg)
 	PopupGoldGain(caster,dmg)
 	local target = event.unit
 	caster.attackTarget = target:GetEntityIndex()
@@ -107,13 +107,13 @@ function ExchangeLumber(event)
 	--Buy wood
 	if amount > 0 then
 		DebugPrint("Buying " .. amount .. " wood for " .. price .. " gold!")
-		if price > PlayerResource:getGold(playerID) then
+		if price > PlayerResource:GetGold(playerID) then
             SendErrorMessage(playerID, "#error_not_enough_gold")
             return false
         else
-        	PlayerResource:modifyGold(hero,-price)
-        	PlayerResource:modifyLumber(hero,amount)
-        	modifyLumberPrice(increasePrice)
+        	PlayerResource:ModifyGold(hero,-price)
+        	PlayerResource:ModifyLumber(hero,amount)
+        	ModifyLumberPrice(increasePrice)
         	PopupGoldGain(caster,math.floor(price),false)
         	PopupLumber(caster,math.floor(amount),true)
         end
@@ -122,13 +122,13 @@ function ExchangeLumber(event)
 		amount = -amount
 		price = price + increasePrice
 		DebugPrint("Selling " .. amount .. " wood for " .. price .. " gold!")
-		if amount > PlayerResource:getLumber(playerID) then
+		if amount > PlayerResource:GetLumber(playerID) then
             SendErrorMessage(playerID, "#error_not_enough_lumber")
             return false
 		else
-			PlayerResource:modifyGold(hero,price)
-			PlayerResource:modifyLumber(hero,-amount)
-        	modifyLumberPrice(increasePrice)
+			PlayerResource:ModifyGold(hero,price)
+			PlayerResource:ModifyLumber(hero,-amount)
+        	ModifyLumberPrice(increasePrice)
         	PopupGoldGain(caster,math.floor(price),true)
         	PopupLumber(caster,math.floor(amount),false)
 		end
@@ -145,15 +145,15 @@ function SpawnUnitOnSpellStart(event)
 	local gold_cost = ability:GetSpecialValueFor("gold_cost")
 	local lumber_cost = ability:GetSpecialValueFor("lumber_cost")
 	local food = ability:GetSpecialValueFor("food_cost")
-	PlayerResource:modifyGold(hero,-gold_cost)
-	PlayerResource:modifyLumber(hero,-lumber_cost)
-	PlayerResource:modifyFood(hero,food)
-    if PlayerResource:getGold(playerID) < 0 then
+	PlayerResource:ModifyGold(hero,-gold_cost)
+	PlayerResource:ModifyLumber(hero,-lumber_cost)
+	PlayerResource:ModifyFood(hero,food)
+    if PlayerResource:GetGold(playerID) < 0 then
         SendErrorMessage(playerID, "#error_not_enough_gold")
         caster:AddNewModifier(nil, nil, "modifier_stunned", {duration=0.03})
         return false
     end
-    if PlayerResource:getLumber(playerID) < 0 then
+    if PlayerResource:GetLumber(playerID) < 0 then
         SendErrorMessage(playerID, "#error_not_enough_lumber")
         caster:AddNewModifier(nil, nil, "modifier_stunned", {duration=0.03})
         return false
@@ -190,9 +190,9 @@ function SpawnUnitOnChannelInterrupted(event)
 	local gold_cost = ability:GetSpecialValueFor("gold_cost")
 	local lumber_cost = ability:GetSpecialValueFor("lumber_cost")
 	local food = ability:GetSpecialValueFor("food_cost")
-	PlayerResource:modifyGold(hero,gold_cost)
-	PlayerResource:modifyLumber(hero,lumber_cost)
-	PlayerResource:modifyFood(hero,-food)
+	PlayerResource:ModifyGold(hero,gold_cost)
+	PlayerResource:ModifyLumber(hero,lumber_cost)
+	PlayerResource:ModifyFood(hero,-food)
 
 end
 
@@ -401,11 +401,11 @@ function BuyItem(event)
 		SendErrorMessage(playerID, "#error_shop_out_of_range")
 		return false
 	end
-	if gold_cost > PlayerResource:getGold(playerID) then
+	if gold_cost > PlayerResource:GetGold(playerID) then
         SendErrorMessage(playerID, "#error_not_enough_gold")
         return false
     end
-	if lumber_cost > PlayerResource:getLumber(playerID) then
+	if lumber_cost > PlayerResource:GetLumber(playerID) then
         SendErrorMessage(playerID, "#error_not_enough_lumber")
         return false
     end
@@ -413,8 +413,8 @@ function BuyItem(event)
 		SendErrorMessage(playerID, "#error_full_inventory")
         return false
     end
-    PlayerResource:modifyLumber(hero,-lumber_cost)
-    PlayerResource:modifyGold(hero,-gold_cost)
+    PlayerResource:ModifyLumber(hero,-lumber_cost)
+    PlayerResource:ModifyGold(hero,-gold_cost)
 	local item = CreateItem(item_name, hero, hero)
 	hero:AddItem(item)
 	return true
@@ -456,8 +456,8 @@ function SellItem(event)
 	--if target == caster then
 		local gold_cost = ability:GetSpecialValueFor("gold_cost")
 		local lumber_cost = ability:GetSpecialValueFor("lumber_cost")
-		PlayerResource:modifyGold(hero,gold_cost,true)
-		PlayerResource:modifyLumber(hero,lumber_cost,true)
+		PlayerResource:ModifyGold(hero,gold_cost,true)
+		PlayerResource:ModifyLumber(hero,lumber_cost,true)
 	--end
 end
 
@@ -482,18 +482,18 @@ function BuyLumberTroll(event)
         return false
     end
 	if amount > 0 then
-		if price > PlayerResource:getGold(playerID) then
+		if price > PlayerResource:GetGold(playerID) then
             SendErrorMessage(playerID, "#error_not_enough_gold")
             return false
 		end
 	else
-		if -amount > PlayerResource:getLumber(playerID) then
+		if -amount > PlayerResource:GetLumber(playerID) then
             SendErrorMessage(playerID, "#error_not_enough_lumber")
             return false
 		end
 	end
-	PlayerResource:modifyGold(hero,-price)
-	PlayerResource:modifyLumber(hero,amount)
+	PlayerResource:ModifyGold(hero,-price)
+	PlayerResource:ModifyLumber(hero,amount)
 
 end
 
@@ -503,7 +503,7 @@ function StealGold(event)
 	local playerID = target:GetPlayerOwnerID()
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
 
-	PlayerResource:modifyGold(caster,math.ceil(GetNetworth(hero)*0.02)+5)
+	PlayerResource:ModifyGold(caster,math.ceil(GetNetworth(hero)*0.02)+5)
 
 end
 
@@ -529,7 +529,7 @@ function GetNetworth(hero)
 			sum = sum + gold_cost + lumber_cost * 64000
 	    end
 	end
-	sum = sum + PlayerResource:getGold(hero:GetPlayerOwnerID())
+	sum = sum + PlayerResource:GetGold(hero:GetPlayerOwnerID())
 	return sum
 end
 

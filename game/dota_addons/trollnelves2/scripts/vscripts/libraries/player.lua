@@ -8,28 +8,28 @@ local lumberGainedImportance = 12
 local lumberGivenImportance = 12
 local rankImportance = 25
 
-function CDOTA_PlayerResource:setGold(hero,gold)
+function CDOTA_PlayerResource:SetGold(hero,gold)
     local pID = hero:GetPlayerOwnerID()
     gold = math.floor(string.match(gold,"[-]?%d+")) or 0
     gold = gold <= 1000000 and gold or 1000000
     GameRules.gold[pID] = gold
-    CustomNetTables:SetTableValue("resources", tostring(pID), { gold = PlayerResource:getGold(pID),lumber = PlayerResource:getLumber(pID) })
+    CustomNetTables:SetTableValue("resources", tostring(pID), { gold = PlayerResource:GetGold(pID),lumber = PlayerResource:GetLumber(pID) })
 end
 
-function CDOTA_PlayerResource:modifyGold(hero,gold,noGain)
+function CDOTA_PlayerResource:ModifyGold(hero,gold,noGain)
     noGain = noGain or false
     local pID = hero:GetPlayerOwnerID()
     gold = math.floor(string.match(gold,"[-]?%d+")) or 0
-    PlayerResource:setGold(hero,math.floor(PlayerResource:getGold(pID) + gold))
+    PlayerResource:SetGold(hero,math.floor(PlayerResource:GetGold(pID) + gold))
     if gold > 0 and not noGain then
-      PlayerResource:modifyGoldGained(pID,gold)
+      PlayerResource:ModifyGoldGained(pID,gold)
     end
     if GameRules.test then
-      PlayerResource:setGold(hero,1000000)
+      PlayerResource:SetGold(hero,1000000)
     end
 end
 
-function CDOTA_PlayerResource:getGold(pID)
+function CDOTA_PlayerResource:GetGold(pID)
   return math.floor(GameRules.gold[pID] or 0)
 end
 
@@ -37,72 +37,72 @@ end
 
 
 
-function CDOTA_PlayerResource:setLumber(hero,lumber)
+function CDOTA_PlayerResource:SetLumber(hero,lumber)
     local pID = hero:GetPlayerOwnerID()
 		lumber = lumber or 0
     lumber = lumber <= 1000000 and lumber or 1000000
     GameRules.lumber[pID] = lumber
-    CustomNetTables:SetTableValue("resources", tostring(pID), { gold = PlayerResource:getGold(pID),lumber = PlayerResource:getLumber(pID) })
+    CustomNetTables:SetTableValue("resources", tostring(pID), { gold = PlayerResource:GetGold(pID),lumber = PlayerResource:GetLumber(pID) })
 end
 
-function CDOTA_PlayerResource:modifyLumber(hero,lumber,noGain)
+function CDOTA_PlayerResource:ModifyLumber(hero,lumber,noGain)
     noGain = noGain or false
     local pID = hero:GetPlayerOwnerID()
     lumber = lumber or 0
-    PlayerResource:setLumber(hero,PlayerResource:getLumber(pID) + lumber)
+    PlayerResource:SetLumber(hero,PlayerResource:GetLumber(pID) + lumber)
     if lumber > 0 and not noGain then
-      PlayerResource:modifyLumberGained(pID,lumber)
+      PlayerResource:ModifyLumberGained(pID,lumber)
     end
     if GameRules.test then
-      PlayerResource:setLumber(hero,1000000)
+      PlayerResource:SetLumber(hero,1000000)
     end
 end
 
-function CDOTA_PlayerResource:getLumber(pID)
+function CDOTA_PlayerResource:GetLumber(pID)
   return GameRules.lumber[pID] or 0
 end
 
-function CDOTA_PlayerResource:modifyGoldGained(pID,amount)
-  GameRules.goldGained[pID] = PlayerResource:getGoldGained(pID) + amount
+function CDOTA_PlayerResource:ModifyGoldGained(pID,amount)
+  GameRules.goldGained[pID] = PlayerResource:GetGoldGained(pID) + amount
 end
 
-function CDOTA_PlayerResource:getGoldGained(pID)
+function CDOTA_PlayerResource:GetGoldGained(pID)
   return GameRules.goldGained[pID] or 0
 end
 
-function CDOTA_PlayerResource:modifyGoldGiven(pID,amount)
-  GameRules.goldGiven[pID] = PlayerResource:getGoldGiven(pID) + amount
+function CDOTA_PlayerResource:ModifyGoldGiven(pID,amount)
+  GameRules.goldGiven[pID] = PlayerResource:GetGoldGiven(pID) + amount
 end
 
-function CDOTA_PlayerResource:getGoldGiven(pID)
+function CDOTA_PlayerResource:GetGoldGiven(pID)
   return GameRules.goldGiven[pID] or 0
 end
 
 
 
-function CDOTA_PlayerResource:modifyLumberGained(pID,amount)
-  GameRules.lumberGained[pID] =PlayerResource:getLumberGained(pID) + amount
+function CDOTA_PlayerResource:ModifyLumberGained(pID,amount)
+  GameRules.lumberGained[pID] =PlayerResource:GetLumberGained(pID) + amount
 end
 
-function CDOTA_PlayerResource:getLumberGained(pID)
+function CDOTA_PlayerResource:GetLumberGained(pID)
   return GameRules.lumberGained[pID] or 0
 end
 
-function CDOTA_PlayerResource:modifyLumberGiven(pID,amount)
-  GameRules.lumberGiven[pID] = PlayerResource:getLumberGiven(pID) + amount
+function CDOTA_PlayerResource:ModifyLumberGiven(pID,amount)
+  GameRules.lumberGiven[pID] = PlayerResource:GetLumberGiven(pID) + amount
 end
 
-function CDOTA_PlayerResource:getLumberGiven(pID)
+function CDOTA_PlayerResource:GetLumberGiven(pID)
   return GameRules.lumberGiven[pID] or 0
 end
 
 function CDOTA_PlayerResource:GetAllStats(pID)
 	local sum = 0
-	sum = sum + PlayerResource:getGoldGained(pID) + PlayerResource:getGoldGiven(pID) + PlayerResource:getLumberGiven(pID) + PlayerResource:getLumberGained(pID)
+	sum = sum + PlayerResource:GetGoldGained(pID) + PlayerResource:GetGoldGiven(pID) + PlayerResource:GetLumberGiven(pID) + PlayerResource:GetLumberGained(pID)
 	return sum
 end	
 
-function CDOTA_PlayerResource:modifyFood(hero,food)
+function CDOTA_PlayerResource:ModifyFood(hero,food)
     food = string.match(food,"[-]?%d+") or 0
     local playerID = hero:GetMainControllingPlayer()
     hero.food = hero.food + food
@@ -138,8 +138,8 @@ end
 
 function CDOTA_PlayerResource:GetScoreBonusGoldGained(pID)
 	local team = PlayerResource:GetTeam(pID)
-	local playerSum = PlayerResource:getGoldGained(pID)
-	local teamAvg = PlayerResource:GetPlayerCountForTeam(team) > 1 and (Team.getGoldGained(team) - playerSum)/(PlayerResource:GetPlayerCountForTeam(team)-1) or playerSum
+	local playerSum = PlayerResource:GetGoldGained(pID)
+	local teamAvg = PlayerResource:GetPlayerCountForTeam(team) > 1 and (Team.GetGoldGained(team) - playerSum)/(PlayerResource:GetPlayerCountForTeam(team)-1) or playerSum
 	playerSum = playerSum == 0 and 1 or playerSum
 	teamAvg = teamAvg == 0 and 1 or teamAvg
 	if playerSum == teamAvg then
@@ -156,8 +156,8 @@ function CDOTA_PlayerResource:GetScoreBonusGoldGained(pID)
 end
 function CDOTA_PlayerResource:GetScoreBonusGoldGiven(pID)
 	local team = PlayerResource:GetTeam(pID)
-	local playerSum = PlayerResource:getGoldGiven(pID)
-	local teamAvg = PlayerResource:GetPlayerCountForTeam(team) > 1 and (Team.getGoldGiven(team) - playerSum)/(PlayerResource:GetPlayerCountForTeam(team)-1) or playerSum
+	local playerSum = PlayerResource:GetGoldGiven(pID)
+	local teamAvg = PlayerResource:GetPlayerCountForTeam(team) > 1 and (Team.GetGoldGiven(team) - playerSum)/(PlayerResource:GetPlayerCountForTeam(team)-1) or playerSum
 	playerSum = playerSum == 0 and 1 or playerSum
 	teamAvg = teamAvg == 0 and 1 or teamAvg
 	if playerSum == teamAvg then
@@ -173,8 +173,8 @@ function CDOTA_PlayerResource:GetScoreBonusGoldGiven(pID)
 end
 function CDOTA_PlayerResource:GetScoreBonusLumberGained(pID)
 	local team = PlayerResource:GetTeam(pID)
-	local playerSum = PlayerResource:getLumberGained(pID)
-	local teamAvg = PlayerResource:GetPlayerCountForTeam(team) > 1 and (Team.getLumberGained(team) - playerSum)/(PlayerResource:GetPlayerCountForTeam(team)-1) or playerSum
+	local playerSum = PlayerResource:GetLumberGained(pID)
+	local teamAvg = PlayerResource:GetPlayerCountForTeam(team) > 1 and (Team.GetLumberGained(team) - playerSum)/(PlayerResource:GetPlayerCountForTeam(team)-1) or playerSum
 	playerSum = playerSum == 0 and 1 or playerSum
 	teamAvg = teamAvg == 0 and 1 or teamAvg
 	if playerSum == teamAvg then
@@ -190,8 +190,8 @@ function CDOTA_PlayerResource:GetScoreBonusLumberGained(pID)
 end
 function CDOTA_PlayerResource:GetScoreBonusLumberGiven(pID)
 	local team = PlayerResource:GetTeam(pID)
-	local playerSum = PlayerResource:getLumberGiven(pID)
-	local teamAvg = PlayerResource:GetPlayerCountForTeam(team) > 1 and (Team.getLumberGiven(team) - playerSum)/(PlayerResource:GetPlayerCountForTeam(team)-1) or playerSum
+	local playerSum = PlayerResource:GetLumberGiven(pID)
+	local teamAvg = PlayerResource:GetPlayerCountForTeam(team) > 1 and (Team.GetLumberGiven(team) - playerSum)/(PlayerResource:GetPlayerCountForTeam(team)-1) or playerSum
 	playerSum = playerSum == 0 and 1 or playerSum
 	teamAvg = teamAvg == 0 and 1 or teamAvg
 	if playerSum == teamAvg then
@@ -230,15 +230,4 @@ function CDOTA_PlayerResource:IsAngel(hero)
 end
 function CDOTA_PlayerResource:IsWolf(hero)
     return string.match(hero:GetUnitName(),"lycan")
-end
-
-function CDOTA_PlayerResource:CheckTrollVictory()
-    for i=1,PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS) do
-        local playerID = PlayerResource:GetNthPlayerIDOnTeam(2, i)
-        local hero = PlayerResource:GetSelectedHeroEntity(playerID) or false
-        if hero and hero.alive then
-            return false
-        end
-    end
-    return true
 end

@@ -17,10 +17,10 @@ function Stats.SubmitMatchData(winner,callback)
 			playerData.team = PlayerResource:GetTeam(pID) or 0
 			playerData.team = playerData.team == DOTA_TEAM_GOODGUYS and 2 or playerData.team == DOTA_TEAM_BADGUYS and 3 or 0
 			playerData.type = PlayerResource:GetType(pID)
-			playerData.goldGained = PlayerResource:getGoldGained(pID) or 0
-			playerData.goldGiven = PlayerResource:getGoldGiven(pID) or 0
-			playerData.lumberGained = PlayerResource:getLumberGained(pID) or 0
-			playerData.lumberGiven = PlayerResource:getLumberGiven(pID) or 0
+			playerData.goldGained = PlayerResource:GetGoldGained(pID) or 0
+			playerData.goldGiven = PlayerResource:GetGoldGiven(pID) or 0
+			playerData.lumberGained = PlayerResource:GetLumberGained(pID) or 0
+			playerData.lumberGiven = PlayerResource:GetLumberGiven(pID) or 0
 			playerData.kills = PlayerResource:GetKills(pID)
 			playerData.deaths = PlayerResource:GetDeaths(pID)
 			playerData.score = PlayerResource:GetTeam(pID) == winner and (100 + PlayerResource:GetScoreBonus(pID)) or (-100 + PlayerResource:GetScoreBonus(pID))

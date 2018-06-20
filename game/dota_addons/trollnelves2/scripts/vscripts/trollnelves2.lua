@@ -17,6 +17,7 @@ require('libraries/notifications')
 require('libraries/popups')
 require('libraries/team')
 require('libraries/player')
+require('libraries/entity')
 
 
 -- These internal libraries set up trollnelves2's events and processes.  Feel free to inspect them/change them if you need to.
@@ -69,10 +70,10 @@ function trollnelves2:OnPlayerReconnect(event)
 		if hero.dced and hero.dced == true then
 			hero.alive = true
 			hero.dced = false
-			PlayerResource:modifyGold(hero,0)
-			PlayerResource:modifyLumber(hero,0)
-			PlayerResource:modifyFood(hero,0)
-			modifyLumberPrice(0)
+			PlayerResource:ModifyGold(hero,0)
+			PlayerResource:ModifyLumber(hero,0)
+			PlayerResource:ModifyFood(hero,0)
+			ModifyLumberPrice(0)
 		else
 			local player = PlayerResource:GetPlayer(playerID)
 			if player then
@@ -188,8 +189,8 @@ function InitializeHero(hero)
 	hero.buildings = {} -- This keeps the name and quantity of each building
 	hero.units = {}
 	hero.disabledBuildings = {}
-	PlayerResource:setGold(hero,0)
-	PlayerResource:setLumber(hero,0) -- Secondary resource of the player
+	PlayerResource:SetGold(hero,0)
+	PlayerResource:SetLumber(hero,0) -- Secondary resource of the player
 	if GameRules.stunHeroes then
 		hero:AddNewModifier(nil, nil, "modifier_stunned", { })
 		table.insert(GameRules.heroes,hero)
@@ -198,8 +199,8 @@ function InitializeHero(hero)
 	Timers:CreateTimer(0.25,function()
 		local player = PlayerResource:GetPlayer(pID)
 		if player then
-			CustomGameEventManager:Send_ServerToPlayer(player, "player_lumber_changed", { lumber = PlayerResource:getLumber(pID) })
-			CustomGameEventManager:Send_ServerToPlayer(player, "player_custom_gold_changed", { gold = PlayerResource:getGold(pID) })
+			CustomGameEventManager:Send_ServerToPlayer(player, "player_lumber_changed", { lumber = PlayerResource:GetLumber(pID) })
+			CustomGameEventManager:Send_ServerToPlayer(player, "player_custom_gold_changed", { gold = PlayerResource:GetGold(pID) })
 		end
 		return 0.25
 	end)
@@ -229,8 +230,8 @@ function InitializeBuilder(hero)
 	hero.lumberPerSecond = 0
 	Timers:CreateTimer(0.03, function() 
 		if hero and not hero:IsNull() then
-			PlayerResource:modifyGold(hero, hero.goldPerSecond)
-			PlayerResource:modifyLumber(hero, hero.lumberPerSecond)
+			PlayerResource:ModifyGold(hero, hero.goldPerSecond)
+			PlayerResource:ModifyLumber(hero, hero.lumberPerSecond)
 			return 1
 		end
 	end)
@@ -243,9 +244,9 @@ function InitializeBuilder(hero)
 	end
 	hero:SetAbilityPoints(0)
 	UpdateSpells(hero)
-	PlayerResource:setGold(hero,30)
-	PlayerResource:setLumber(hero,0) -- Secondary resource of the player
-	PlayerResource:modifyFood(hero,0)
+	PlayerResource:SetGold(hero,30)
+	PlayerResource:SetLumber(hero,0) -- Secondary resource of the player
+	PlayerResource:ModifyFood(hero,0)
 
 	hero:NotifyWearablesOfModelChange(false)
 end
@@ -299,8 +300,8 @@ function InitializeTroll(hero)
 			hero:SetAbilityPoints(0)
 			-- Clear inventory
 			hero:ClearInventory()
-			PlayerResource:modifyGold(hero,0)
-			PlayerResource:modifyLumber(hero,0) -- Secondary resource of the player
+			PlayerResource:ModifyGold(hero,0)
+			PlayerResource:ModifyLumber(hero,0) -- Secondary resource of the player
 			local player = hero:GetPlayerOwner()
 			if player then
 				CustomGameEventManager:Send_ServerToPlayer(player, "hide_cheese_panel", { })
@@ -337,14 +338,6 @@ function InitializeTroll(hero)
 		end, 
 	pID)
 
-end
-
-function CDOTA_BaseNPC:ClearInventory()
-	local item_count = self:GetNumItemsInInventory()
-	for i=0, item_count do
-		local item = self:GetItemInSlot(i)
-		self:RemoveItem(item)
-	end
 end
 
 
@@ -384,7 +377,7 @@ end
 
 function trollnelves2:PreStart()
 	local gameStartTimer = 5
-	modifyLumberPrice(0)
+	ModifyLumberPrice(0)
 	Timers:CreateTimer(0.03,function()
 		if gameStartTimer > 0 then
 			Notifications:ClearBottomFromAll()
@@ -401,7 +394,7 @@ function trollnelves2:PreStart()
 					if pHero and not pHero:IsNull() then
 						pHero:RemoveModifierByName("modifier_stunned")
 						if string.match(pHero:GetUnitName(),"troll") then
-							PlayerResource:setGold(pHero,0)
+							PlayerResource:SetGold(pHero,0)
 							pHero:AddNewModifier(nil, nil, "modifier_stunned", {duration=GameRules.trollTimer})
 							local timer = GameRules.trollTimer
 							Timers:CreateTimer(0.03,function()
@@ -447,7 +440,7 @@ function trollnelves2:Inittrollnelves2()
 	DebugPrint('[TROLLNELVES2] Done loading trollnelves2 trollnelves2!\n\n')
 end
 
-function modifyLumberPrice(amount)
+function ModifyLumberPrice(amount)
 	amount = string.match(amount,"[-]?%d+") or 0
 	if GameRules.lumber_price + amount < 10 then
 		GameRules.lumber_price = 10
@@ -457,10 +450,10 @@ function modifyLumberPrice(amount)
 	CustomGameEventManager:Send_ServerToAllClients("player_lumber_price_changed", {lumberPrice = GameRules.lumber_price} )
 end
 
-function setResourceValues()
+function SetResourceValues()
 	for pID=0,DOTA_MAX_PLAYERS do
 		if PlayerResource:IsValidPlayer( pID ) then
-			CustomNetTables:SetTableValue("resources", tostring(pID) .. "_resource_stats", { gold = PlayerResource:getGold(pID),lumber = PlayerResource:getLumber(pID) , goldGained = PlayerResource:getGoldGained(pID) , lumberGained = PlayerResource:getLumberGained(pID) , goldGiven = PlayerResource:getGoldGiven(pID) , lumberGiven = PlayerResource:getLumberGiven(pID) , timePassed = GameRules:GetGameTime() - GameRules.startTime })
+			CustomNetTables:SetTableValue("resources", tostring(pID) .. "_resource_stats", { gold = PlayerResource:GetGold(pID),lumber = PlayerResource:GetLumber(pID) , goldGained = PlayerResource:GetGoldGained(pID) , lumberGained = PlayerResource:GetLumberGained(pID) , goldGiven = PlayerResource:GetGoldGiven(pID) , lumberGiven = PlayerResource:GetLumberGiven(pID) , timePassed = GameRules:GetGameTime() - GameRules.startTime })
 		end
 	end
 end
@@ -628,11 +621,4 @@ function GetClass(unitName)
 	elseif string.match(unitName,"research_lab") then
 		return "research_lab"
 	end
-end
-
-function CDOTA_BaseNPC:GetCollisionSize()
-	if GetUnitKV(self:GetUnitName()) then
-		return GetUnitKV(self:GetUnitName(),"CollisionSize")
-	end
-	return nil
 end

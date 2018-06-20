@@ -22,11 +22,11 @@ function Build( event )
         end
 
         -- If not enough resources to queue, stop
-        if PlayerResource:getGold(playerID) < gold_cost then
+        if PlayerResource:GetGold(playerID) < gold_cost then
             SendErrorMessage(playerID, "#error_not_enough_gold")
             return false
         end
-        if PlayerResource:getLumber(playerID) < lumber_cost then
+        if PlayerResource:GetLumber(playerID) < lumber_cost then
             SendErrorMessage(playerID, "#error_not_enough_lumber")
             return false
         end
@@ -36,8 +36,8 @@ function Build( event )
 
     -- Position for a building was confirmed and valid
     event:OnBuildingPosChosen(function(vPos)
-        PlayerResource:modifyGold(hero,-gold_cost)
-        PlayerResource:modifyLumber(hero,-lumber_cost)
+        PlayerResource:ModifyGold(hero,-gold_cost)
+        PlayerResource:ModifyLumber(hero,-lumber_cost)
         EmitSoundOnClient("DOTA_Item.ObserverWard.Activate", PlayerResource:GetPlayer(playerID))
     end)
 
@@ -54,8 +54,8 @@ function Build( event )
         BuildingHelper:print("Cancelled construction of " .. name)
         -- Refund resources for this cancelled work
         if work.refund and work.refund == true then
-            PlayerResource:modifyGold(hero,gold_cost,true)
-            PlayerResource:modifyLumber(hero,lumber_cost,true)
+            PlayerResource:ModifyGold(hero,gold_cost,true)
+            PlayerResource:ModifyLumber(hero,lumber_cost,true)
         end
     end)
 
@@ -165,8 +165,8 @@ function CancelBuilding( keys )
     BuildingHelper:print("CancelBuilding "..building:GetUnitName().." "..building:GetEntityIndex())
 
     -- Refund here
-    PlayerResource:modifyGold(hero,building.gold_cost,true)
-    PlayerResource:modifyLumber(hero,building.lumber_cost,true)
+    PlayerResource:ModifyGold(hero,building.gold_cost,true)
+    PlayerResource:ModifyLumber(hero,building.lumber_cost,true)
 
     -- Eject builder
     local builder = building.builder_inside
@@ -217,11 +217,11 @@ function UpgradeBuilding( event )
             lumber_cost = upgrade.lumber_cost
         end
     end
-    if gold_cost > PlayerResource:getGold(playerID) then
+    if gold_cost > PlayerResource:GetGold(playerID) then
         SendErrorMessage(playerID, "#error_not_enough_gold")
         return false
     end
-    if lumber_cost > PlayerResource:getLumber(playerID) then
+    if lumber_cost > PlayerResource:GetLumber(playerID) then
         SendErrorMessage(playerID, "#error_not_enough_lumber")
         return false
     end
@@ -239,8 +239,8 @@ function UpgradeBuilding( event )
         end
     end
     
-    PlayerResource:modifyGold(hero,-gold_cost)
-    PlayerResource:modifyLumber(hero,-lumber_cost)
+    PlayerResource:ModifyGold(hero,-gold_cost)
+    PlayerResource:ModifyLumber(hero,-lumber_cost)
     for i=0, newBuilding:GetAbilityCount()-1 do
         local ability = newBuilding:GetAbilityByIndex(i)
         if ability then

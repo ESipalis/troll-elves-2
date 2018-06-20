@@ -262,9 +262,9 @@ function BuildingHelper:OnEntityKilled(keys)
         killed.alive = false
         killed.legitChooser = true
 
-        bounty = PlayerResource:getGold(killedID)
-        PlayerResource:setGold(killed,0)
-        PlayerResource:setLumber(killed,0)
+        bounty = PlayerResource:GetGold(killedID)
+        PlayerResource:SetGold(killed,0)
+        PlayerResource:SetLumber(killed,0)
 
         if GameRules:GetGameTime() - GameRules.startTime < 420 then
             local args = {}
@@ -292,8 +292,8 @@ function BuildingHelper:OnEntityKilled(keys)
             end
         end
 
-        if PlayerResource:CheckTrollVictory() == true then
-            setResourceValues()
+        if CheckTrollVictory() then
+            SetResourceValues()
             Stats.SubmitMatchData(DOTA_TEAM_BADGUYS,callback)
             GameRules:SetGameWinner(DOTA_TEAM_BADGUYS)
             return
@@ -352,30 +352,40 @@ function BuildingHelper:OnEntityKilled(keys)
         end
         UpdateSpells(hero)
     elseif PlayerResource:IsTroll(killed) then
-        setResourceValues()
+        SetResourceValues()
         Stats.SubmitMatchData(DOTA_TEAM_GOODGUYS,callback)
         GameRules:SetGameWinner(DOTA_TEAM_GOODGUYS)
     elseif PlayerResource:IsWolf(killed) then
         bounty = math.max(GetNetworth(killed) * 0.10,GameRules:GetGameTime())
         RespawnHelper(killed)
     elseif PlayerResource:IsAngel(killed) then
-        bounty = math.max(PlayerResource:getGold(killedID),GameRules:GetGameTime())
-        PlayerResource:setGold(killed,0)
+        bounty = math.max(PlayerResource:GetGold(killedID),GameRules:GetGameTime())
+        PlayerResource:SetGold(killed,0)
         RespawnHelper(killed)
     end
     if bounty>=0 and attacker~=killed then
         bounty = math.floor(bounty)
-        PlayerResource:modifyGold(attacker,bounty)
+        PlayerResource:ModifyGold(attacker,bounty)
         GameRules:SendCustomMessage("%s1 (" .. GetModifiedName(attackerName)  .. ") killed " .. PlayerResource:GetPlayerName(killedID) .. " (" .. GetModifiedName(killedName) .. ") for <font color='#F0BA36'>"..bounty.."</font> gold!",attackerID,0)
     end
     if killed and killed:GetKeyValue("FoodCost") then
         local food_cost = killed:GetKeyValue("FoodCost")
         local hero = PlayerResource:GetSelectedHeroEntity(killedID)
-        PlayerResource:modifyFood(hero,-food_cost)
+        PlayerResource:ModifyFood(hero,-food_cost)
     end
 
 end
 
+function CheckTrollVictory()
+    for i=1,PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS) do
+        local playerID = PlayerResource:GetNthPlayerIDOnTeam(2, i)
+        local hero = PlayerResource:GetSelectedHeroEntity(playerID)
+        if hero and hero.alive then
+            return false
+        end
+    end
+    return true
+end
 
 function GetModifiedName(orgName)
     if string.match(orgName,"troll") then
@@ -728,18 +738,18 @@ function BuildingHelper:GiveResources( event )
             local hero = PlayerResource:GetSelectedHeroEntity(targetID)
             local casterHero = PlayerResource:GetSelectedHeroEntity(casterID)
             if gold and lumber then
-                if PlayerResource:getGold(casterID) < gold or PlayerResource:getLumber(casterID) < lumber then
+                if PlayerResource:GetGold(casterID) < gold or PlayerResource:GetLumber(casterID) < lumber then
                     SendErrorMessage(casterID, "#error_not_enough_resources")
                     return
                 end
-                PlayerResource:modifyGold(casterHero,-gold,true)
-                PlayerResource:modifyLumber(casterHero,-lumber,true)
-                PlayerResource:modifyGold(hero,gold,true)
-                PlayerResource:modifyLumber(hero,lumber,true)
-                PlayerResource:modifyGoldGiven(targetID,-gold)
-                PlayerResource:modifyLumberGiven(targetID,-lumber)
-                PlayerResource:modifyGoldGiven(casterID,gold)
-                PlayerResource:modifyLumberGiven(casterID,lumber)
+                PlayerResource:ModifyGold(casterHero,-gold,true)
+                PlayerResource:ModifyLumber(casterHero,-lumber,true)
+                PlayerResource:ModifyGold(hero,gold,true)
+                PlayerResource:ModifyLumber(hero,lumber,true)
+                PlayerResource:ModifyGoldGiven(targetID,-gold)
+                PlayerResource:ModifyLumberGiven(targetID,-lumber)
+                PlayerResource:ModifyGoldGiven(casterID,gold)
+                PlayerResource:ModifyLumberGiven(casterID,lumber)
                 if gold > 0 or lumber > 0 then
                     local text = PlayerResource:GetPlayerName(casterHero:GetPlayerOwnerID()) .. "(" .. GetModifiedName(casterHero:GetUnitName()) .. ") has sent "
                     if gold > 0 then
@@ -798,8 +808,8 @@ function BuildingHelper:ChooseHelpSide(event)
             local trollHero = PlayerResource:GetSelectedHeroEntity(GameRules.trollID)
             local lumber = math.floor(GetNetworth(trollHero)/64000*0.3)
             local gold = math.floor((GetNetworth(trollHero)/64000*0.3 - lumber)*64000)
-            PlayerResource:setLumber(hero,lumber)
-            PlayerResource:setGold(hero,gold)
+            PlayerResource:SetLumber(hero,lumber)
+            PlayerResource:SetGold(hero,gold)
             PlayerResource:SetUnitShareMaskForPlayer(GameRules.trollID,pID, 2 , true)
             GameRules:SendCustomMessage("%s1 has joined the dark side and now will help " .. GetModifiedName("troll") .. ".%s1 is now a" .. GetModifiedName("lycan") ,pID,0)
             Timers:CreateTimer(0.03,function()
@@ -833,7 +843,7 @@ function GetNetworth(hero)
             sum = sum + gold_cost + lumber_cost * 64000
         end
     end
-    sum = sum + PlayerResource:getGold(hero:GetPlayerOwnerID())
+    sum = sum + PlayerResource:GetGold(hero:GetPlayerOwnerID())
     return sum
 end
 
@@ -882,8 +892,8 @@ function BuildingHelper:SellItem(args)
         local lumber_cost = item:GetSpecialValueFor("lumber_cost")
         local hero = item:GetCaster()
         UTIL_Remove(item)
-        PlayerResource:modifyGold(hero,gold_cost,true)
-        PlayerResource:modifyLumber(hero,lumber_cost,true)
+        PlayerResource:ModifyGold(hero,gold_cost,true)
+        PlayerResource:ModifyLumber(hero,lumber_cost,true)
         local player = hero:GetPlayerOwner()
         EmitSoundOnClient("DOTA_Item.Hand_Of_Midas", player)
     end
