@@ -53,7 +53,7 @@ function Build( event )
         local name = work.name
         BuildingHelper:print("Cancelled construction of " .. name)
         -- Refund resources for this cancelled work
-        if work.refund and work.refund == true then
+        if work.refund and work.refund == true and not work.repair then
             PlayerResource:ModifyGold(hero,gold_cost,true)
             PlayerResource:ModifyLumber(hero,lumber_cost,true)
         end
