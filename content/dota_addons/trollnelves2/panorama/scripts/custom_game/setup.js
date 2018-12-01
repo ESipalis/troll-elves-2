@@ -48,6 +48,8 @@ var customHpReg = {};
     centerBlock.FindChildTraverse("stragiint").style.visibility = "collapse";
     //Fuck that levelup button
     centerBlock.FindChildTraverse("level_stats_frame").style.visibility = "collapse";
+    // Hide tp slot
+    centerBlock.FindChildTraverse("inventory_tpscroll_container").style.visibility = "collapse";
 
     //fuck backpack UI (We have Lua filling these slots with junk, and if the player can't touch them it should be effectively disabled)
     var inventory = centerBlock.FindChildTraverse("inventory").FindChildTraverse("inventory_items");

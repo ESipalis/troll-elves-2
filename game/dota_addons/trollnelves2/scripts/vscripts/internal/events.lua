@@ -26,6 +26,10 @@ end
 function trollnelves2:_OnNPCSpawned(keys)
   local npc = EntIndexToHScript(keys.entindex)
 
+  if npc.GetPhysicalArmorValue then
+    npc:AddNewModifier(npc, nil, "modifier_custom_armor", {})
+  end
+
   if npc:IsRealHero() and npc.bFirstSpawned == nil then
     npc.bFirstSpawned = true
     trollnelves2:OnHeroInGame(npc)

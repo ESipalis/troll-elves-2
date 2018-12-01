@@ -435,6 +435,7 @@ end
 function trollnelves2:Inittrollnelves2()
 	trollnelves2 = self
 	DebugPrint('[TROLLNELVES2] Starting to load trollnelves2 trollnelves2...')
+	LinkLuaModifier("modifier_custom_armor", "libraries/modifiers/modifier_custom_armor.lua", LUA_MODIFIER_MOTION_NONE)
 	trollnelves2:_Inittrollnelves2()
 	CustomGameEventManager:RegisterListener( "player_vote", OnPlayerVote )
 	DebugPrint('[TROLLNELVES2] Done loading trollnelves2 trollnelves2!\n\n')

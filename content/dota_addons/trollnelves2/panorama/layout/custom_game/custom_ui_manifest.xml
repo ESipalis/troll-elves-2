@@ -2,6 +2,7 @@
 <root>
 	<scripts>
 		<include src="file://{resources}/scripts/custom_game/setup.js" />
+		<include src="file://{resources}/scripts/custom_game/physical_resistance.js" />
 	</scripts>
 	<styles>
 		<include src="file://{resources}/styles/custom_game/setup.css" />
