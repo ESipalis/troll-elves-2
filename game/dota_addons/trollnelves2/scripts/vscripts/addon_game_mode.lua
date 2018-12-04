@@ -22,11 +22,9 @@ function Precache( context )
   -- Models can also be precached by folder or individually
   -- PrecacheModel should generally used over PrecacheResource for individual models
   -- Sounds can precached here like anything else
-  PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_gyrocopter.vsndevts", context)
 
   -- Entire items can be precached by name
   -- Abilities can also be precached in this way despite the name
-  PrecacheItemByNameSync("item_build_rock", context)
   PrecacheItemByNameSync("item_root_ability", context)
   PrecacheItemByNameSync("item_silence_ability", context)
   PrecacheItemByNameSync("item_glyph_ability", context)

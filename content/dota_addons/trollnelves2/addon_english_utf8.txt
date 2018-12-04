@@ -995,12 +995,6 @@
 		"DOTA_Tooltip_ability_item_night_ability_blind_percentage"                        "BLIND PERCENTAGE:"
 		"DOTA_Tooltip_ability_item_night_ability_radius"                                  "RADIUS:"
 
-		"DOTA_Tooltip_ability_item_build_rock"                                            "Build Rock"
-		"DOTA_Tooltip_ability_item_build_rock_Description"                                "Build rock.Use this to block troll's way from entering your base.Make sure to center it!"
-		"DOTA_Tooltip_ability_item_build_rock_gold_cost"                                  "GOLD COST:"
-		"DOTA_Tooltip_ability_item_build_rock_lumber_cost"                                "LUMBER COST:"
-
-
 		"DOTA_Tooltip_ability_item_dmg_1"                                                 "Dmg 1"
 		"DOTA_Tooltip_ability_item_dmg_1_Description"                                     ""
 		"DOTA_Tooltip_ability_item_dmg_1_bonus_damage"                                    "BONUS DAMAGE:"
