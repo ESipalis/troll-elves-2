@@ -161,6 +161,7 @@ function InitializeTrollIDFromVoting()
 	local playerCount = PlayerResource:GetPlayerCountForTeam( DOTA_TEAM_GOODGUYS )
 	for i=1,playerCount do
 		local pID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS, i)
+		PlayerResource:SetCustomTeamAssignment(pID, DOTA_TEAM_GOODGUYS)
 		local player_choise = GameRules.players[pID] or 1
 		if player_choise == 2 then
 			table.insert(GameRules.trolls,pID)
