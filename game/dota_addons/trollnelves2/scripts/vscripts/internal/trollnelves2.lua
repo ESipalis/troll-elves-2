@@ -172,6 +172,7 @@ function trollnelves2:_Capturetrollnelves2()
     end
 
     mode:SetUnseenFogOfWarEnabled(USE_UNSEEN_FOG_OF_WAR)
+    mode:SetWeatherEffectsDisabled(true)
 
     self:OnFirstPlayerLoaded()
   end 
