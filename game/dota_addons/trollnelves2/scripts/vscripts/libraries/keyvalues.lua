@@ -69,7 +69,6 @@ end
 -- Load all the necessary key value files
 function LoadGameKeyValues()
     local scriptPath ="scripts/npc/"
-    local override = LoadKeyValues(scriptPath.."npc_abilities_override.txt")
     local files = { AbilityKV = {base="npc_abilities",custom="npc_abilities_custom"},
                     ItemKV = {base="items",custom="npc_items_custom"},
                     UnitKV = {base="npc_units",custom="npc_units_custom"},
@@ -81,13 +80,6 @@ function LoadGameKeyValues()
         local file = {}
         if LOAD_BASE_FILES then
             file = LoadKeyValues(scriptPath..v.base..".txt")
-        end
-
-        -- Replace main game keys by any match on the override file
-        for k,v in pairs(override) do
-            if file[k] then
-                file[k] = v
-            end
         end
 
         local custom_file = LoadKeyValues(scriptPath..v.custom..".txt")

@@ -198,7 +198,7 @@
 	"upgrade_to_tent_6"
 	{
 		"BaseClass"             		"ability_datadriven"
-		"AbilityTextureName"			"train_tent_6"
+		"AbilityTextureName"			"build_tent_6"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCastPoint"				"0"
 		"MaxLevel"						"1"
@@ -217,7 +217,7 @@
 	"upgrade_to_tent_7"
 	{
 		"BaseClass"             		"ability_datadriven"
-		"AbilityTextureName"			"train_tent_7"
+		"AbilityTextureName"			"build_tent_7"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCastPoint"				"0"
 		"MaxLevel"						"1"
@@ -236,7 +236,7 @@
 	"upgrade_to_barracks_1"
 	{
 		"BaseClass"             		"ability_datadriven"
-		"AbilityTextureName"			"train_barracks"
+		"AbilityTextureName"			"build_barracks"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCastPoint"				"0"
 		"MaxLevel"						"1"
@@ -255,7 +255,7 @@
 	"upgrade_to_barracks_2"
 	{
 		"BaseClass"             		"ability_datadriven"
-		"AbilityTextureName"			"train_barracks"
+		"AbilityTextureName"			"build_barracks"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCastPoint"				"0"
 		"MaxLevel"						"1"
@@ -274,7 +274,7 @@
 	"upgrade_to_barracks_3"
 	{
 		"BaseClass"             		"ability_datadriven"
-		"AbilityTextureName"			"train_barracks"
+		"AbilityTextureName"			"build_barracks"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCastPoint"				"0"
 		"MaxLevel"						"1"
@@ -2711,7 +2711,7 @@
 	"train_gold_wisp"
 	{
 		"BaseClass"					"ability_datadriven"
-		"AbilityTextureName"		"train_wisp_old"
+		"AbilityTextureName"		"train_gold_wisp"
 		"MaxLevel"					"1"
 		"UnitName"					"gold_wisp"
 		
