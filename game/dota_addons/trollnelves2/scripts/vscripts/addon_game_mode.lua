@@ -103,8 +103,6 @@ end
 -- Create the game mode when we activate
 function Activate()
   GameRules.MapSpeed = string.match(GetMapName(),"%d+") or 1
-  GameRules.trollnelves2 = trollnelves2()
-  GameRules.trollnelves2:Inittrollnelves2()
   GameRules.lumber_price = 150
   GameRules.max_food = 20
   GameRules.TrollWin = false
@@ -114,7 +112,6 @@ function Activate()
   GameRules.stunHeroes = true
   GameRules.trollSpawned = false
   GameRules.dcedChoosers = {}
-  GameRules.test = true
   GameRules.trollTps = {Vector(-320,0,256),Vector(0,0,256),Vector(320,0,256),Vector(-320,-320,256),Vector(0,-320,256),Vector(320,-320,256),Vector(-320,-640,256),Vector(0,-640,256),Vector(320,-640,256)}
   GameRules.trollTimer = 30
   GameRules.angel_spawn_points = Entities:FindAllByName("angel_spawn_point")
@@ -131,7 +128,12 @@ function Activate()
   GameRules.scores = {}
   GameRules.types = {}
   GameRules.playerCount = 0
+  
+  GameRules.test = false
   if GameRules.test then
     GameRules.trollTimer = 1
   end
+
+  GameRules.trollnelves2 = trollnelves2()
+  GameRules.trollnelves2:Inittrollnelves2()
 end

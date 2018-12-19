@@ -7,89 +7,29 @@
 	<scripts>
 		<include src="file://{resources}/scripts/custom_game/vote_hud.js" />
 	</scripts>
-	<Panel hittest="false" class="TeamSelect">
-		<!-- Custom Host Settings Panel-->
-		 <Panel id="Settings">
-	        <Label class='SettingsHeader' text="GAME SETTINGS" style="" />
-	        <Label id="TrollSelection" class='SettingHeader' text="Do you want to be the troll?" style="" />
-			<Panel class = "vote_buttons">
-				<RadioButton checked="checked" onactivate="ChooseTeam('troll')" group="team" id="team1" text="Yes"/>
-				<RadioButton group="team" onactivate="ChooseTeam('elf')" id="team2" text="No"/>
-			</Panel>
-	    </Panel>
-		    
-		<Panel hittest="false" id="TeamSelectContainer" selectionpos="auto">`
-			<!--Empty space to let the loading screen and chat be visible-->
-			<Panel hittest="false" id="TeamsSelectEmptySpace" />
+	<Panel hittest="false" class="GameSetup">
 
-			<!--Teams List, left hand panel-->
-			<Panel id="TeamsList" >
-				<Panel id="TeamsListGroup" >
-					<Panel id="TeamListHeader">
-						<Label id="TeamListHeaderLabel" text="#custom_game_team_select" />
-						<Image id="TeamListLockedIcon" src="file://{images}/control_icons/lock_small.png" />
-					</Panel>
-					<Panel id="TeamsListRoot" />
-				</Panel>
-			</Panel>
+		<!-- Map name -->
+		<Panel id="MapInfo">
+			<Label id="MapInfoLabel" text="#LoadingScreenMapInfo"/>
+		</Panel>
 
-			<!--Game Info and Unassigned players, right hand panel-->
-			<Panel id="GameAndPlayersRoot">
-				
-				<Panel id="GameInfoPanel" >
-					
-					<!--Game mode and map
-					<Panel id="CustomGameModeName">
-						<Label id="GameModeNameLabel" text="#addon_game_name" />
-					</Panel>-->
-					<Panel id="MapInfo">
-						<Label id="MapInfoLabel" text="#LoadingScreenMapInfo"/>
-					</Panel>
-					
-					<!--Countdown timer-->
-					<Panel id="StartGameCountdownTimer">
-						<Image id="TimerBg" src="file://{images}/status_icons/timer_background.psd" />
-						<Image id="TimerRing" src="file://{images}/status_icons/timer_ring.psd" />
-						<Label id="TeamSelectTimer" text="#custom_game_team_select_timer" />
-						<Panel id="TimerLabelBox" >
-							<Label id="TimerLabelAutoStart" text="#custom_game_team_select_auto_start" />
-							<Label id="TimerLabelGameStart" text="#custom_game_team_select_starting" />
-						</Panel>
-					</Panel>
-					
-				</Panel>
+		<Panel id="CountdownAndChoiceWrapper">
 
-				<!--Unassigned players-->
-				<Panel id="UnassignedPlayerPanel" >
-					<Button id="UnassignedPlayersButton" onactivate="OnLeaveTeamPressed()">
-						<Panel id="UnassignedPlayersHeader">
-							<Label text="#custom_game_team_select_unassigned_players" />
-						</Panel>
-						<Panel id="UnassignedPlayersDivider" />
-						<Panel id="UnassignedPlayersContainer" />
-					</Button>		
-				
-					<Button id="AutoAssignButton" onactivate="OnAutoAssignPressed()">
-						<Image src="file://{images}/control_icons/double_arrow_left.png" />
-						<Label text="#custom_game_team_select_auto_assign" />
-					</Button>
+			 <Panel id="Settings">
+		        <Label id="TrollSelection" class='SettingHeader' text="Do you want to be the troll?"/>
+				<Panel class = "vote_buttons">
+					<RadioButton group="team" onactivate="ChooseTeam('troll')" id="team1" text="Yes"/>
+					<RadioButton group="team" onactivate="ChooseTeam('elf')" id="team2" text="No"/>
 				</Panel>
-				
-				<!--Start and lock button-->
-				<Button id="LockAndStartButton" class="PlayButton" onactivate="OnLockAndStartPressed()">
-					<Label text="#custom_game_team_select_lock_start" />
-				</Button>
-				<Button id="CancelAndUnlockButton" class="PlayButton" onactivate="OnCancelAndUnlockPressed()">
-					<Label text="#custom_game_team_select_cancel_unlock" />
-				</Button>
-				
+		    </Panel>
+			<!--Countdown timer-->
+			<Panel id="StartGameCountdownTimer">
+				<Image id="TimerBg" src="file://{images}/status_icons/timer_background.psd" />
+				<Image id="TimerRing" src="file://{images}/status_icons/timer_ring.psd" />
+				<Label id="TeamSelectTimer" text="#custom_game_team_select_timer" />
 			</Panel>
 		</Panel>
+		    
 	</Panel>
 </root>
-
-<!-- 					<Panel id="content" hittest="false">
-							<Label id="label" text="Choose your side: "/>
-							<RadioButton checked="checked" onactivate="ChooseTeam('elf')" group="team" id="team1" text="Elf"/>
-							<RadioButton group="team" onactivate="ChooseTeam('troll')" id="team2" text="Troll"/>
-					</Panel> -->

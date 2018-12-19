@@ -5,7 +5,6 @@
   </styles>
 	<Panel class="AddonLoadingRoot">
 		<Panel id = "LoadingTextContainer">
-			<!-- <Label id = "LoadingText" text = "#loading_text" html = "true"/> -->
 			<Panel id = "TrollTips" class = "TipContainer">
 				<Label id = "TrollTipsText" text = "#troll_tips" html = "true"/>
 				<Image id = "TrollImage" src = "file://{images}/custom_game/troll.png"/>

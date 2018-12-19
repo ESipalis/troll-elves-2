@@ -19,164 +19,51 @@ require('libraries/team')
 require('libraries/player')
 require('libraries/entity')
 
-
--- These internal libraries set up trollnelves2's events and processes.  Feel free to inspect them/change them if you need to.
 require('internal/trollnelves2')
-require('internal/events')
 
--- settings.lua is where you can specify many different properties for your game mode and is one of the core trollnelves2 files.
 require('settings')
--- events.lua is where you can specify the actions to be taken when any event occurs and is one of the core trollnelves2 files.
 require('events')
 
---[[
-	This function should be used to set up Async precache calls at the beginning of the gameplay.
 
-	In this function, place all of your PrecacheItemByNameAsync and PrecacheUnitByNameAsync.  These calls will be made
-	after all players have loaded in, but before they have selected their heroes. PrecacheItemByNameAsync can also
-	be used to precache dynamically-added datadriven abilities instead of items.  PrecacheUnitByNameAsync will 
-	precache the precache{} block statement of the unit and all precache{} block statements for every Ability# 
-	defined on the unit.
+function trollnelves2:GameSetup()
+	DebugPrint("HERE:::" .. PlayerResource:GetPlayerCount())
+	Timers:CreateTimer(90, function()
+		InitializeTrollIDFromVoting2()
 
-	This function should only be called once.  If you want to/need to precache more items/abilities/units at a later
-	time, you can call the functions individually (for example if you want to precache units in a new wave of
-	holdout).
-
-	This function should generally only be used if the Precache() function in addon_game_mode.lua is not working.
-]]
-function trollnelves2:PostLoadPrecache()
-	DebugPrint("[TROLLNELVES2] Performing Post-Load precache")
+		GameRules:FinishCustomGameSetup()
+	end)
 end
 
---[[
-	This function is called once and only once as soon as the first player (almost certain to be the server in local lobbies) loads in.
-	It can be used to initialize state that isn't initializeable in Inittrollnelves2() but needs to be done before everyone loads in.
-]]
-function trollnelves2:OnFirstPlayerLoaded()
-	DebugPrint("[TROLLNELVES2] First Player has loaded")
-	if string.match(GetMapName(),"winter") then
-		GameRules:GetGameModeEntity():SetCameraDistanceOverride(1400)
-	end
-end
-
-
-function trollnelves2:OnPlayerReconnect(event)
-	local playerID = event.PlayerID
-	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
-	if hero:HasModifier("modifier_disconnected") then
-		hero:RemoveModifierByName("modifier_disconnected")
-	end
-	if string.match(hero:GetUnitName(),"wisp") and hero.alive == false then
-		if hero.dced and hero.dced == true then
-			hero.alive = true
-			hero.dced = false
-			PlayerResource:ModifyGold(hero,0)
-			PlayerResource:ModifyLumber(hero,0)
-			PlayerResource:ModifyFood(hero,0)
-			ModifyLumberPrice(0)
-		else
-			local player = PlayerResource:GetPlayer(playerID)
-			if player then
-				CustomGameEventManager:Send_ServerToPlayer(player, "show_helper_options", { })
-			end
-		end
-	end
-	if GameRules.trollID and playerID == GameRules.trollID then
-		GameRules.trollHero:SetControllableByPlayer(playerID, false)
-	end
-	if hero:GetTeamNumber() == DOTA_TEAM_BADGUYS then
-		local player = PlayerResource:GetPlayer(playerID)
-		if player then
-			CustomGameEventManager:Send_ServerToPlayer(player, "hide_cheese_panel", { })
-		end
-	end
-end
-
-function trollnelves2:OnDisconnect(event)
-	local playerID = event.PlayerID
-	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
-	local team = hero:GetTeamNumber()
-	if team == DOTA_TEAM_GOODGUYS then
-		hero:AddNewModifier(nil, nil, "modifier_disconnected", {})
-		if hero.alive == true then
-			hero.alive = false
-			hero.dced = true
-			local lastAlive = true
-			for i=1,PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS) do
-				local pID = PlayerResource:GetNthPlayerIDOnTeam(2, i)
-				local hero2 = PlayerResource:GetSelectedHeroEntity(pID) or false
-				if hero2 and hero2.alive then
-						lastAlive = false
-						break
-				end
-			end
-			if lastAlive then
-					hero:RemoveModifierByName("modifier_disconnected")
-			end
-		end
-	elseif team == DOTA_TEAM_BADGUYS then
-		hero:MoveToPosition(Vector(0,0,0))
-	end
-end
-
-function trollnelves2:OnConnectFull(keys)
-	local entIndex = keys.index+1
-	-- The Player entity of the joining user
-	local player = EntIndexToHScript(entIndex)
-	local userID = keys.userid
-	GameRules.userIds = GameRules.userIds or {}
-	-- The Player ID of the joining player
-	local playerID = player:GetPlayerID()
-	GameRules.userIds[userID] = playerID
-	trollnelves2:_Capturetrollnelves2()
-end
-
-function trollnelves2:OnGameRulesStateChange()
-	local newState = GameRules:State_Get()
-	if newState == DOTA_GAMERULES_STATE_HERO_SELECTION then
-		GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS , 12)
-		InitializeTrollIDFromVoting()
-	elseif newState == DOTA_GAMERULES_STATE_PRE_GAME then
-		self:PreStart()
-		-- Remove TP Scrolls
-		GameRules:GetGameModeEntity():SetItemAddedToInventoryFilter(function(ctx, event)
-		    local item = EntIndexToHScript(event.item_entindex_const)
-		    if item:GetAbilityName() == "item_tpscroll" and item:GetPurchaser() == nil then return false end
-		    return true
-		end, self)
-	end
-end
-
---[[
-	This function is called once and only once after all players have loaded into the game, right as the hero selection time begins.
-	It can be used to initialize non-hero player state or adjust the hero selection (i.e. force random etc)
-]]
-function trollnelves2:OnAllPlayersLoaded()
-	DebugPrint("[TROLLNELVES2] All Players have loaded into the game")
-	
-end
-
-function InitializeTrollIDFromVoting()
-	GameRules.trolls = {}
+function InitializeTrollIDFromVoting2() -- Refactor
+	local trolls = {}
 	local playerCount = PlayerResource:GetPlayerCountForTeam( DOTA_TEAM_GOODGUYS )
 	for i=1,playerCount do
 		local pID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS, i)
 		PlayerResource:SetCustomTeamAssignment(pID, DOTA_TEAM_GOODGUYS)
 		local player_choise = GameRules.players[pID] or 1
 		if player_choise == 2 then
-			table.insert(GameRules.trolls,pID)
+			table.insert(trolls,pID)
 		end
 	end
 	local trollPlayer
-	if #GameRules.trolls > 0 then
-		trollPlayer = GameRules.trolls[math.random(#GameRules.trolls)]
+	if #trolls > 0 then
+		trollPlayer = trolls[math.random(#trolls)]
 	else
 		trollPlayer = math.random(playerCount) - 1
 	end
 	if not GameRules.test then
-		PlayerResource:SetCustomTeamAssignment( trollPlayer , DOTA_TEAM_BADGUYS )
+	    PlayerResource:SetCustomTeamAssignment( trollPlayer , DOTA_TEAM_BADGUYS )
+	    local trollPlayerHandle = PlayerResource:GetPlayer(trollPlayer)
+	    trollPlayerHandle:SetSelectedHero("npc_dota_hero_troll_warlord")
 		GameRules.trollID = trollPlayer
 	end
+	local playerCount = PlayerResource:GetPlayerCountForTeam( DOTA_TEAM_GOODGUYS )
+	for i=1,playerCount do
+    local pID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS, i)
+    local playerHandle = PlayerResource:GetPlayer(pID)
+    playerHandle:SetSelectedHero("npc_dota_hero_wisp")
+	end
+
 end
 
 function OnPlayerVote(eventSourceIndex, args)
@@ -256,93 +143,87 @@ end
 function InitializeTroll(hero)
 	local pID = hero:GetPlayerOwnerID()
 	GameRules.trollID = pID
-	PrecacheUnitByNameAsync("npc_dota_hero_troll_warlord",
-		function()          
-			PlayerResource:ReplaceHeroWith(pID, "npc_dota_hero_troll_warlord", 0 , 0)
-			UTIL_Remove(hero)
-			hero = PlayerResource:GetSelectedHeroEntity(pID)
-			InitializeHero(hero)
-			GameRules.trollHero = hero
-			hero:AddNewModifier(nil, nil, "modifier_stunned", {duration=GameRules.trollTimer})
-			GameRules.trollSpawned = true
-			Timers:CreateTimer(0.1,function()
-				if hero then
-					AddFOWViewer(hero:GetTeamNumber(), hero:GetAbsOrigin(), 150, 0.1, false)
-					return 0.1
+	InitializeHero(hero)
+	GameRules.trollHero = hero
+	hero:AddNewModifier(nil, nil, "modifier_stunned", {duration=GameRules.trollTimer})
+	GameRules.trollSpawned = true
+	Timers:CreateTimer(0.1,function()
+		if hero then
+			AddFOWViewer(hero:GetTeamNumber(), hero:GetAbsOrigin(), 150, 0.1, false)
+			return 0.1
+		end
+	end)
+	Timers:CreateTimer(0.3,function()
+		if hero and not hero:IsNull() then
+			local allEntities = Entities:FindAllByClassname("npc_dota_creature")
+			for k,v in pairs(allEntities) do
+				if v and not v:IsNull() and IsCustomBuilding(v) and v:GetTeamNumber() ~= team and hero:CanEntityBeSeenByMyTeam(v) and not v.minimapEntity then
+					v.minimapEntity = CreateUnitByName("minimap_entity", v:GetAbsOrigin(), false, v:GetOwner(), v:GetOwner(), v:GetTeamNumber())
+					v.minimapEntity:AddNewModifier(v.minimapEntity, nil, "modifier_minimap", {})
+					v.minimapEntity.correspondingEntity = v
 				end
-			end)
-			Timers:CreateTimer(0.3,function()
-				if hero and not hero:IsNull() then
-					local allEntities = Entities:FindAllByClassname("npc_dota_creature")
-					for k,v in pairs(allEntities) do
-						if v and not v:IsNull() and IsCustomBuilding(v) and v:GetTeamNumber() ~= team and hero:CanEntityBeSeenByMyTeam(v) and not v.minimapEntity then
-							v.minimapEntity = CreateUnitByName("minimap_entity", v:GetAbsOrigin(), false, v:GetOwner(), v:GetOwner(), v:GetTeamNumber())
-							v.minimapEntity:AddNewModifier(v.minimapEntity, nil, "modifier_minimap", {})
-							v.minimapEntity.correspondingEntity = v
-						end
-					end
-					local minimapEntities = Entities:FindAllByClassname("npc_dota_building")
-					for k,minimapEnt in pairs(minimapEntities) do
-						if minimapEnt and not minimapEnt:IsNull() and hero:CanEntityBeSeenByMyTeam(minimapEnt) and minimapEnt.correspondingEntity and minimapEnt.correspondingEntity == "dead" then
-							minimapEnt.correspondingEntity = nil
-							minimapEnt:ForceKill(false)
-							UTIL_Remove(minimapEnt)
-						end
-					end
+			end
+			local minimapEntities = Entities:FindAllByClassname("npc_dota_building")
+			for k,minimapEnt in pairs(minimapEntities) do
+				if minimapEnt and not minimapEnt:IsNull() and hero:CanEntityBeSeenByMyTeam(minimapEnt) and minimapEnt.correspondingEntity and minimapEnt.correspondingEntity == "dead" then
+					minimapEnt.correspondingEntity = nil
+					minimapEnt:ForceKill(false)
+					UTIL_Remove(minimapEnt)
 				end
-				return 0.3
-			end)
+			end
+		end
+		return 0.3
+	end)
 
 
-			for i=0,15 do
-				local ability = hero:GetAbilityByIndex(i)
-				if ability then ability:SetLevel(ability:GetMaxLevel()) end
-			end
-			hero:SetAbilityPoints(0)
-			-- Clear inventory
-			hero:ClearInventory()
-			PlayerResource:ModifyGold(hero,0)
-			PlayerResource:ModifyLumber(hero,0) -- Secondary resource of the player
-			local player = hero:GetPlayerOwner()
-			if player then
-				CustomGameEventManager:Send_ServerToPlayer(player, "hide_cheese_panel", { })
-			end
-			local units = Entities:FindAllByClassname("npc_dota_creature")
-			for _,unit in pairs(units) do
-				local unit_name = unit:GetUnitName();
-				if string.match(unit_name,"shop") or string.match(unit_name,"troll_hut") then
-					unit:SetOwner(hero)
-					unit:SetControllableByPlayer(pID, true)
-					unit:AddNewModifier(unit,nil,"modifier_invulnerable",{})
-					unit:AddNewModifier(unit,nil,"modifier_phased",{})
-					table.insert(GameRules.shops,unit)
-					if string.match(unit_name,"troll_hut") then
-						unit.ancestors = {}
-						if hero.buildings[unit:GetUnitName()] then
-								hero.buildings[unit:GetUnitName()] = hero.buildings[unit:GetUnitName()] + 1
-						else
-								hero.buildings[unit:GetUnitName()] = 1
-						end
-						BuildingHelper:AddModifierBuilding(unit)
-						BuildingHelper:BlockGridSquares(GetUnitKV(unit_name,"ConstructionSize"), 0, unit:GetAbsOrigin())
-					end
+	for i=0,15 do
+		local ability = hero:GetAbilityByIndex(i)
+		if ability then ability:SetLevel(ability:GetMaxLevel()) end
+	end
+	hero:SetAbilityPoints(0)
+	-- Clear inventory
+	hero:ClearInventory()
+	PlayerResource:ModifyGold(hero,0)
+	PlayerResource:ModifyLumber(hero,0) -- Secondary resource of the player
+	local player = hero:GetPlayerOwner()
+	if player then
+		CustomGameEventManager:Send_ServerToPlayer(player, "hide_cheese_panel", { })
+	end
+	local units = Entities:FindAllByClassname("npc_dota_creature")
+	for _,unit in pairs(units) do
+		local unit_name = unit:GetUnitName();
+		if string.match(unit_name,"shop") or string.match(unit_name,"troll_hut") then
+			unit:SetOwner(hero)
+			unit:SetControllableByPlayer(pID, true)
+			unit:AddNewModifier(unit,nil,"modifier_invulnerable",{})
+			unit:AddNewModifier(unit,nil,"modifier_phased",{})
+			table.insert(GameRules.shops,unit)
+			if string.match(unit_name,"troll_hut") then
+				unit.ancestors = {}
+				if hero.buildings[unit:GetUnitName()] then
+						hero.buildings[unit:GetUnitName()] = hero.buildings[unit:GetUnitName()] + 1
+				else
+						hero.buildings[unit:GetUnitName()] = 1
 				end
+				BuildingHelper:AddModifierBuilding(unit)
+				BuildingHelper:BlockGridSquares(GetUnitKV(unit_name,"ConstructionSize"), 0, unit:GetAbsOrigin())
 			end
-			if GameRules.test then
-				hero:AddItemByName("item_dmg_12")
-				hero:AddItemByName("item_armor_11")
-				hero:AddItemByName("item_hp_11")
-				hero:AddItemByName("item_hp_reg_11")
-				hero:AddItemByName("item_atk_spd_6")
-				hero:AddItemByName("item_disable_repair")
-			end
-		end, 
-	pID)
+		end
+	end
+	if GameRules.test then
+		hero:AddItemByName("item_dmg_12")
+		hero:AddItemByName("item_armor_11")
+		hero:AddItemByName("item_hp_11")
+		hero:AddItemByName("item_hp_reg_11")
+		hero:AddItemByName("item_atk_spd_6")
+		hero:AddItemByName("item_disable_repair")
+	end
 
 end
 
 
 function trollnelves2:OnHeroInGame(hero)
+	DebugPrint("OnHeroInGame *******************")
 	local team = hero:GetTeamNumber()
 	local pID = hero:GetPlayerOwnerID()
 	if team == DOTA_TEAM_BADGUYS then
@@ -373,7 +254,6 @@ function trollnelves2:OnHeroInGame(hero)
 			InitializeTroll(hero)
 		end
 	end
-
 end
 
 function trollnelves2:PreStart()
@@ -419,26 +299,12 @@ function trollnelves2:PreStart()
 	end)
 end
 
---[[
-	This function is called once and only once when the game completely begins (about 0:00 on the clock).  At this point,
-	gold will begin to go up in ticks if configured, creeps will spawn, towers will become damageable etc.  This function
-	is useful for starting any game logic timers/thinkers, beginning the first round, etc.
-]]
-function trollnelves2:OnGameInProgress()
-	DebugPrint("[TROLLNELVES2] The game has officially begun")
-
-end
-
-
-
 -- This function initializes the game mode and is called before anyone loads into the game
 -- It can be used to pre-initialize any values/tables that will be needed later
 function trollnelves2:Inittrollnelves2()
 	trollnelves2 = self
 	DebugPrint('[TROLLNELVES2] Starting to load trollnelves2 trollnelves2...')
-	LinkLuaModifier("modifier_custom_armor", "libraries/modifiers/modifier_custom_armor.lua", LUA_MODIFIER_MOTION_NONE)
 	trollnelves2:_Inittrollnelves2()
-	CustomGameEventManager:RegisterListener( "player_vote", OnPlayerVote )
 	DebugPrint('[TROLLNELVES2] Done loading trollnelves2 trollnelves2!\n\n')
 end
 
