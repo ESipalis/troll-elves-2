@@ -4,6 +4,12 @@
     height: 100%;
 }
 
+#MapInfo{
+    horizontal-align: right;
+    margin-top: 5%;
+    margin-right: 3%;
+}
+
 #MapInfoLabel
 {
     font-size: 32px;
@@ -11,72 +17,51 @@
 	text-transform: uppercase;
 }
 
-
-#CountdownAndChoiceWrapper {
-    width: 300px;
+#TeamChoiceWrapper
+{
+    width: 40%;
     height: fit-children;
     horizontal-align: center;
     vertical-align: top;  
-    margin-right: 20px;
+    flow-children: down;
     margin-top: 35%;
-    flow-children: down;
-}
-
-#Settings
-{
-    width: 300px;
-    height: fit-children;
-    flow-children: down;
-
-    background-color: gradient( linear, 100% 0%, 100% 100%, from( #111111 ), color-stop( 0.00, #272b30 ), color-stop( 0.6, #181a1e ), to( #181a1e ) );
-    box-shadow: inset #000000 0px 2px 6px 3px;
+    padding: 10px 100px 10px 100px;
+    background-color: rgba(0, 0, 0, 0.9);
     border-bottom: 1px solid #404b4a11;
-    border-radius: 10px;
-    opacity: 1;
 }
 
-.SettingHeader
+#TeamChoiceHeader
 {
-    font-family: Radiance,FZLanTingHei-R-GBK,TH Sarabun New,Gulim,MingLiU;
-    font-size: 25px;
+    font-size: 60px;
     horizontal-align: center;
-    color: #a9aaaa;
     margin-left: 10px;
     margin-top: 3px;
 }
 
-.vote_buttons{
+#ChoiceButtonWrapper{
+    margin-top:10px;
 	flow-children:right;
-	horizontal-align:center;
-	margin-bottom:20px;
-	
+    horizontal-align:center;
 }
 
-#StartGameCountdownTimer
-{
-    horizontal-align: center;
-	width: 96px;
-	margin-top: 32px;
+.ChoiceButton {
+    padding: 0px 5px 0px 5px;
 }
 
-#TeamSelectTimer
+.ChoiceButton > Label {
+    font-size: 30px;
+    color: white;
+}
+
+.ChoiceButton > .RadioBox {
+    width: 40px;
+    height: 40px;
+}
+
+#TeamChoiceTimer
 {
 	margin-top: 8px;
     font-size: 48px;
     color: #CCCCCC;
-	horizontal-align: center;
-}
-
-#TimerBg
-{
-	wash-color: #222222;
-}
-
-#TimerBg,
-#TimerRing
-{
-	width: 70px;
-	height: 70px;
-	margin-top: 2px;
 	horizontal-align: center;
 }

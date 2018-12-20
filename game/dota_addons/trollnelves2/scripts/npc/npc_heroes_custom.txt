@@ -1,8 +1,8 @@
 "DOTAHeroes"
 {
-	"npc_dota_hero_wisp"
+	"npc_dota_hero_treant"
 	{
-		"override_hero"				"npc_dota_hero_wisp"
+		"override_hero"				"npc_dota_hero_treant"
 		"Model"						"models/creeps/lane_creeps/creep_radiant_melee/radiant_melee.vmdl"
 		"SoundSet"					"Hero_Wisp"
 		"UnitLabel"					"builder"
@@ -58,6 +58,7 @@
 	    "VisionNighttimeRange"    "1800"                  // Range of vision at night time.
 		
 		"AttackDesire"			"0.5"
+		"DisableWearables"         "1"
 	}
 	"npc_dota_hero_troll_warlord"{
 		"override_hero"     "npc_dota_hero_troll_warlord"
@@ -173,6 +174,7 @@
 		
 		"VisionDaytimeRange"    "1800"                  // Range of vision at night time.
 		"VisionNighttimeRange"    "1800"                  // Range of vision at night time.
+		"DisableWearables"               "1"
 	}
 	"npc_dota_hero_crystal_maiden"{
 		"override_hero"     "npc_dota_hero_crystal_maiden"

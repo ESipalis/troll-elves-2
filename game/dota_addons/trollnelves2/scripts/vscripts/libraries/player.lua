@@ -8,12 +8,29 @@ local lumberGainedImportance = 12
 local lumberGivenImportance = 12
 local rankImportance = 25
 
+if GameRules.disconnectedHeroSelects == nil then
+	GameRules.disconnectedHeroSelects = {}
+end
+
+function CDOTA_PlayerResource:SetSelectedHero(playerID, heroName)
+    local player = PlayerResource:GetPlayer(playerID)
+	if player == nil then
+        GameRules.disconnectedHeroSelects[playerID] = heroName
+        return
+	end
+    player:SetSelectedHero(heroName)
+end
+
 function CDOTA_PlayerResource:SetGold(hero,gold)
     local pID = hero:GetPlayerOwnerID()
     gold = math.floor(string.match(gold,"[-]?%d+")) or 0
     gold = gold <= 1000000 and gold or 1000000
     GameRules.gold[pID] = gold
     CustomNetTables:SetTableValue("resources", tostring(pID), { gold = PlayerResource:GetGold(pID),lumber = PlayerResource:GetLumber(pID) })
+    local player = hero:GetPlayerOwner()
+    if player then
+        CustomGameEventManager:Send_ServerToPlayer(player, "player_custom_gold_changed", { gold = PlayerResource:GetGold(pID) })
+    end
 end
 
 function CDOTA_PlayerResource:ModifyGold(hero,gold,noGain)
@@ -22,19 +39,16 @@ function CDOTA_PlayerResource:ModifyGold(hero,gold,noGain)
     gold = math.floor(string.match(gold,"[-]?%d+")) or 0
     PlayerResource:SetGold(hero,math.floor(PlayerResource:GetGold(pID) + gold))
     if gold > 0 and not noGain then
-      PlayerResource:ModifyGoldGained(pID,gold)
+        PlayerResource:ModifyGoldGained(pID,gold)
     end
     if GameRules.test then
-      PlayerResource:SetGold(hero,1000000)
+        PlayerResource:SetGold(hero,1000000)
     end
 end
 
 function CDOTA_PlayerResource:GetGold(pID)
-  return math.floor(GameRules.gold[pID] or 0)
+	return math.floor(GameRules.gold[pID] or 0)
 end
-
-
-
 
 
 function CDOTA_PlayerResource:SetLumber(hero,lumber)
@@ -43,6 +57,10 @@ function CDOTA_PlayerResource:SetLumber(hero,lumber)
     lumber = lumber <= 1000000 and lumber or 1000000
     GameRules.lumber[pID] = lumber
     CustomNetTables:SetTableValue("resources", tostring(pID), { gold = PlayerResource:GetGold(pID),lumber = PlayerResource:GetLumber(pID) })
+    local player = hero:GetPlayerOwner()
+    if player then
+        CustomGameEventManager:Send_ServerToPlayer(player, "player_lumber_changed", { lumber = PlayerResource:GetLumber(pID) })
+    end
 end
 
 function CDOTA_PlayerResource:ModifyLumber(hero,lumber,noGain)
@@ -61,6 +79,7 @@ end
 function CDOTA_PlayerResource:GetLumber(pID)
   return GameRules.lumber[pID] or 0
 end
+
 
 function CDOTA_PlayerResource:ModifyGoldGained(pID,amount)
   GameRules.goldGained[pID] = PlayerResource:GetGoldGained(pID) + amount
@@ -128,7 +147,10 @@ end
 
 function CDOTA_PlayerResource:GetType(pID)
 	local heroName = PlayerResource:GetSelectedHeroName(pID)
-	return string.match(heroName,"troll") and "troll" or string.match(heroName,"crystal") and "angel" or string.match(heroName,"lycan") and "wolf" or "elf"
+    return string.match(heroName,TROLL_HERO) and "troll" 
+            or string.match(heroName,ANGEL_HERO) and "angel"
+            or string.match(heroName,WOLF_HERO) and "wolf"
+            or "elf"
 end
 
 function CDOTA_PlayerResource:GetScoreBonus(pID)	
@@ -220,14 +242,14 @@ end
 
 
 function CDOTA_PlayerResource:IsElf(hero)
-    return string.match(hero:GetUnitName(),"wisp")
+    return hero:GetUnitName() == ELF_HERO
 end
 function CDOTA_PlayerResource:IsTroll(hero)
-    return string.match(hero:GetUnitName(),"troll_warlord")
+    return hero:GetUnitName() == TROLL_HERO
 end
 function CDOTA_PlayerResource:IsAngel(hero)
-    return string.match(hero:GetUnitName(),"crystal_maiden")
+    return hero:GetUnitName() == ANGEL_HERO
 end
 function CDOTA_PlayerResource:IsWolf(hero)
-    return string.match(hero:GetUnitName(),"lycan")
+    return hero:GetUnitName() == WOLF_HERO
 end

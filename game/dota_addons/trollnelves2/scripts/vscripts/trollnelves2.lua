@@ -26,50 +26,47 @@ require('events')
 
 
 function trollnelves2:GameSetup()
-	DebugPrint("HERE:::" .. PlayerResource:GetPlayerCount())
-	Timers:CreateTimer(90, function()
-		InitializeTrollIDFromVoting2()
-
+	Timers:CreateTimer(10, function()
+		SelectHeroes()
 		GameRules:FinishCustomGameSetup()
 	end)
 end
 
-function InitializeTrollIDFromVoting2() -- Refactor
-	local trolls = {}
-	local playerCount = PlayerResource:GetPlayerCountForTeam( DOTA_TEAM_GOODGUYS )
-	for i=1,playerCount do
-		local pID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS, i)
+function SelectHeroes()
+	local playerCount = PlayerResource:GetPlayerCount()
+	local wannabeTrollIDs = {}
+	for pID=0, playerCount-1 do
 		PlayerResource:SetCustomTeamAssignment(pID, DOTA_TEAM_GOODGUYS)
-		local player_choise = GameRules.players[pID] or 1
-		if player_choise == 2 then
-			table.insert(trolls,pID)
+		local playerChoise = GameRules.playersChoice[pID]
+		if playerChoise == "troll" then
+			table.insert(wannabeTrollIDs, pID)
 		end
 	end
-	local trollPlayer
-	if #trolls > 0 then
-		trollPlayer = trolls[math.random(#trolls)]
+	local trollPlayerID
+	if #wannabeTrollIDs > 0 then
+		trollPlayerID = wannabeTrollIDs[math.random(#wannabeTrollIDs)]
 	else
-		trollPlayer = math.random(playerCount) - 1
+		trollPlayerID = math.random(playerCount) - 1
 	end
 	if not GameRules.test then
-	    PlayerResource:SetCustomTeamAssignment( trollPlayer , DOTA_TEAM_BADGUYS )
-	    local trollPlayerHandle = PlayerResource:GetPlayer(trollPlayer)
-	    trollPlayerHandle:SetSelectedHero("npc_dota_hero_troll_warlord")
-		GameRules.trollID = trollPlayer
+	    PlayerResource:SetCustomTeamAssignment(trollPlayerID , DOTA_TEAM_BADGUYS)
+	    PlayerResource:SetSelectedHero(trollPlayerID, TROLL_HERO)
+		GameRules.trollID = trollPlayerID
 	end
-	local playerCount = PlayerResource:GetPlayerCountForTeam( DOTA_TEAM_GOODGUYS )
-	for i=1,playerCount do
-    local pID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS, i)
-    local playerHandle = PlayerResource:GetPlayer(pID)
-    playerHandle:SetSelectedHero("npc_dota_hero_wisp")
+	local elfCount = PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS)
+	for i=1, elfCount do
+		local pID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS, i)
+		local color = GameRules.playersColors[GameRules.colorCounter]
+		PlayerResource:SetCustomPlayerColor(pID, color[1], color[2], color[3])
+		GameRules.colorCounter = GameRules.colorCounter + 1
+		PlayerResource:SetSelectedHero(pID, ELF_HERO)
 	end
-
 end
 
 function OnPlayerVote(eventSourceIndex, args)
 	local playerID = args["pID"]
 	local vote = args["team"]
-	GameRules.players[playerID] = vote == "troll" and 2 or 1
+	GameRules.playersChoice[playerID] = vote
 end
 
 function InitializeHero(hero)
@@ -81,38 +78,27 @@ function InitializeHero(hero)
 	PlayerResource:SetLumber(hero,0) -- Secondary resource of the player
 	if GameRules.stunHeroes then
 		hero:AddNewModifier(nil, nil, "modifier_stunned", { })
-		table.insert(GameRules.heroes,hero)
+		table.insert(GameRules.heroes, hero)
 	end
-	local pID = hero:GetPlayerOwnerID()
-	Timers:CreateTimer(0.25,function()
-		local player = PlayerResource:GetPlayer(pID)
-		if player then
-			CustomGameEventManager:Send_ServerToPlayer(player, "player_lumber_changed", { lumber = PlayerResource:GetLumber(pID) })
-			CustomGameEventManager:Send_ServerToPlayer(player, "player_custom_gold_changed", { gold = PlayerResource:GetGold(pID) })
-		end
-		return 0.25
-	end)
+
+	hero:ClearInventory()
+	-- Learn all abilities (this isn't necessary on creatures)
+	for i=0,15 do
+		local ability = hero:GetAbilityByIndex(i)
+		if ability then ability:SetLevel(ability:GetMaxLevel()) end
+	end
+	hero:SetAbilityPoints(0)
 end
 
 function InitializeBuilder(hero)
 	InitializeHero(hero)
-	local pID = hero:GetPlayerOwnerID()
 	hero.alive = true
-	PlayerResource:SetCustomPlayerColor(pID, GameRules.playersColors[GameRules.colorCounter][1], GameRules.playersColors[GameRules.colorCounter][2], GameRules.playersColors[GameRules.colorCounter][3])
-	GameRules.colorCounter = GameRules.colorCounter + 1
 
-	hero:ClearInventory()
-
-	local root = CreateItem("item_root_ability",hero,hero)
-	local silence = CreateItem("item_silence_ability",hero,hero)
-	local glyph = CreateItem("item_glyph_ability",hero,hero)
-	local night = CreateItem("item_night_ability",hero,hero)
-	local blink = CreateItem("item_blink_datadriven",hero,hero)
-	hero:AddItem(root)
-	hero:AddItem(silence)
-	hero:AddItem(glyph)
-	hero:AddItem(night)
-	hero:AddItem(blink)
+	hero:AddItemByName("item_root_ability")
+	hero:AddItemByName("item_silence_ability")
+	hero:AddItemByName("item_glyph_ability")
+	hero:AddItemByName("item_night_ability")
+	hero:AddItemByName("item_blink_datadriven")
 
 	hero.goldPerSecond = 0
 	hero.lumberPerSecond = 0
@@ -125,12 +111,6 @@ function InitializeBuilder(hero)
 	end)
 
 
-	-- Learn all abilities (this isn't necessary on creatures)
-	for i=0,15 do
-		local ability = hero:GetAbilityByIndex(i)
-		if ability then ability:SetLevel(ability:GetMaxLevel()) end
-	end
-	hero:SetAbilityPoints(0)
 	UpdateSpells(hero)
 	PlayerResource:SetGold(hero,30)
 	PlayerResource:SetLumber(hero,0) -- Secondary resource of the player
@@ -175,16 +155,6 @@ function InitializeTroll(hero)
 		return 0.3
 	end)
 
-
-	for i=0,15 do
-		local ability = hero:GetAbilityByIndex(i)
-		if ability then ability:SetLevel(ability:GetMaxLevel()) end
-	end
-	hero:SetAbilityPoints(0)
-	-- Clear inventory
-	hero:ClearInventory()
-	PlayerResource:ModifyGold(hero,0)
-	PlayerResource:ModifyLumber(hero,0) -- Secondary resource of the player
 	local player = hero:GetPlayerOwner()
 	if player then
 		CustomGameEventManager:Send_ServerToPlayer(player, "hide_cheese_panel", { })
@@ -223,7 +193,6 @@ end
 
 
 function trollnelves2:OnHeroInGame(hero)
-	DebugPrint("OnHeroInGame *******************")
 	local team = hero:GetTeamNumber()
 	local pID = hero:GetPlayerOwnerID()
 	if team == DOTA_TEAM_BADGUYS then
@@ -257,7 +226,7 @@ function trollnelves2:OnHeroInGame(hero)
 end
 
 function trollnelves2:PreStart()
-	local gameStartTimer = 5
+	local gameStartTimer = 10
 	ModifyLumberPrice(0)
 	Timers:CreateTimer(0.03,function()
 		if gameStartTimer > 0 then
@@ -274,7 +243,7 @@ function trollnelves2:PreStart()
 				for _,pHero in pairs(GameRules.heroes) do
 					if pHero and not pHero:IsNull() then
 						pHero:RemoveModifierByName("modifier_stunned")
-						if string.match(pHero:GetUnitName(),"troll") then
+						if pHero:GetUnitName() == TROLL_HERO then
 							PlayerResource:SetGold(pHero,0)
 							pHero:AddNewModifier(nil, nil, "modifier_stunned", {duration=GameRules.trollTimer})
 							local timer = GameRules.trollTimer

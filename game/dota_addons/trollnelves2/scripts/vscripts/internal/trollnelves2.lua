@@ -41,7 +41,6 @@ function trollnelves2:_Inittrollnelves2()
   mode:SetAnnouncerDisabled(false)
   mode:SetWeatherEffectsDisabled(true)
 
-  -- mode:SetCustomGameForceHero("npc_dota_hero_wisp")
   mode:SetMinimumAttackSpeed(MINIMUM_ATTACK_SPEED)
   mode:SetMaximumAttackSpeed(MAXIMUM_ATTACK_SPEED)
 	if string.match(GetMapName(),"winter") then

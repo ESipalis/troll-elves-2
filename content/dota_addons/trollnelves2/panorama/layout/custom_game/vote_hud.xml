@@ -14,21 +14,13 @@
 			<Label id="MapInfoLabel" text="#LoadingScreenMapInfo"/>
 		</Panel>
 
-		<Panel id="CountdownAndChoiceWrapper">
-
-			 <Panel id="Settings">
-		        <Label id="TrollSelection" class='SettingHeader' text="Do you want to be the troll?"/>
-				<Panel class = "vote_buttons">
-					<RadioButton group="team" onactivate="ChooseTeam('troll')" id="team1" text="Yes"/>
-					<RadioButton group="team" onactivate="ChooseTeam('elf')" id="team2" text="No"/>
-				</Panel>
-		    </Panel>
-			<!--Countdown timer-->
-			<Panel id="StartGameCountdownTimer">
-				<Image id="TimerBg" src="file://{images}/status_icons/timer_background.psd" />
-				<Image id="TimerRing" src="file://{images}/status_icons/timer_ring.psd" />
-				<Label id="TeamSelectTimer" text="#custom_game_team_select_timer" />
+		<Panel id="TeamChoiceWrapper">
+			<Label id="TeamChoiceHeader" text="#team_choice_header"/>
+			<Panel id = "ChoiceButtonWrapper">
+				<RadioButton class="ChoiceButton" group="team" onactivate="ChooseTeam('troll')" text="#team_choice_yes"/>
+				<RadioButton class="ChoiceButton" group="team" onactivate="ChooseTeam('elf')" text="#team_choice_no"/>
 			</Panel>
+			<Label id="TeamChoiceTimer" text="#custom_game_team_select_timer" />
 		</Panel>
 		    
 	</Panel>

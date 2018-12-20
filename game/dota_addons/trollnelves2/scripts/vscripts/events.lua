@@ -26,29 +26,35 @@ end
 
 function trollnelves2:OnPlayerReconnect(event)
 	local playerID = event.PlayerID
-	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
-	if hero:HasModifier("modifier_disconnected") then
-		hero:RemoveModifierByName("modifier_disconnected")
+	local notSelectedHero = GameRules.disconnectedHeroSelects[playerID]
+	if notSelectedHero then
+		PlayerResource:SetSelectedHero(playerID, notSelectedHero)
 	end
-	if string.match(hero:GetUnitName(),"wisp") and hero.alive == false then
-		if hero.dced and hero.dced == true then
-			hero.alive = true
-			hero.dced = false
-			PlayerResource:ModifyGold(hero,0)
-			PlayerResource:ModifyLumber(hero,0)
-			PlayerResource:ModifyFood(hero,0)
-			ModifyLumberPrice(0)
-		else
-			local player = PlayerResource:GetPlayer(playerID)
-			if player then
-				CustomGameEventManager:Send_ServerToPlayer(player, "show_helper_options", { })
+	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
+	if hero then
+		if hero:HasModifier("modifier_disconnected") then
+			hero:RemoveModifierByName("modifier_disconnected")
+		end
+		if hero:GetUnitName() == ELF_HERO and hero.alive == false then
+			if hero.dced == true then
+				hero.alive = true
+				hero.dced = false
+				-- Send info to client
+				PlayerResource:ModifyGold(hero,0)
+				PlayerResource:ModifyLumber(hero,0)
+				PlayerResource:ModifyFood(hero,0)
+				ModifyLumberPrice(0)
+			else
+				local player = PlayerResource:GetPlayer(playerID)
+				if player then
+					CustomGameEventManager:Send_ServerToPlayer(player, "show_helper_options", { })
+				end
 			end
 		end
 	end
-	if GameRules.trollID and playerID == GameRules.trollID then
-		GameRules.trollHero:SetControllableByPlayer(playerID, false)
-	end
-	if hero:GetTeamNumber() == DOTA_TEAM_BADGUYS then
+
+	local team = PlayerResource:GetTeam(playerID)
+	if team == DOTA_TEAM_BADGUYS then
 		local player = PlayerResource:GetPlayer(playerID)
 		if player then
 			CustomGameEventManager:Send_ServerToPlayer(player, "hide_cheese_panel", { })

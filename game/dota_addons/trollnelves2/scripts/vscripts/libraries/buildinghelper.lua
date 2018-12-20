@@ -388,13 +388,13 @@ function CheckTrollVictory()
 end
 
 function GetModifiedName(orgName)
-    if string.match(orgName,"troll") then
+    if string.match(orgName,TROLL_HERO) then
         return "<font color='#FF0000'>The Mighty Troll</font>"
-    elseif string.match(orgName,"wisp") then
+    elseif string.match(orgName,ELF_HERO) then
         return "<font color='#00CC00'>Elf</font>"
-    elseif string.match(orgName,"lycan") then
+    elseif string.match(orgName, WOLF_HERO) then
         return "<font color='#800000'>Wolf</font>"
-    elseif string.match(orgName,"crystal_maiden") then
+    elseif string.match(orgName,ANGEL_HERO) then
         return "<font color='#0099FF'>Angel</font>"
     else
         return "?"
@@ -787,7 +787,7 @@ function BuildingHelper:ChooseHelpSide(event)
         PlayerResource:SetCameraTarget(pID, nil)
     end)
     if team == DOTA_TEAM_GOODGUYS then
-        PlayerResource:ReplaceHeroWith(pID, "npc_dota_hero_crystal_maiden", 0, 0)
+        PlayerResource:ReplaceHeroWith(pID, ANGEL_HERO, 0, 0)
         UTIL_Remove(hero)
         hero = PlayerResource:GetSelectedHeroEntity(pID)
         if hero then
@@ -795,11 +795,11 @@ function BuildingHelper:ChooseHelpSide(event)
             hero:AddItemByName("item_blink_datadriven")
             hero:SetAbsOrigin(Vector(0,0,0))
             RespawnHelper(hero)
-            GameRules:SendCustomMessage("%s1 will keep helping elves and now is an " .. GetModifiedName("crystal_maiden") ,pID,0)
+            GameRules:SendCustomMessage("%s1 will keep helping elves and now is an " .. GetModifiedName(ANGEL_HERO) ,pID,0)
         end
     elseif team == DOTA_TEAM_BADGUYS then
         PlayerResource:SetCustomTeamAssignment(pID,team)
-        PlayerResource:ReplaceHeroWith(pID, "npc_dota_hero_lycan", 0, 0)
+        PlayerResource:ReplaceHeroWith(pID, WOLF_HERO, 0, 0)
         UTIL_Remove(hero)
         hero = PlayerResource:GetSelectedHeroEntity(pID)
         if hero then
@@ -811,7 +811,7 @@ function BuildingHelper:ChooseHelpSide(event)
             PlayerResource:SetLumber(hero,lumber)
             PlayerResource:SetGold(hero,gold)
             PlayerResource:SetUnitShareMaskForPlayer(GameRules.trollID,pID, 2 , true)
-            GameRules:SendCustomMessage("%s1 has joined the dark side and now will help " .. GetModifiedName("troll") .. ".%s1 is now a" .. GetModifiedName("lycan") ,pID,0)
+            GameRules:SendCustomMessage("%s1 has joined the dark side and now will help " .. GetModifiedName(TROLL_HERO) .. ".%s1 is now a" .. GetModifiedName(WOLF_HERO) ,pID,0)
             Timers:CreateTimer(0.03,function()
                 if hero and hero:IsAlive() then
                     AddFOWViewer(hero:GetTeamNumber(), hero:GetAbsOrigin(), 150, 0.03, false)
@@ -1005,7 +1005,7 @@ function BuildingHelper:OrderFilter(order)
             local unit_name = shop:GetUnitName()
             if string.match(unit_name,"shop") or string.match(unit_name,"troll_hut") then
                 shop.buyer = issuerID
-                if string.match(unit_name,"troll_hut") and string.match(EntIndexToHScript(abilityIndex):GetAbilityName(),"upgrade") and not string.match(PlayerResource:GetSelectedHeroEntity(issuerID):GetUnitName(),"troll") and PlayerResource:GetPlayer(GameRules.trollID) then
+                if string.match(unit_name,"troll_hut") and string.match(EntIndexToHScript(abilityIndex):GetAbilityName(),"upgrade") and not PlayerResource:GetSelectedHeroEntity(issuerID):GetUnitName() == TROLL_HERO and PlayerResource:GetPlayer(GameRules.trollID) then
                     SendErrorMessage(issuerID,"#error_only_troll_can_upgrade")
                     return false
                 end

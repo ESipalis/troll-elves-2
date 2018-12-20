@@ -10,7 +10,7 @@ function ChooseTeam(args) {
 //--------------------------------------------------------------------------------------------------
 var timer = 10;
 function UpdateTimer() {
-	$("#StartGameCountdownTimer").SetDialogVariableInt("countdown_timer_seconds", timer);
+	$("#TeamChoiceWrapper").SetDialogVariableInt("countdown_timer_seconds", timer);
 	if (timer-- > 0) {
 		$.Schedule(1, UpdateTimer);
 	}

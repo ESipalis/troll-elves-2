@@ -3,6 +3,7 @@
 require('internal/util')
 require('trollnelves2')
 require("libraries/buildinghelper")
+require('settings')
 
 function Precache( context )
 --[[
@@ -31,10 +32,10 @@ function Precache( context )
 
   -- Entire heroes (sound effects/voice/models/particles) can be precached with PrecacheUnitByNameSync
   -- Custom units from npc_units_custom.txt can also have all of their abilities and precache{} blocks precached in this way
-  PrecacheUnitByNameSync("npc_dota_hero_wisp", context)
-  PrecacheUnitByNameSync("npc_dota_hero_troll_warlord", context)
-  PrecacheUnitByNameSync("npc_dota_hero_lycan", context)
-  PrecacheUnitByNameSync("npc_dota_hero_crystal_maiden", context)
+  PrecacheUnitByNameSync(ELF_HERO, context)
+  PrecacheUnitByNameSync(TROLL_HERO, context)
+  PrecacheUnitByNameSync(WOLF_HERO, context)
+  PrecacheUnitByNameSync(ANGEL_HERO, context)
   PrecacheUnitByNameSync("tent", context)
   PrecacheUnitByNameSync("tent_2", context)
   PrecacheUnitByNameSync("tent_3", context)
@@ -107,7 +108,7 @@ function Activate()
   GameRules.max_food = 20
   GameRules.TrollWin = false
   GameRules.heroes = {}
-  GameRules.players = {}
+  GameRules.playersChoice = {}
   GameRules.firstHero = true
   GameRules.stunHeroes = true
   GameRules.trollSpawned = false

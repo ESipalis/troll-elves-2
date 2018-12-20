@@ -7,7 +7,7 @@
 		"addon_game_name"			"Troll & Elves 2"
 		
 		// ******************** HEROES ********************
-		"npc_dota_hero_wisp"                                                              "Builder"
+		"npc_dota_hero_treant"                                                  "Elf"
 		"npc_dota_hero_troll_warlord"                                                     "Troll"
 		"npc_dota_hero_lycan"                                                             "Wolf"
 		"npc_dota_hero_crystal_maiden"                                                    "Angel"
@@ -74,8 +74,6 @@
 		"wisp_6"                                                                          "Wisp 6"
 		"wisp_7"                                                                          "Wisp 7"
 		"wisp_8"                                                                          "Wisp 8"
-		"npc_dota_hero_wisp"                                                              "Builder"
-		"npc_dota_hero_troll_warlord"                                                     "Troll"
 		"gold_wisp"                                                                       "Gold Wisp"
 		"gold_mine_1"                                                                     "Gold Mine 1"
 		"gold_mine_2"                                                                     "Gold Mine 2"
@@ -94,8 +92,6 @@
 		"troll_hut_2"                                                                     "Troll Hut 2"
 		"troll_hut_3"                                                                     "Troll Hut 3"
 		"troll_hut_4"                                                                     "Troll Hut 4"
-		"npc_dota_hero_lycan"                                                             "Wolf"
-		"npc_dota_hero_crystal_maiden"                                                    "Angel"
 		
 		// ******************** ABILITY MODIFIERS ********************
 		"DOTA_Tooltip_modifier_gain_gold"                                                 "Gain Gold"
@@ -1134,6 +1130,11 @@
 		"error_no_radar"																	"Sadly scans in custom games don't count towards the community challenge! "
 		"error_not_night"																	"Works only at night! "
 		"error_item_not_sellable"															"Item not sellable"
+
+		"team_choice_header"                                                                "Do you want to be the troll?"
+		"team_choice_yes"                                                                   "Yes"
+		"team_choice_no"                                                                    "No"
+		
 		"loading_text"																		"&lt;=Click this for tips! 
 																							<br>Important: 
 																							<br>&nbsp;&nbsp;&nbsp;&nbsp;To give resources use scoreboard! 
