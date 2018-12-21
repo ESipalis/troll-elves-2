@@ -73,8 +73,6 @@ function BuildingHelper:Init()
 
     self:HookBoilerplate()
 
-
-    --GameRules.TrollWin = false
 end
 function BuildingHelper:HookBoilerplate()
     if not __ACTIVATE_HOOK then
@@ -277,7 +275,6 @@ function BuildingHelper:OnEntityKilled(keys)
             local orgPlayer = killed:GetPlayerOwner()
             if orgPlayer then
                 CustomGameEventManager:Send_ServerToPlayer(orgPlayer, "show_helper_options", { })
-                CustomGameEventManager:Send_ServerToPlayer(orgPlayer, "hide_cheese_panel", { })
                 Timers:CreateTimer(30,function()
                     if killed and killed.legitChooser and killed.legitChooser == true then
                        local args = {}

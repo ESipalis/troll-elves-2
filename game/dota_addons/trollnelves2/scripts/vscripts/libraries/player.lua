@@ -127,7 +127,7 @@ function CDOTA_PlayerResource:ModifyFood(hero,food)
     hero.food = hero.food + food
     local player = hero:GetPlayerOwner()
     if player then
-      CustomGameEventManager:Send_ServerToPlayer(player, "player_food_changed", { food = math.floor(hero.food) , maxFood = GameRules.max_food })
+      CustomGameEventManager:Send_ServerToPlayer(player, "player_food_changed", { food = math.floor(hero.food) , maxFood = GameRules.maxFood })
     end
 end
 
@@ -241,15 +241,15 @@ end
 
 
 
-function CDOTA_PlayerResource:IsElf(hero)
-    return hero:GetUnitName() == ELF_HERO
+function CDOTA_BaseNPC_Hero:IsElf()
+    return self:GetUnitName() == ELF_HERO
 end
-function CDOTA_PlayerResource:IsTroll(hero)
-    return hero:GetUnitName() == TROLL_HERO
+function CDOTA_BaseNPC_Hero:IsTroll()
+    return self:GetUnitName() == TROLL_HERO
 end
-function CDOTA_PlayerResource:IsAngel(hero)
-    return hero:GetUnitName() == ANGEL_HERO
+function CDOTA_BaseNPC_Hero:IsAngel()
+    return self:GetUnitName() == ANGEL_HERO
 end
-function CDOTA_PlayerResource:IsWolf(hero)
-    return hero:GetUnitName() == WOLF_HERO
+function CDOTA_BaseNPC_Hero:IsWolf()
+    return self:GetUnitName() == WOLF_HERO
 end

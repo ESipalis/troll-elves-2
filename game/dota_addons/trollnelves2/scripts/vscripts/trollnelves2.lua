@@ -37,8 +37,8 @@ function SelectHeroes()
 	local wannabeTrollIDs = {}
 	for pID=0, playerCount-1 do
 		PlayerResource:SetCustomTeamAssignment(pID, DOTA_TEAM_GOODGUYS)
-		local playerChoise = GameRules.playersChoice[pID]
-		if playerChoise == "troll" then
+		local playerSelection = GameRules.playerTeamChoices[pID]
+		if playerSelection == "troll" then
 			table.insert(wannabeTrollIDs, pID)
 		end
 	end
@@ -56,17 +56,46 @@ function SelectHeroes()
 	local elfCount = PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS)
 	for i=1, elfCount do
 		local pID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS, i)
-		local color = GameRules.playersColors[GameRules.colorCounter]
-		PlayerResource:SetCustomPlayerColor(pID, color[1], color[2], color[3])
-		GameRules.colorCounter = GameRules.colorCounter + 1
 		PlayerResource:SetSelectedHero(pID, ELF_HERO)
+		if GameRules.colorCounter <= #PLAYER_COLORS then
+			local color = PLAYER_COLORS[GameRules.colorCounter]
+			PlayerResource:SetCustomPlayerColor(pID, color[1], color[2], color[3])
+			GameRules.colorCounter = GameRules.colorCounter + 1
+		end
 	end
 end
 
-function OnPlayerVote(eventSourceIndex, args)
-	local playerID = args["pID"]
+function StartCreatingMinimapBuildings()
+	Timers:CreateTimer(0.3,function()
+		if GameRules:State_Get() > DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+			return
+		end
+		-- Create minimap entities for buildings that are visible and don't already have a minimap entity
+		local allEntities = Entities:FindAllByClassname("npc_dota_creature")
+		for _, unit in pairs(allEntities) do
+			if IsCustomBuilding(unit) and not unit:IsNull() and not unit.minimapEntity and unit:GetTeamNumber() ~= DOTA_TEAM_BADGUYS and IsLocationVisible(DOTA_TEAM_BADGUYS, unit:GetAbsOrigin()) then
+				unit.minimapEntity = CreateUnitByName("minimap_entity", unit:GetAbsOrigin(), false, unit:GetOwner(), unit:GetOwner(), unit:GetTeamNumber())
+				unit.minimapEntity:AddNewModifier(unit.minimapEntity, nil, "modifier_minimap", {})
+				unit.minimapEntity.correspondingEntity = unit
+			end
+		end
+		-- Kill minimap entities of dead buildings when location is scouted
+		local minimapEntities = Entities:FindAllByClassname("npc_dota_building")
+		for k,minimapEnt in pairs(minimapEntities) do
+			if not minimapEnt:IsNull() and minimapEnt.correspondingEntity == "dead" and IsLocationVisible(DOTA_TEAM_BADGUYS, minimapEnt:GetAbsOrigin()) then
+				minimapEnt.correspondingEntity = nil
+				minimapEnt:ForceKill(false)
+				UTIL_Remove(minimapEnt)
+			end
+		end
+		return 0.3
+	end)
+end
+
+function OnPlayerTeamChoose(eventSourceIndex, args)
+	local playerID = args["playerID"]
 	local vote = args["team"]
-	GameRules.playersChoice[playerID] = vote
+	GameRules.playerTeamChoices[playerID] = vote
 end
 
 function InitializeHero(hero)
@@ -74,11 +103,10 @@ function InitializeHero(hero)
 	hero.buildings = {} -- This keeps the name and quantity of each building
 	hero.units = {}
 	hero.disabledBuildings = {}
-	PlayerResource:SetGold(hero,0)
-	PlayerResource:SetLumber(hero,0) -- Secondary resource of the player
-	if GameRules.stunHeroes then
-		hero:AddNewModifier(nil, nil, "modifier_stunned", { })
-		table.insert(GameRules.heroes, hero)
+	PlayerResource:SetGold(hero, 0)
+	PlayerResource:SetLumber(hero, 0)
+	if not GameRules.startTime then
+		hero:AddNewModifier(nil, nil, "modifier_stunned", nil)
 	end
 
 	hero:ClearInventory()
@@ -112,62 +140,27 @@ function InitializeBuilder(hero)
 
 
 	UpdateSpells(hero)
-	PlayerResource:SetGold(hero,30)
-	PlayerResource:SetLumber(hero,0) -- Secondary resource of the player
-	PlayerResource:ModifyFood(hero,0)
-
-	hero:NotifyWearablesOfModelChange(false)
+	PlayerResource:SetGold(hero, 30)
+	PlayerResource:SetLumber(hero, 0)
+	PlayerResource:ModifyFood(hero, 0)
 end
 
 
 function InitializeTroll(hero)
-	local pID = hero:GetPlayerOwnerID()
-	GameRules.trollID = pID
 	InitializeHero(hero)
 	GameRules.trollHero = hero
-	hero:AddNewModifier(nil, nil, "modifier_stunned", {duration=GameRules.trollTimer})
-	GameRules.trollSpawned = true
-	Timers:CreateTimer(0.1,function()
-		if hero then
-			AddFOWViewer(hero:GetTeamNumber(), hero:GetAbsOrigin(), 150, 0.1, false)
-			return 0.1
-		end
-	end)
-	Timers:CreateTimer(0.3,function()
-		if hero and not hero:IsNull() then
-			local allEntities = Entities:FindAllByClassname("npc_dota_creature")
-			for k,v in pairs(allEntities) do
-				if v and not v:IsNull() and IsCustomBuilding(v) and v:GetTeamNumber() ~= team and hero:CanEntityBeSeenByMyTeam(v) and not v.minimapEntity then
-					v.minimapEntity = CreateUnitByName("minimap_entity", v:GetAbsOrigin(), false, v:GetOwner(), v:GetOwner(), v:GetTeamNumber())
-					v.minimapEntity:AddNewModifier(v.minimapEntity, nil, "modifier_minimap", {})
-					v.minimapEntity.correspondingEntity = v
-				end
-			end
-			local minimapEntities = Entities:FindAllByClassname("npc_dota_building")
-			for k,minimapEnt in pairs(minimapEntities) do
-				if minimapEnt and not minimapEnt:IsNull() and hero:CanEntityBeSeenByMyTeam(minimapEnt) and minimapEnt.correspondingEntity and minimapEnt.correspondingEntity == "dead" then
-					minimapEnt.correspondingEntity = nil
-					minimapEnt:ForceKill(false)
-					UTIL_Remove(minimapEnt)
-				end
-			end
-		end
-		return 0.3
-	end)
+	hero:AddNewModifier(nil, nil, "modifier_stunned", nil)
 
-	local player = hero:GetPlayerOwner()
-	if player then
-		CustomGameEventManager:Send_ServerToPlayer(player, "hide_cheese_panel", { })
-	end
+	local playerID = hero:GetPlayerOwnerID()
+
 	local units = Entities:FindAllByClassname("npc_dota_creature")
 	for _,unit in pairs(units) do
 		local unit_name = unit:GetUnitName();
 		if string.match(unit_name,"shop") or string.match(unit_name,"troll_hut") then
 			unit:SetOwner(hero)
-			unit:SetControllableByPlayer(pID, true)
+			unit:SetControllableByPlayer(playerID, true)
 			unit:AddNewModifier(unit,nil,"modifier_invulnerable",{})
 			unit:AddNewModifier(unit,nil,"modifier_phased",{})
-			table.insert(GameRules.shops,unit)
 			if string.match(unit_name,"troll_hut") then
 				unit.ancestors = {}
 				if hero.buildings[unit:GetUnitName()] then
@@ -211,53 +204,60 @@ function trollnelves2:OnHeroInGame(hero)
 			end
 			return rate
 		end)
-	end
-	GameRules.playerCount = GameRules.playerCount + 1
 
-	if PlayerResource:IsElf(hero) then
-		--Builder team!
-		if team == DOTA_TEAM_GOODGUYS then
-			InitializeBuilder(hero)
-		--Troll team!
-		elseif team == DOTA_TEAM_BADGUYS then
-			InitializeTroll(hero)
-		end
+		-- Give small flying vision around hero to see elf walls/rocks on highground
+		Timers:CreateTimer(0.1, function()
+			if hero then
+				AddFOWViewer(hero:GetTeamNumber(), hero:GetAbsOrigin(), 150, 0.1, false)
+				return 0.1
+			end
+		end)
+	end
+
+	if hero:IsElf() then
+		InitializeBuilder(hero)
+	elseif team == DOTA_TEAM_BADGUYS then
+		InitializeTroll(hero)
 	end
 end
 
 function trollnelves2:PreStart()
-	local gameStartTimer = 10
+	StartCreatingMinimapBuildings()
+	local gameStartTimer = PRE_GAME_TIME
 	ModifyLumberPrice(0)
-	Timers:CreateTimer(0.03,function()
+	Timers:CreateTimer(function()
 		if gameStartTimer > 0 then
 			Notifications:ClearBottomFromAll()
 			Notifications:BottomToAll({text="Game starts in " .. gameStartTimer, style={color='#E62020'}, duration=1})
 			gameStartTimer = gameStartTimer - 1
 			return 1
 		else
-			if GameRules.trollSpawned == true then
+			if GameRules.trollHero then
 				Notifications:ClearBottomFromAll()
 				Notifications:BottomToAll({text="Game started!", style={color='#E62020'}, duration=1})
 				GameRules.startTime = GameRules:GetGameTime()
-				GameRules.stunHeroes = false
-				for _,pHero in pairs(GameRules.heroes) do
-					if pHero and not pHero:IsNull() then
-						pHero:RemoveModifierByName("modifier_stunned")
-						if pHero:GetUnitName() == TROLL_HERO then
-							PlayerResource:SetGold(pHero,0)
-							pHero:AddNewModifier(nil, nil, "modifier_stunned", {duration=GameRules.trollTimer})
-							local timer = GameRules.trollTimer
-							Timers:CreateTimer(0.03,function()
-								if timer > 0 then
-									Notifications:ClearBottomFromAll()
-									Notifications:BottomToAll({text="Troll spawns in " .. timer, style={color='#E62020'}, duration=1})
-									timer = timer - 1
-									return 1.0
-								end
-							end)
-						end
-					end
+
+				-- Unstun the elves
+				local elfCount = PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS)
+				for i=1, elfCount do
+					local pID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS, i)
+					local playerHero = PlayerResource:GetSelectedHeroEntity(pID)
+					playerHero:RemoveModifierByName("modifier_stunned")
 				end
+
+				local trollSpawnTimer = TROLL_SPAWN_TIME
+				local trollHero = GameRules.trollHero
+				trollHero:AddNewModifier(nil, nil, "modifier_stunned", {duration=trollSpawnTimer})
+				PlayerResource:SetGold(trollHero, 0)
+
+				Timers:CreateTimer(function()
+					if trollSpawnTimer > 0 then
+						Notifications:ClearBottomFromAll()
+						Notifications:BottomToAll({text="Troll spawns in " .. trollSpawnTimer, style={color='#E62020'}, duration=1})
+						trollSpawnTimer = trollSpawnTimer - 1
+						return 1.0
+					end
+				end)
 			else
 				Notifications:ClearBottomFromAll()
 				Notifications:BottomToAll({text="Troll hasn't spawned yet!Resetting!", style={color='#E62020'}, duration=1})
@@ -279,12 +279,12 @@ end
 
 function ModifyLumberPrice(amount)
 	amount = string.match(amount,"[-]?%d+") or 0
-	if GameRules.lumber_price + amount < 10 then
-		GameRules.lumber_price = 10
+	if GameRules.lumberPrice + amount < 10 then
+		GameRules.lumberPrice = 10
 	else
-		GameRules.lumber_price = GameRules.lumber_price + amount
+		GameRules.lumberPrice = GameRules.lumberPrice + amount
 	end
-	CustomGameEventManager:Send_ServerToAllClients("player_lumber_price_changed", {lumberPrice = GameRules.lumber_price} )
+	CustomGameEventManager:Send_ServerToTeam(DOTA_TEAM_GOODGUYS, "player_lumber_price_changed", {lumberPrice = GameRules.lumberPrice} )
 end
 
 function SetResourceValues()

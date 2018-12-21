@@ -11,7 +11,7 @@ function trollnelves2:_Inittrollnelves2()
   GameRules:SetHeroSelectionTime(0)
   GameRules:SetStrategyTime(0)
   GameRules:SetShowcaseTime(0)
-  GameRules:SetPreGameTime(30)
+  GameRules:SetPreGameTime(PRE_GAME_TIME)
   GameRules:SetPostGameTime(120)
    -- Will finish game setup using FinishCustomGameSetup()
   GameRules:SetCustomGameSetupRemainingTime(-1)
@@ -53,7 +53,7 @@ function trollnelves2:_Inittrollnelves2()
 	    return not (item:GetAbilityName() == "item_tpscroll" and item:GetPurchaser() == nil)
 	end, self)
 
-	CustomGameEventManager:RegisterListener("player_vote", OnPlayerVote)
+	CustomGameEventManager:RegisterListener("player_team_choose", OnPlayerTeamChoose)
   LinkLuaModifier("modifier_custom_armor", "libraries/modifiers/modifier_custom_armor.lua", LUA_MODIFIER_MOTION_NONE)
 
   -- Event Hooks

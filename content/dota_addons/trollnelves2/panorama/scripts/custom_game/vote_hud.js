@@ -2,7 +2,7 @@
 
 function ChooseTeam(args) {
 	var PlayerID = Players.GetLocalPlayer()
-	GameEvents.SendCustomGameEventToServer("player_vote", { "pID": PlayerID, "team": args });
+	GameEvents.SendCustomGameEventToServer("player_team_choose", { "playerID": PlayerID, "team": args });
 }
 
 //--------------------------------------------------------------------------------------------------

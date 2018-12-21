@@ -1,9 +1,9 @@
 function trollnelves2:OnGameRulesStateChange()
- 	DebugPrint("GameRulesStateChange ******************")
-  local newState = GameRules:State_Get()
-  DebugPrint(newState)
-  if newState == DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP then
-    trollnelves2:GameSetup()
+	DebugPrint("GameRulesStateChange ******************")
+	local newState = GameRules:State_Get()
+	DebugPrint(newState)
+	if newState == DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP then
+		trollnelves2:GameSetup()
 	elseif newState == DOTA_GAMERULES_STATE_PRE_GAME then
 		self:PreStart()
 	end
@@ -50,14 +50,6 @@ function trollnelves2:OnPlayerReconnect(event)
 					CustomGameEventManager:Send_ServerToPlayer(player, "show_helper_options", { })
 				end
 			end
-		end
-	end
-
-	local team = PlayerResource:GetTeam(playerID)
-	if team == DOTA_TEAM_BADGUYS then
-		local player = PlayerResource:GetPlayer(playerID)
-		if player then
-			CustomGameEventManager:Send_ServerToPlayer(player, "hide_cheese_panel", { })
 		end
 	end
 end

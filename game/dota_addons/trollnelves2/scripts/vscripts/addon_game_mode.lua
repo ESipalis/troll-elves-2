@@ -104,21 +104,14 @@ end
 -- Create the game mode when we activate
 function Activate()
   GameRules.MapSpeed = string.match(GetMapName(),"%d+") or 1
-  GameRules.lumber_price = 150
-  GameRules.max_food = 20
-  GameRules.TrollWin = false
-  GameRules.heroes = {}
-  GameRules.playersChoice = {}
-  GameRules.firstHero = true
-  GameRules.stunHeroes = true
-  GameRules.trollSpawned = false
+  GameRules.lumberPrice = STARTING_LUMBER_PRICE
+  GameRules.maxFood = STARTING_MAX_FOOD
+  GameRules.playerTeamChoices = {}
   GameRules.dcedChoosers = {}
   GameRules.trollTps = {Vector(-320,0,256),Vector(0,0,256),Vector(320,0,256),Vector(-320,-320,256),Vector(0,-320,256),Vector(320,-320,256),Vector(-320,-640,256),Vector(0,-640,256),Vector(320,-640,256)}
-  GameRules.trollTimer = 30
   GameRules.angel_spawn_points = Entities:FindAllByName("angel_spawn_point")
   GameRules.shops = Entities:FindAllByClassname("trigger_shop")
-  GameRules.playersColors = {{0, 102, 255},{0, 204, 255},{153, 0, 204},{225,0,255},{255, 255, 0},{255, 153, 51},{51, 204, 51},{0, 105, 0},{128, 0, 0},{176, 0, 0},{60,20,74}}
-  GameRules.startTime = 0
+  GameRules.startTime = nil
   GameRules.colorCounter = 1
   GameRules.gold = {}
   GameRules.lumber = {}
@@ -128,7 +121,6 @@ function Activate()
   GameRules.lumberGiven = {}
   GameRules.scores = {}
   GameRules.types = {}
-  GameRules.playerCount = 0
   
   GameRules.test = false
   if GameRules.test then

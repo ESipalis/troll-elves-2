@@ -65,12 +65,11 @@ function TeleportTo (event)
 	local caster = event.caster
 	for i=1,#GameRules.trollTps do
 		local units = FindUnitsInRadius(caster:GetTeamNumber(), GameRules.trollTps[i] , nil, 150 , DOTA_UNIT_TARGET_TEAM_FRIENDLY, DOTA_UNIT_TARGET_HERO , DOTA_UNIT_TARGET_FLAG_NONE, 0 , false)
-		if units and #units == 0 then
+		if #units == 0 then
 			FindClearSpaceForUnit( caster , GameRules.trollTps[i] , true )
 			break
 		end
 	end
-	--caster:AddNewModifier(caster,nil,"modifier_phased",{duration = 1})
 end
 
 function GoldOnAttack (event)
@@ -94,11 +93,11 @@ function ExchangeLumber(event)
 	local price = 0
 	local increasePrice = 0
 	for a = 10,math.abs(amount),10 do
-		price = price + GameRules.lumber_price + increasePrice
+		price = price + GameRules.lumberPrice + increasePrice
 		if amount > 0 then
 			increasePrice = increasePrice + 5
 		else
-			if GameRules.lumber_price + increasePrice - 5 > 10 then
+			if GameRules.lumberPrice + increasePrice - 5 > 10 then
 				increasePrice = increasePrice - 5
 			end
 		end
@@ -158,7 +157,7 @@ function SpawnUnitOnSpellStart(event)
         caster:AddNewModifier(nil, nil, "modifier_stunned", {duration=0.03})
         return false
     end
-    if hero.food > GameRules.max_food then
+    if hero.food > GameRules.maxFood then
         SendErrorMessage(playerID, "#error_not_enough_food")
         caster:AddNewModifier(nil, nil, "modifier_stunned", {duration=0.03})
         return false
@@ -453,12 +452,10 @@ function SellItem(event)
 	local target = event.target
 	local playerID = caster:GetPlayerOwnerID()
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
-	--if target == caster then
-		local gold_cost = ability:GetSpecialValueFor("gold_cost")
-		local lumber_cost = ability:GetSpecialValueFor("lumber_cost")
-		PlayerResource:ModifyGold(hero,gold_cost,true)
-		PlayerResource:ModifyLumber(hero,lumber_cost,true)
-	--end
+	local gold_cost = ability:GetSpecialValueFor("gold_cost")
+	local lumber_cost = ability:GetSpecialValueFor("lumber_cost")
+	PlayerResource:ModifyGold(hero,gold_cost,true)
+	PlayerResource:ModifyLumber(hero,lumber_cost,true)
 end
 
 function FountainRegen(event)
