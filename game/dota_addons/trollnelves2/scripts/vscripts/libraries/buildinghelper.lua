@@ -3,7 +3,10 @@ BH_VERSION = "1.1.1"
 require('libraries/timers')
 require('libraries/selection')
 require('libraries/keyvalues')
+require('libraries/util')
 require('stats')
+require('settings')
+
 if not BuildingHelper then
     BuildingHelper = class({})
 end
@@ -39,13 +42,12 @@ function BuildingHelper:Init()
     CustomGameEventManager:RegisterListener("selection_update", Dynamic_Wrap(BuildingHelper, 'OnSelectionUpdate')) --Hook selection library
     CustomGameEventManager:RegisterListener("gnv_request", Dynamic_Wrap(BuildingHelper, "SendGNV"))
     CustomGameEventManager:RegisterListener("rightclick_order", Dynamic_Wrap(BuildingHelper, "RightClickOrder"))
-    CustomGameEventManager:RegisterListener("give_resources", Dynamic_Wrap(BuildingHelper, "GiveResources"))
-    CustomGameEventManager:RegisterListener("choose_help_side", Dynamic_Wrap(BuildingHelper, "ChooseHelpSide"))
+
      -- Game Event Listeners
     ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(BuildingHelper, 'OnGameRulesStateChange'), self)
     ListenToGameEvent('npc_spawned', Dynamic_Wrap(BuildingHelper, 'OnNPCSpawned'), self)
     ListenToGameEvent('entity_killed', Dynamic_Wrap(BuildingHelper, 'OnEntityKilled'), self)
-    ListenToGameEvent('dota_item_purchased', Dynamic_Wrap(BuildingHelper, 'OnItemPurchase'), self)
+
     if BuildingHelper.Settings["UPDATE_TREES"] then
         ListenToGameEvent('tree_cut', Dynamic_Wrap(BuildingHelper, 'OnTreeCut'), self)
     end
@@ -245,69 +247,14 @@ function BuildingHelper:OnNPCSpawned(keys)
         npc:SetHullRadius(collision_size)
     end
 end
+
 function BuildingHelper:OnEntityKilled(keys)
     local killed = EntIndexToHScript(keys.entindex_killed)
-    local attacker = EntIndexToHScript(keys.entindex_attacker)
+
     local unitTable = killed:GetKeyValue()
     local gridTable = unitTable and unitTable["Grid"]
-    local bounty = -1
-    local killedID = killed:GetPlayerOwnerID()
-    local attackerID = attacker:GetPlayerOwnerID()
-    local killedName = PlayerResource:GetSelectedHeroEntity(killedID) and PlayerResource:GetSelectedHeroEntity(killedID):GetUnitName() or killed:GetUnitName()
-    local attackerName = PlayerResource:GetSelectedHeroEntity(attackerID) and PlayerResource:GetSelectedHeroEntity(attackerID):GetUnitName() or attacker:GetUnitName()
-    if IsBuilder(killed) and killed.alive then
+    if IsBuilder(killed) then
         BuildingHelper:ClearQueue(killed)
-        killed.alive = false
-        killed.legitChooser = true
-
-        bounty = PlayerResource:GetGold(killedID)
-        PlayerResource:SetGold(killed,0)
-        PlayerResource:SetLumber(killed,0)
-
-        if GameRules:GetGameTime() - GameRules.startTime < 420 then
-            local args = {}
-            args.team = DOTA_TEAM_GOODGUYS
-            args.playerID = killedID
-            Timers:CreateTimer(1,function()
-                BuildingHelper:ChooseHelpSide(args)
-            end)
-        else
-            local orgPlayer = killed:GetPlayerOwner()
-            if orgPlayer then
-                CustomGameEventManager:Send_ServerToPlayer(orgPlayer, "show_helper_options", { })
-                Timers:CreateTimer(30,function()
-                    if killed and killed.legitChooser and killed.legitChooser == true then
-                       local args = {}
-                        args.team = RandomInt(0, 1) == 1 and DOTA_TEAM_GOODGUYS or DOTA_TEAM_BADGUYS
-                        args.playerID = killedID
-                        BuildingHelper:ChooseHelpSide(args)
-                    end
-                end)
-            end
-            if PlayerResource:GetConnectionState(killedID) == 3 then
-                GameRules.dcedChoosers[killedID] = true
-            end
-        end
-
-        if CheckTrollVictory() then
-            SetResourceValues()
-            Stats.SubmitMatchData(DOTA_TEAM_BADGUYS,callback)
-            GameRules:SetGameWinner(DOTA_TEAM_BADGUYS)
-            return
-        end
-        for i=#killed.units,1,-1 do
-            if killed and killed.units[i] then
-                if killed.units[i].minimapEntity then
-                    UTIL_Remove(killed.units[i].minimapEntity)
-                end
-                killed.units[i]:ForceKill(false)
-            end
-        end
-        killed:SetAbsOrigin(Vector(-10000,-10000,0))
-        PlayerResource:SetCameraTarget(killedID, PlayerResource:GetSelectedHeroEntity(GameRules.trollID))
-
-
-
     elseif IsCustomBuilding(killed) or gridTable then
         -- Building Helper grid cleanup
         BuildingHelper:RemoveBuilding(killed, false)
@@ -327,75 +274,31 @@ function BuildingHelper:OnEntityKilled(keys)
         end
 
         local hero = killed:GetOwner()
-        local name = killed:GetUnitName()
-        if hero.buildings[name] and hero.buildings[name] > 0 then
-            hero.buildings[name] = hero.buildings[name] - 1
-        end
-        if killed.ancestors then
-            for key,aname in pairs(killed.ancestors) do
-                if name ~= aname then
-                    hero.buildings[aname] = hero.buildings[aname] - 1
+        if hero and hero.alive then -- Skip looping unnecesarrily when elf dies
+            local name = killed:GetUnitName()
+            if hero.buildings[name] and hero.buildings[name] > 0 then
+                hero.buildings[name] = hero.buildings[name] - 1
+            end
+            if killed.ancestors then
+                for key,aname in pairs(killed.ancestors) do
+                    if name ~= aname then
+                        hero.buildings[aname] = hero.buildings[aname] - 1
+                    end
                 end
             end
-        end
-        for i=#hero.units,1,-1 do
-            if hero.units[i] == killed then
-                table.remove(hero.units,i)
+            for i=#hero.units,1,-1 do
+                if hero.units[i] == killed then
+                    table.remove(hero.units,i)
+                end
             end
-        end
 
-        for k,v in pairs(hero.units) do
-            UpdateUpgrades(v)
-        end
-        UpdateSpells(hero)
-    elseif PlayerResource:IsTroll(killed) then
-        SetResourceValues()
-        Stats.SubmitMatchData(DOTA_TEAM_GOODGUYS,callback)
-        GameRules:SetGameWinner(DOTA_TEAM_GOODGUYS)
-    elseif PlayerResource:IsWolf(killed) then
-        bounty = math.max(GetNetworth(killed) * 0.10,GameRules:GetGameTime())
-        RespawnHelper(killed)
-    elseif PlayerResource:IsAngel(killed) then
-        bounty = math.max(PlayerResource:GetGold(killedID),GameRules:GetGameTime())
-        PlayerResource:SetGold(killed,0)
-        RespawnHelper(killed)
-    end
-    if bounty>=0 and attacker~=killed then
-        bounty = math.floor(bounty)
-        PlayerResource:ModifyGold(attacker,bounty)
-        GameRules:SendCustomMessage("%s1 (" .. GetModifiedName(attackerName)  .. ") killed " .. PlayerResource:GetPlayerName(killedID) .. " (" .. GetModifiedName(killedName) .. ") for <font color='#F0BA36'>"..bounty.."</font> gold!",attackerID,0)
-    end
-    if killed and killed:GetKeyValue("FoodCost") then
-        local food_cost = killed:GetKeyValue("FoodCost")
-        local hero = PlayerResource:GetSelectedHeroEntity(killedID)
-        PlayerResource:ModifyFood(hero,-food_cost)
-    end
-
-end
-
-function CheckTrollVictory()
-    for i=1,PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS) do
-        local playerID = PlayerResource:GetNthPlayerIDOnTeam(2, i)
-        local hero = PlayerResource:GetSelectedHeroEntity(playerID)
-        if hero and hero.alive then
-            return false
+            for k,v in pairs(hero.units) do
+                UpdateUpgrades(v)
+            end
+            UpdateSpells(hero)
         end
     end
-    return true
-end
 
-function GetModifiedName(orgName)
-    if string.match(orgName,TROLL_HERO) then
-        return "<font color='#FF0000'>The Mighty Troll</font>"
-    elseif string.match(orgName,ELF_HERO) then
-        return "<font color='#00CC00'>Elf</font>"
-    elseif string.match(orgName, WOLF_HERO) then
-        return "<font color='#800000'>Wolf</font>"
-    elseif string.match(orgName,ANGEL_HERO) then
-        return "<font color='#0099FF'>Angel</font>"
-    else
-        return "?"
-    end
 end
 
 function BuildingHelper:OnTreeCut(keys)
@@ -725,186 +628,6 @@ function BuildingHelper:RightClickOrder( event )
 
 end
 
-function BuildingHelper:GiveResources( event )
-    local targetID = event.target
-    local casterID = event.casterID
-    local gold = math.floor(math.abs(tonumber(event.gold)))
-    local lumber = math.floor(math.abs(tonumber(event.lumber)))
-    if tonumber(event.gold) ~= nil and tonumber(event.lumber) ~= nil then
-        if PlayerResource:GetSelectedHeroEntity(targetID) and PlayerResource:GetSelectedHeroEntity(targetID):GetTeam() == PlayerResource:GetSelectedHeroEntity(event.casterID):GetTeam() then
-            local hero = PlayerResource:GetSelectedHeroEntity(targetID)
-            local casterHero = PlayerResource:GetSelectedHeroEntity(casterID)
-            if gold and lumber then
-                if PlayerResource:GetGold(casterID) < gold or PlayerResource:GetLumber(casterID) < lumber then
-                    SendErrorMessage(casterID, "#error_not_enough_resources")
-                    return
-                end
-                PlayerResource:ModifyGold(casterHero,-gold,true)
-                PlayerResource:ModifyLumber(casterHero,-lumber,true)
-                PlayerResource:ModifyGold(hero,gold,true)
-                PlayerResource:ModifyLumber(hero,lumber,true)
-                PlayerResource:ModifyGoldGiven(targetID,-gold)
-                PlayerResource:ModifyLumberGiven(targetID,-lumber)
-                PlayerResource:ModifyGoldGiven(casterID,gold)
-                PlayerResource:ModifyLumberGiven(casterID,lumber)
-                if gold > 0 or lumber > 0 then
-                    local text = PlayerResource:GetPlayerName(casterHero:GetPlayerOwnerID()) .. "(" .. GetModifiedName(casterHero:GetUnitName()) .. ") has sent "
-                    if gold > 0 then
-                        text = text .. "<font color = '#F0BA36'>" .. gold .. "</font> gold"
-                    end
-                    if gold > 0 and lumber > 0 then
-                        text = text .. " and "
-                    end
-                    if lumber > 0 then
-                        text = text .. "<font color = '#009900'>" .. lumber .. "</font> lumber"
-                    end
-                    text = text ..  " to " .. PlayerResource:GetPlayerName(hero:GetPlayerOwnerID()) .. "(" .. GetModifiedName(hero:GetUnitName()) .. ")!" 
-                    GameRules:SendCustomMessageToTeam(text,casterHero:GetTeamNumber(),0,0)
-                end
-            else
-                SendErrorMessage(event.casterID, "#error_enter_only_digits")
-            end
-        else
-            SendErrorMessage(event.casterID, "#error_select_only_your_allies")
-        end
-    else
-        SendErrorMessage(event.casterID, "#error_type_only_digits")
-    end
-end
-
-function BuildingHelper:ChooseHelpSide(event)
-    local team = event.team
-    local pID = event.playerID
-    local player = PlayerResource:GetPlayer(pID)
-    local hero = PlayerResource:GetSelectedHeroEntity(pID)
-    if hero then
-        hero.legitChooser = false
-    end
-    Timers:CreateTimer(3,function()
-        PlayerResource:SetCameraTarget(pID, nil)
-    end)
-    if team == DOTA_TEAM_GOODGUYS then
-        PlayerResource:ReplaceHeroWith(pID, ANGEL_HERO, 0, 0)
-        UTIL_Remove(hero)
-        hero = PlayerResource:GetSelectedHeroEntity(pID)
-        if hero then
-            hero:ClearInventory()
-            hero:AddItemByName("item_blink_datadriven")
-            hero:SetAbsOrigin(Vector(0,0,0))
-            RespawnHelper(hero)
-            GameRules:SendCustomMessage("%s1 will keep helping elves and now is an " .. GetModifiedName(ANGEL_HERO) ,pID,0)
-        end
-    elseif team == DOTA_TEAM_BADGUYS then
-        PlayerResource:SetCustomTeamAssignment(pID,team)
-        PlayerResource:ReplaceHeroWith(pID, WOLF_HERO, 0, 0)
-        UTIL_Remove(hero)
-        hero = PlayerResource:GetSelectedHeroEntity(pID)
-        if hero then
-            hero:ClearInventory()
-            RespawnHelper(hero)
-            local trollHero = PlayerResource:GetSelectedHeroEntity(GameRules.trollID)
-            local lumber = math.floor(GetNetworth(trollHero)/64000*0.3)
-            local gold = math.floor((GetNetworth(trollHero)/64000*0.3 - lumber)*64000)
-            PlayerResource:SetLumber(hero,lumber)
-            PlayerResource:SetGold(hero,gold)
-            PlayerResource:SetUnitShareMaskForPlayer(GameRules.trollID,pID, 2 , true)
-            GameRules:SendCustomMessage("%s1 has joined the dark side and now will help " .. GetModifiedName(TROLL_HERO) .. ".%s1 is now a" .. GetModifiedName(WOLF_HERO) ,pID,0)
-            Timers:CreateTimer(0.03,function()
-                if hero and hero:IsAlive() then
-                    AddFOWViewer(hero:GetTeamNumber(), hero:GetAbsOrigin(), 150, 0.03, false)
-                end
-                if not hero:IsNull() then
-                    return 0.03
-                end
-            end)
-        end
-    end
-    if hero then
-        for i=0,15 do
-            local ability = hero:GetAbilityByIndex(i)
-            if ability then ability:SetLevel(ability:GetMaxLevel()) end
-        end
-    end
-
-end
-
-function GetNetworth(hero)
-    local sum = 0
-    for i = 0, 5, 1 do
-        local item = hero:GetItemInSlot(i)
-        if item then
-            local item_name = item:GetAbilityName()
-            DebugPrint("Item name: " .. item_name)
-            local gold_cost = GetItemKV(item_name)["AbilitySpecial"]["02"]["gold_cost"]
-            local lumber_cost = GetItemKV(item_name)["AbilitySpecial"]["03"]["lumber_cost"]
-            sum = sum + gold_cost + lumber_cost * 64000
-        end
-    end
-    sum = sum + PlayerResource:GetGold(hero:GetPlayerOwnerID())
-    return sum
-end
-
-function RandomAngelLocation()
-    return (GameRules.angel_spawn_points and #GameRules.angel_spawn_points and #GameRules.angel_spawn_points > 0) and GameRules.angel_spawn_points[RandomInt(1, #GameRules.angel_spawn_points)]:GetAbsOrigin() or Vector(0,0,0)
-end
-
-function RespawnHelper(hero)
-        local team = hero:GetTeamNumber()
-        local timer = team == DOTA_TEAM_GOODGUYS and 30 or 5
-        local invul = team == DOTA_TEAM_GOODGUYS and true or false
-        local pos = team == DOTA_TEAM_GOODGUYS and RandomAngelLocation() or Vector(0,-640,256)
-        hero:SetRespawnsDisabled(false)
-        hero:ForceKill(true)
-        hero:SetRespawnPosition(pos)
-        hero:SetTimeUntilRespawn(timer)
-        local countdown = timer
-        local countdownColor = team == DOTA_TEAM_GOODGUYS and "#0099FF" or "#800000"
-        Timers:CreateTimer(0.03,function()
-            if countdown > 0 then
-                local player = hero:GetPlayerOwner()
-                if player then
-                    Notifications:ClearBottom(player)
-                    Notifications:Bottom(player,{text="You will respawn in " .. countdown .. " seconds", style={color=countdownColor}, duration=1})
-                end
-                countdown = countdown - 1
-                return 1.0
-            else
-                hero:RespawnHero(false,false)
-                if invul == true then
-                    hero:AddNewModifier(hero,nil,"modifier_invulnerable",{duration = 5}) 
-                end
-                hero:NotifyWearablesOfModelChange(false)
-            end
-
-        end)
-end
-
-function BuildingHelper:SellItem(args)
-    local item = EntIndexToHScript(args.itemIndex)
-    if item then
-        if not item:IsSellable() then
-            SendErrorMessage(issuerID,"#error_item_not_sellable")
-        end
-        local gold_cost = item:GetSpecialValueFor("gold_cost")
-        local lumber_cost = item:GetSpecialValueFor("lumber_cost")
-        local hero = item:GetCaster()
-        UTIL_Remove(item)
-        PlayerResource:ModifyGold(hero,gold_cost,true)
-        PlayerResource:ModifyLumber(hero,lumber_cost,true)
-        local player = hero:GetPlayerOwner()
-        EmitSoundOnClient("DOTA_Item.Hand_Of_Midas", player)
-    end
-
-end
-
-
--- Requires notifications library from bmddota/barebones
-function SendErrorMessage( pID, string )
-    Notifications:ClearBottom(pID)
-    Notifications:Bottom(pID, {text=string, style={color='#E62020'}, duration=2})
-    EmitSoundOnClient("General.Cancel", PlayerResource:GetPlayer(pID))
-end
-
 
 function BuildingHelper:OrderFilter(order)
     local ret = true    
@@ -1046,7 +769,7 @@ function BuildingHelper:OrderFilter(order)
     end
     if order_type == DOTA_UNIT_ORDER_SELL_ITEM then
         local args = {itemIndex = abilityIndex}
-        BuildingHelper:SellItem(args)
+        SellItem(args)
         return false
     end
 

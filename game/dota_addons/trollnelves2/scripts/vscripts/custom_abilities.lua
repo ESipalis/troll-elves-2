@@ -1,3 +1,5 @@
+require('libraries/util')
+
 --Ability for tents to give gold
 function GainGoldCreate(event)
 	local caster = event.caster
@@ -381,12 +383,6 @@ end
 
 
 
-function SendErrorMessage( pID, string )
-    Notifications:ClearBottom(pID)
-    Notifications:Bottom(pID, {text=string, style={color='#E62020'}, duration=2})
-    EmitSoundOnClient("General.Cancel", PlayerResource:GetPlayer(pID))
-end
-
 function BuyItem(event)
 	local ability = event.ability
 	local caster = event.caster
@@ -446,18 +442,6 @@ function IsInsideBoxEntity(box, unit)
     return betweenX and betweenY
 end
 
-function SellItem(event)
-	local ability = event.ability
-	local caster = event.caster
-	local target = event.target
-	local playerID = caster:GetPlayerOwnerID()
-	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
-	local gold_cost = ability:GetSpecialValueFor("gold_cost")
-	local lumber_cost = ability:GetSpecialValueFor("lumber_cost")
-	PlayerResource:ModifyGold(hero,gold_cost,true)
-	PlayerResource:ModifyLumber(hero,lumber_cost,true)
-end
-
 function FountainRegen(event)
 	local caster = event.caster
 	local radius = event.Radius
@@ -500,8 +484,7 @@ function StealGold(event)
 	local playerID = target:GetPlayerOwnerID()
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
 
-	PlayerResource:ModifyGold(caster,math.ceil(GetNetworth(hero)*0.02)+5)
-
+	PlayerResource:ModifyGold(caster,math.ceil(hero:GetNetworth()*0.02)+5)
 end
 
 function CheckStealGoldTarget(event)
@@ -513,21 +496,6 @@ function CheckStealGoldTarget(event)
 		SendErrorMessage(pID, "#error_castable_only_on_troll_hut")
 		caster:SetMana(caster:GetMana() + 20)
 	end
-end
-
-function GetNetworth(hero)
-	local sum = 0
-    for i = 0, 5, 1 do
-	    local item = hero:GetItemInSlot(i)
-	    if item then
-	        local item_name = item:GetAbilityName()
-        	local gold_cost = GetItemKV(item_name)["AbilitySpecial"]["02"]["gold_cost"];
-			local lumber_cost = GetItemKV(item_name)["AbilitySpecial"]["03"]["lumber_cost"];
-			sum = sum + gold_cost + lumber_cost * 64000
-	    end
-	end
-	sum = sum + PlayerResource:GetGold(hero:GetPlayerOwnerID())
-	return sum
 end
 
 function CommitSuicide(event)

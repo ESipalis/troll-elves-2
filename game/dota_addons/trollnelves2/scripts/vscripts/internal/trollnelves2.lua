@@ -53,7 +53,6 @@ function trollnelves2:_Inittrollnelves2()
 	    return not (item:GetAbilityName() == "item_tpscroll" and item:GetPurchaser() == nil)
 	end, self)
 
-	CustomGameEventManager:RegisterListener("player_team_choose", OnPlayerTeamChoose)
   LinkLuaModifier("modifier_custom_armor", "libraries/modifiers/modifier_custom_armor.lua", LUA_MODIFIER_MOTION_NONE)
 
   -- Event Hooks
@@ -61,6 +60,12 @@ function trollnelves2:_Inittrollnelves2()
   ListenToGameEvent('npc_spawned', Dynamic_Wrap(trollnelves2, 'OnNPCSpawned'), self)
   ListenToGameEvent('player_connect_full', Dynamic_Wrap(trollnelves2, 'OnConnectFull'), self)
   ListenToGameEvent("player_reconnected", Dynamic_Wrap(trollnelves2, 'OnPlayerReconnect'), self)
+  ListenToGameEvent('entity_killed', Dynamic_Wrap(trollnelves2, 'OnEntityKilled'), self)
+
+  -- Panorama event listeners
+  CustomGameEventManager:RegisterListener("give_resources", GiveResources)
+  CustomGameEventManager:RegisterListener("choose_help_side", ChooseHelpSide)
+	CustomGameEventManager:RegisterListener("player_team_choose", OnPlayerTeamChoose)
 
 
   -- Debugging setup

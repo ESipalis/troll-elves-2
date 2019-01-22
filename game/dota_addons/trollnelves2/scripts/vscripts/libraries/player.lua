@@ -253,3 +253,18 @@ end
 function CDOTA_BaseNPC_Hero:IsWolf()
     return self:GetUnitName() == WOLF_HERO
 end
+
+function CDOTA_BaseNPC_Hero:GetNetworth()
+    local sum = 0
+    for i = 0, 5, 1 do
+        local item = self:GetItemInSlot(i)
+        if item then
+            local item_name = item:GetAbilityName()
+            local gold_cost = GetItemKV(item_name)["AbilitySpecial"]["02"]["gold_cost"]
+            local lumber_cost = GetItemKV(item_name)["AbilitySpecial"]["03"]["lumber_cost"]
+            sum = sum + gold_cost + lumber_cost * 64000
+        end
+    end
+    sum = sum + PlayerResource:GetGold(self:GetPlayerOwnerID())
+    return sum
+end

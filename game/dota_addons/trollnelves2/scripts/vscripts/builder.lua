@@ -1,3 +1,5 @@
+require('libraries/util')
+
 -- A build ability is used (not yet confirmed)
 function Build( event )
     local caster = event.caster
@@ -189,13 +191,6 @@ function DestroyBuilding( keys )
     else
         building:ForceKill(false)
     end
-end
-
--- Requires notifications library from bmddota/barebones
-function SendErrorMessage( pID, string )
-    Notifications:ClearBottom(pID)
-    Notifications:Bottom(pID, {text=string, style={color='#E62020'}, duration=2})
-    EmitSoundOnClient("General.Cancel", PlayerResource:GetPlayer(pID))
 end
 
 function UpgradeBuilding( event )

@@ -13,6 +13,7 @@ end
 -- This library allow for easily delayed/timed actions
 require('libraries/timers')
 -- This library can be used for sending panorama notifications to the UIs of players/teams/everyone
+require('libraries/util')
 require('libraries/notifications')
 require('libraries/popups')
 require('libraries/team')
@@ -164,9 +165,9 @@ function InitializeTroll(hero)
 			if string.match(unit_name,"troll_hut") then
 				unit.ancestors = {}
 				if hero.buildings[unit:GetUnitName()] then
-						hero.buildings[unit:GetUnitName()] = hero.buildings[unit:GetUnitName()] + 1
+					hero.buildings[unit:GetUnitName()] = hero.buildings[unit:GetUnitName()] + 1
 				else
-						hero.buildings[unit:GetUnitName()] = 1
+					hero.buildings[unit:GetUnitName()] = 1
 				end
 				BuildingHelper:AddModifierBuilding(unit)
 				BuildingHelper:BlockGridSquares(GetUnitKV(unit_name,"ConstructionSize"), 0, unit:GetAbsOrigin())
@@ -216,7 +217,7 @@ function trollnelves2:OnHeroInGame(hero)
 
 	if hero:IsElf() then
 		InitializeBuilder(hero)
-	elseif team == DOTA_TEAM_BADGUYS then
+	elseif hero:IsTroll() then
 		InitializeTroll(hero)
 	end
 end
@@ -261,7 +262,7 @@ function trollnelves2:PreStart()
 			else
 				Notifications:ClearBottomFromAll()
 				Notifications:BottomToAll({text="Troll hasn't spawned yet!Resetting!", style={color='#E62020'}, duration=1})
-				gameStartTimer = 5
+				gameStartTimer = 3
 				return 1.0
 			end
 		end
@@ -279,11 +280,7 @@ end
 
 function ModifyLumberPrice(amount)
 	amount = string.match(amount,"[-]?%d+") or 0
-	if GameRules.lumberPrice + amount < 10 then
-		GameRules.lumberPrice = 10
-	else
-		GameRules.lumberPrice = GameRules.lumberPrice + amount
-	end
+	GameRules.lumberPrice = math.max(GameRules.lumberPrice + amount, MINIMUM_LUMBER_PRICE)
 	CustomGameEventManager:Send_ServerToTeam(DOTA_TEAM_GOODGUYS, "player_lumber_price_changed", {lumberPrice = GameRules.lumberPrice} )
 end
 
@@ -293,6 +290,38 @@ function SetResourceValues()
 			CustomNetTables:SetTableValue("resources", tostring(pID) .. "_resource_stats", { gold = PlayerResource:GetGold(pID),lumber = PlayerResource:GetLumber(pID) , goldGained = PlayerResource:GetGoldGained(pID) , lumberGained = PlayerResource:GetLumberGained(pID) , goldGiven = PlayerResource:GetGoldGiven(pID) , lumberGiven = PlayerResource:GetLumberGiven(pID) , timePassed = GameRules:GetGameTime() - GameRules.startTime })
 		end
 	end
+end
+
+function GetModifiedName(orgName)
+    if string.match(orgName,TROLL_HERO) then
+        return "<font color='#FF0000'>The Mighty Troll</font>"
+    elseif string.match(orgName,ELF_HERO) then
+        return "<font color='#00CC00'>Elf</font>"
+    elseif string.match(orgName, WOLF_HERO) then
+        return "<font color='#800000'>Wolf</font>"
+    elseif string.match(orgName,ANGEL_HERO) then
+        return "<font color='#0099FF'>Angel</font>"
+    else
+        return "?"
+    end
+end
+
+function SellItem(args)
+    local item = EntIndexToHScript(args.itemIndex)
+    if item then
+        if not item:IsSellable() then
+            SendErrorMessage(issuerID,"#error_item_not_sellable")
+        end
+        local gold_cost = item:GetSpecialValueFor("gold_cost")
+        local lumber_cost = item:GetSpecialValueFor("lumber_cost")
+        local hero = item:GetCaster()
+        UTIL_Remove(item)
+        PlayerResource:ModifyGold(hero,gold_cost,true)
+        PlayerResource:ModifyLumber(hero,lumber_cost,true)
+        local player = hero:GetPlayerOwner()
+        EmitSoundOnClient("DOTA_Item.Hand_Of_Midas", player)
+    end
+
 end
 
 function UpdateSpells(unit)

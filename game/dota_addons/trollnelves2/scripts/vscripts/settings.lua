@@ -6,10 +6,12 @@ ELF_HERO = "npc_dota_hero_treant"
 ANGEL_HERO = "npc_dota_hero_crystal_maiden"
 WOLF_HERO = "npc_dota_hero_lycan"
 
+WOLF_START_SPAWN_TIME = 420 -- When the players will be able to choose wolf instead of auto chosen to angels. In seconds.
 TROLL_SPAWN_TIME = 30
 PRE_GAME_TIME = 10
 
 STARTING_LUMBER_PRICE = 150
+MINIMUM_LUMBER_PRICE = 10
 STARTING_MAX_FOOD = 20
 
 PLAYER_COLORS = {

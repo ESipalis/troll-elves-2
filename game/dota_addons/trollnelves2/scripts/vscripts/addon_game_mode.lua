@@ -122,7 +122,7 @@ function Activate()
   GameRules.scores = {}
   GameRules.types = {}
   
-  GameRules.test = false
+  GameRules.test = true
   if GameRules.test then
     GameRules.trollTimer = 1
   end
