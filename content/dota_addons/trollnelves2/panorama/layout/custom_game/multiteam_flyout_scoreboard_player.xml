@@ -60,7 +60,7 @@
 				</Panel>
 				<Panel id = "ResourcesAmount">
 					<Label id="TeammateGoldAmount" text="999" />
-					<Label id="TeammateLumberAmount" text="999" />
+					<Label id="TeammateLumberAmount" text="745" />
 				</Panel>
 				<Button id="MuteButton" onactivate="ToggleMute();" />
 			</Panel>

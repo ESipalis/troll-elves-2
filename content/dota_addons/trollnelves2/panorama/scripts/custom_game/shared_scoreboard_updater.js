@@ -15,6 +15,7 @@ function _ScoreboardUpdater_SetTextSafe( panel, childName, textValue )
 }
 
 
+var ui = GameUI.CustomUIConfig();
 //=============================================================================
 //=============================================================================
 function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContainer, playerId, localPlayerTeamId )
@@ -31,9 +32,8 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
 	playerPanel.SetHasClass( "is_local_player", ( playerId == Game.GetLocalPlayerID() ) );
 	playerPanel.pID = playerId;
 	
-	var ultStateOrTime = PlayerUltimateStateOrTime_t.PLAYER_ULTIMATE_STATE_HIDDEN; // values > 0 mean on cooldown for that many seconds
-	var goldValue = -1;
-	var lumberValue = -1;
+	var goldValue = ui.playerGold[playerId];
+	var lumberValue = ui.playerLumber[playerId];
 	var goldGiven = -1;
 	var lumberGiven = -1;
 	var goldGained = -1;
@@ -46,8 +46,6 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
 	{
 		isTeammate = ( playerInfo.player_team_id == localPlayerTeamId );
 		
-		goldValue = CustomNetTables.GetTableValue("resources",playerId) && CustomNetTables.GetTableValue("resources",playerId).gold || 0;
-		lumberValue = CustomNetTables.GetTableValue("resources",playerId) && CustomNetTables.GetTableValue("resources",playerId).lumber || 0;
 		goldGained = CustomNetTables.GetTableValue("resources",playerId + "_resource_stats") && CustomNetTables.GetTableValue("resources",playerId + "_resource_stats").goldGained || 0;
 		lumberGained = CustomNetTables.GetTableValue("resources",playerId + "_resource_stats") && CustomNetTables.GetTableValue("resources",playerId + "_resource_stats").lumberGained || 0;
 		goldGiven = CustomNetTables.GetTableValue("resources",playerId + "_resource_stats") && CustomNetTables.GetTableValue("resources",playerId + "_resource_stats").goldGiven || 0;
@@ -165,12 +163,12 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
 		if ( isTeammate)
 		{	
 			playerPanel.FindChildInLayoutFile("TeammateGoldAmount").style.visibility = "visible";
-			_ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateGoldAmount", goldValue );
-			_ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateLumberAmount", lumberValue );
+			_ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateGoldAmount", 12 );
+			_ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateLumberAmount", 12 );
 		}else{
 			playerPanel.FindChildInLayoutFile("TeammateGoldAmount").style.visibility = "collapse";
-			_ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateGoldAmount", 0 );
-			_ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateLumberAmount", 0 );
+			_ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateGoldAmount", 12 );
+			_ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateLumberAmount", 12 );
 		}
 	}
 	_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerGoldAmount", goldValue );

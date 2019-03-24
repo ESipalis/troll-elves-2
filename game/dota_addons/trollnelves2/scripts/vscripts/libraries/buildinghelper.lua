@@ -250,9 +250,9 @@ end
 
 function BuildingHelper:OnEntityKilled(keys)
     local killed = EntIndexToHScript(keys.entindex_killed)
-
     local unitTable = killed:GetKeyValue()
     local gridTable = unitTable and unitTable["Grid"]
+
     if IsBuilder(killed) then
         BuildingHelper:ClearQueue(killed)
     elseif IsCustomBuilding(killed) or gridTable then

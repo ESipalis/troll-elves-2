@@ -150,28 +150,6 @@ function UpdateItemTooltips() {
                 function(){
             		$.DispatchEvent("UIHideCustomLayoutTooltip","AbilityTooltip");
                 });
-            // (function(index, tooltipParent) {
-            //     return function(){
-            //         $.Msg("HEHEHEHELEHLEHEOfaklsdfjasd;klgj;lasdkjfals;kgjasdlk;fhsadgladshfsghasdklfhdsaglkasdhflkasdhgadlskh");
-            //         var entityIndex = Players.GetLocalPlayerPortraitUnit();
-            //         var item = Entities.GetItemInSlot(entityIndex, index);
-            //         var bControllable = Entities.IsControllableByPlayer( entityIndex, Game.GetLocalPlayerID() );
-            //         var bSellable = Items.IsSellable( item ) && Items.CanBeSoldByLocalPlayer( item );
-
-            //         if ( !bSellable)
-            //         {
-            //             // don't show a menu if there's nothing to do
-            //             return;
-            //         }
-
-            //         var contextMenu = $.CreatePanel( "ContextMenuScript", $.GetContextPanel(), "" );
-            //         contextMenu.AddClass( "ContextMenu_NoArrow" );
-            //         contextMenu.AddClass( "ContextMenu_NoBorder" );
-            //         contextMenu.GetContentsPanel().Item = item;
-            //         contextMenu.GetContentsPanel().SetHasClass( "bSellable", bSellable );
-            //         contextMenu.GetContentsPanel().BLoadLayout( "file://{resources}/layout/custom_game/dota_inventory_context_menu.xml", false, false );
-            //     }
-            // })(i, buttonWell));
         }
     }
 }

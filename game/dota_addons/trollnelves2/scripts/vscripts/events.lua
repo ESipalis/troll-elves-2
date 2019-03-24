@@ -169,15 +169,13 @@ function ElfKilled(killed)
 			unit:ForceKill(false)
         end
     end
-    killed:SetAbsOrigin(Vector(-10000,-10000,0))
-    PlayerResource:SetCameraTarget(killedID, GameRules.trollHero)
 
-    if GameRules:GetGameTime() - GameRules.startTime < WOLF_START_SPAWN_TIME then
-        local args = {}
-        args.team = DOTA_TEAM_GOODGUYS
-        args.playerID = killedID
-		ChooseHelpSide(args)
-    else
+    PlayerResource:SetCameraTarget(killedID, GameRules.trollHero)
+    Timers:CreateTimer(3, function()
+        PlayerResource:SetCameraTarget(killedID, nil)
+    end)
+
+    if GameRules:GetGameTime() - GameRules.startTime >= WOLF_START_SPAWN_TIME then
         local orgPlayer = killed:GetPlayerOwner()
         if orgPlayer then
             CustomGameEventManager:Send_ServerToPlayer(orgPlayer, "show_helper_options", { })
@@ -192,6 +190,11 @@ function ElfKilled(killed)
         else
             GameRules.dcedChoosers[killedID] = true
         end
+    else
+        local args = {}
+        args.team = DOTA_TEAM_GOODGUYS
+        args.playerID = killedID
+		ChooseHelpSide(args)
     end
 
     return bounty
@@ -259,58 +262,24 @@ end
 function ChooseHelpSide(event)
     local team = event.team
     local pID = event.playerID
-    local player = PlayerResource:GetPlayer(pID)
     local hero = PlayerResource:GetSelectedHeroEntity(pID)
-    if hero then
-        hero.legitChooser = false
-    end
-    Timers:CreateTimer(3,function()
-        PlayerResource:SetCameraTarget(pID, nil)
-    end)
+    local newHeroName
+    local message
+    hero.legitChooser = false
     if team == DOTA_TEAM_GOODGUYS then
-        PlayerResource:ReplaceHeroWith(pID, ANGEL_HERO, 0, 0)
-        UTIL_Remove(hero)
-        hero = PlayerResource:GetSelectedHeroEntity(pID)
-        if hero then
-            hero:ClearInventory()
-            hero:AddItemByName("item_blink_datadriven")
-            hero:SetAbsOrigin(Vector(0,0,0))
-            RespawnHelper(hero)
-            GameRules:SendCustomMessage("%s1 will keep helping elves and now is an " .. GetModifiedName(ANGEL_HERO) ,pID,0)
-        end
+        newHeroName = ANGEL_HERO
+        message = "%s1 will keep helping elves and now is an " .. GetModifiedName(ANGEL_HERO)
     elseif team == DOTA_TEAM_BADGUYS then
-        PlayerResource:SetCustomTeamAssignment(pID,team)
-        PlayerResource:ReplaceHeroWith(pID, WOLF_HERO, 0, 0)
-        UTIL_Remove(hero)
-        hero = PlayerResource:GetSelectedHeroEntity(pID)
-        if hero then
-            hero:ClearInventory()
-            RespawnHelper(hero)
-			local trollHero = PlayerResource:GetSelectedHeroEntity(GameRules.trollID)
-			local trollNetworth = trollHero:GetNetworth()
-            local lumber = math.floor(trollNetworth/64000*0.3)
-            local gold = math.floor((trollNetworth/64000*0.3 - lumber)*64000)
-            PlayerResource:SetLumber(hero,lumber)
-            PlayerResource:SetGold(hero,gold)
-            PlayerResource:SetUnitShareMaskForPlayer(GameRules.trollID,pID, 2 , true)
-            GameRules:SendCustomMessage("%s1 has joined the dark side and now will help " .. GetModifiedName(TROLL_HERO) .. ".%s1 is now a" .. GetModifiedName(WOLF_HERO) ,pID,0)
-            Timers:CreateTimer(0.03,function()
-                if hero and hero:IsAlive() then
-                    AddFOWViewer(hero:GetTeamNumber(), hero:GetAbsOrigin(), 150, 0.03, false)
-                end
-                if not hero:IsNull() then
-                    return 0.03
-                end
-            end)
-        end
-    end
-    if hero then
-        for i=0,15 do
-            local ability = hero:GetAbilityByIndex(i)
-            if ability then ability:SetLevel(ability:GetMaxLevel()) end
-        end
+        newHeroName = WOLF_HERO
+        message = "%s1 has joined the dark side and now will help " .. GetModifiedName(TROLL_HERO) .. ". %s1 is now a" .. GetModifiedName(WOLF_HERO)
     end
 
+    GameRules:SendCustomMessage(message, pID, 0)
+    PlayerResource:SetCustomTeamAssignment(pID, team)
+    PlayerResource:ReplaceHeroWith(pID, newHeroName, 0, 0)
+    UTIL_Remove(hero)
+    hero = PlayerResource:GetSelectedHeroEntity(pID)
+    RespawnHelper(hero)
 end
 
 function RandomAngelLocation()
@@ -319,16 +288,15 @@ end
 
 function RespawnHelper(hero)
 	local team = hero:GetTeamNumber()
-	local timer = team == DOTA_TEAM_GOODGUYS and 30 or 5
+	local timer = team == DOTA_TEAM_GOODGUYS and ANGEL_RESPAWN_TIME or WOLF_RESPAWN_TIME
 	local invul = team == DOTA_TEAM_GOODGUYS and true or false
 	local pos = team == DOTA_TEAM_GOODGUYS and RandomAngelLocation() or Vector(0,-640,256)
-	hero:SetRespawnsDisabled(false)
-	hero:ForceKill(true)
+	-- hero:ForceKill(true)
 	hero:SetRespawnPosition(pos)
 	hero:SetTimeUntilRespawn(timer)
 	local countdown = timer
 	local countdownColor = team == DOTA_TEAM_GOODGUYS and "#0099FF" or "#800000"
-	Timers:CreateTimer(0.03,function()
+	Timers:CreateTimer(function()
 		if countdown > 0 then
 			local player = hero:GetPlayerOwner()
 			if player then
@@ -339,10 +307,9 @@ function RespawnHelper(hero)
 			return 1.0
 		else
 			hero:RespawnHero(false,false)
-			if invul == true then
-				hero:AddNewModifier(hero,nil,"modifier_invulnerable",{duration = 5}) 
+			if invul then
+				hero:AddNewModifier(hero, nil, "modifier_invulnerable", {duration = 5}) 
 			end
-			hero:NotifyWearablesOfModelChange(false)
 		end
 
 	end)

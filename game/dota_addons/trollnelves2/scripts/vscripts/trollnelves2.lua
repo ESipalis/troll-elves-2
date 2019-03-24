@@ -26,6 +26,13 @@ require('settings')
 require('events')
 
 
+-- Gets called when a player chooses if he wants to be troll or not
+function OnPlayerTeamChoose(eventSourceIndex, args)
+	local playerID = args["playerID"]
+	local vote = args["team"]
+	GameRules.playerTeamChoices[playerID] = vote
+end
+
 function trollnelves2:GameSetup()
 	Timers:CreateTimer(10, function()
 		SelectHeroes()
@@ -66,41 +73,26 @@ function SelectHeroes()
 	end
 end
 
-function StartCreatingMinimapBuildings()
-	Timers:CreateTimer(0.3,function()
-		if GameRules:State_Get() > DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-			return
-		end
-		-- Create minimap entities for buildings that are visible and don't already have a minimap entity
-		local allEntities = Entities:FindAllByClassname("npc_dota_creature")
-		for _, unit in pairs(allEntities) do
-			if IsCustomBuilding(unit) and not unit:IsNull() and not unit.minimapEntity and unit:GetTeamNumber() ~= DOTA_TEAM_BADGUYS and IsLocationVisible(DOTA_TEAM_BADGUYS, unit:GetAbsOrigin()) then
-				unit.minimapEntity = CreateUnitByName("minimap_entity", unit:GetAbsOrigin(), false, unit:GetOwner(), unit:GetOwner(), unit:GetTeamNumber())
-				unit.minimapEntity:AddNewModifier(unit.minimapEntity, nil, "modifier_minimap", {})
-				unit.minimapEntity.correspondingEntity = unit
-			end
-		end
-		-- Kill minimap entities of dead buildings when location is scouted
-		local minimapEntities = Entities:FindAllByClassname("npc_dota_building")
-		for k,minimapEnt in pairs(minimapEntities) do
-			if not minimapEnt:IsNull() and minimapEnt.correspondingEntity == "dead" and IsLocationVisible(DOTA_TEAM_BADGUYS, minimapEnt:GetAbsOrigin()) then
-				minimapEnt.correspondingEntity = nil
-				minimapEnt:ForceKill(false)
-				UTIL_Remove(minimapEnt)
-			end
-		end
-		return 0.3
-	end)
-end
 
-function OnPlayerTeamChoose(eventSourceIndex, args)
-	local playerID = args["playerID"]
-	local vote = args["team"]
-	GameRules.playerTeamChoices[playerID] = vote
+function trollnelves2:OnHeroInGame(hero)
+	local team = hero:GetTeamNumber()
+	InitializeHero(hero)
+	if team == DOTA_TEAM_BADGUYS then
+		InitializeBadHero(hero)
+	end
+
+	if hero:IsElf() then
+		InitializeBuilder(hero)
+	elseif hero:IsTroll() then
+		InitializeTroll(hero)
+	elseif hero:IsAngel() then
+		InitializeAngel(hero)
+	elseif hero:IsWolf() then
+		InitializeWolf(hero)
+	end
 end
 
 function InitializeHero(hero)
-	hero.food = 0
 	hero.buildings = {} -- This keeps the name and quantity of each building
 	hero.units = {}
 	hero.disabledBuildings = {}
@@ -119,8 +111,35 @@ function InitializeHero(hero)
 	hero:SetAbilityPoints(0)
 end
 
+function InitializeBadHero(hero)
+	hero.hpReg = 0
+	hero.hpRegDebuff = 0
+	Timers:CreateTimer(function()
+		if hero:IsNull() then
+			return
+		end
+		local finalHpReg = math.max(hero.hpReg - hero.hpRegDebuff, 0)
+		if finalHpReg > 0 and hero:IsAlive() then
+			hero:SetHealth(hero:GetHealth() + finalHpReg)
+		end
+		return 0.1
+	end)
+
+	-- Give small flying vision around hero to see elf walls/rocks on highground
+	Timers:CreateTimer(function()
+		if not hero or hero:IsNull() then
+			return
+		end
+		if hero:IsAlive() then
+			AddFOWViewer(hero:GetTeamNumber(), hero:GetAbsOrigin(), 150, 0.1, false)
+		end
+		return 0.1
+	end)
+
+end
+
 function InitializeBuilder(hero)
-	InitializeHero(hero)
+	hero.food = 0
 	hero.alive = true
 
 	hero:AddItemByName("item_root_ability")
@@ -131,14 +150,14 @@ function InitializeBuilder(hero)
 
 	hero.goldPerSecond = 0
 	hero.lumberPerSecond = 0
-	Timers:CreateTimer(0.03, function() 
-		if hero and not hero:IsNull() then
-			PlayerResource:ModifyGold(hero, hero.goldPerSecond)
-			PlayerResource:ModifyLumber(hero, hero.lumberPerSecond)
-			return 1
+	Timers:CreateTimer(function() 
+		if hero:IsNull() then
+			return
 		end
+		PlayerResource:ModifyGold(hero, hero.goldPerSecond)
+		PlayerResource:ModifyLumber(hero, hero.lumberPerSecond)
+		return 1
 	end)
-
 
 	UpdateSpells(hero)
 	PlayerResource:SetGold(hero, 30)
@@ -146,12 +165,8 @@ function InitializeBuilder(hero)
 	PlayerResource:ModifyFood(hero, 0)
 end
 
-
 function InitializeTroll(hero)
-	InitializeHero(hero)
 	GameRules.trollHero = hero
-	hero:AddNewModifier(nil, nil, "modifier_stunned", nil)
-
 	local playerID = hero:GetPlayerOwnerID()
 
 	local units = Entities:FindAllByClassname("npc_dota_creature")
@@ -185,42 +200,20 @@ function InitializeTroll(hero)
 
 end
 
-
-function trollnelves2:OnHeroInGame(hero)
-	local team = hero:GetTeamNumber()
-	local pID = hero:GetPlayerOwnerID()
-	if team == DOTA_TEAM_BADGUYS then
-		hero.hpReg = 0
-		hero.hpRegDebuff = 0
-		hero.fullHpReg = 0
-		hero.hpRegTimer = Timers:CreateTimer(FrameTime(),function()
-			local rate = FrameTime()
-			local hpReg = 0
-			hero.hpRegDebuff = hero.hpRegDebuff or 0
-			hero.fullHpReg = math.max(hero.hpReg-hero.hpRegDebuff,0)
-			if hero.fullHpReg > 0 and hero:IsAlive() then
-				rate = 1/hero.fullHpReg > rate and 1/hero.fullHpReg or rate
-				hpReg = hero.fullHpReg * rate
-				hero:SetHealth(hero:GetHealth() + hpReg)
-			end
-			return rate
-		end)
-
-		-- Give small flying vision around hero to see elf walls/rocks on highground
-		Timers:CreateTimer(0.1, function()
-			if hero then
-				AddFOWViewer(hero:GetTeamNumber(), hero:GetAbsOrigin(), 150, 0.1, false)
-				return 0.1
-			end
-		end)
-	end
-
-	if hero:IsElf() then
-		InitializeBuilder(hero)
-	elseif hero:IsTroll() then
-		InitializeTroll(hero)
-	end
+function InitializeAngel(hero)
+	hero:AddItemByName("item_blink_datadriven")
 end
+
+function InitializeWolf(hero)
+	local trollNetworth = GameRules.trollHero:GetNetworth()
+	local lumber = trollNetworth/64000 * WOLF_STARTING_RESOURCES_FRACTION
+	local gold = math.floor((lumber - math.floor(lumber))*64000)
+	lumber = math.floor(lumber)
+	PlayerResource:SetGold(hero, gold)
+	PlayerResource:SetLumber(hero, lumber)
+	PlayerResource:SetUnitShareMaskForPlayer(GameRules.trollID, pID, 2, true)
+end
+
 
 function trollnelves2:PreStart()
 	StartCreatingMinimapBuildings()
@@ -266,6 +259,33 @@ function trollnelves2:PreStart()
 				return 1.0
 			end
 		end
+	end)
+end
+
+function StartCreatingMinimapBuildings()
+	Timers:CreateTimer(0.3,function()
+		if GameRules:State_Get() > DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+			return
+		end
+		-- Create minimap entities for buildings that are visible and don't already have a minimap entity
+		local allEntities = Entities:FindAllByClassname("npc_dota_creature")
+		for _, unit in pairs(allEntities) do
+			if IsCustomBuilding(unit) and not unit:IsNull() and not unit.minimapEntity and unit:GetTeamNumber() ~= DOTA_TEAM_BADGUYS and IsLocationVisible(DOTA_TEAM_BADGUYS, unit:GetAbsOrigin()) then
+				unit.minimapEntity = CreateUnitByName("minimap_entity", unit:GetAbsOrigin(), false, unit:GetOwner(), unit:GetOwner(), unit:GetTeamNumber())
+				unit.minimapEntity:AddNewModifier(unit.minimapEntity, nil, "modifier_minimap", {})
+				unit.minimapEntity.correspondingEntity = unit
+			end
+		end
+		-- Kill minimap entities of dead buildings when location is scouted
+		local minimapEntities = Entities:FindAllByClassname("npc_dota_building")
+		for k,minimapEnt in pairs(minimapEntities) do
+			if not minimapEnt:IsNull() and minimapEnt.correspondingEntity == "dead" and IsLocationVisible(DOTA_TEAM_BADGUYS, minimapEnt:GetAbsOrigin()) then
+				minimapEnt.correspondingEntity = nil
+				minimapEnt:ForceKill(false)
+				UTIL_Remove(minimapEnt)
+			end
+		end
+		return 0.3
 	end)
 end
 

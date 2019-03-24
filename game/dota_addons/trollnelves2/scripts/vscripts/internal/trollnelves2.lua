@@ -5,7 +5,7 @@ mode = nil
 -- It can be used to pre-initialize any values/tables that will be needed later
 function trollnelves2:_Inittrollnelves2()
   -- Setup rules
-  GameRules:SetHeroRespawnEnabled(false)
+  GameRules:SetHeroRespawnEnabled(true)
   GameRules:SetUseUniversalShopMode(false)
   GameRules:SetSameHeroSelectionEnabled(true)
   GameRules:SetHeroSelectionTime(0)
