@@ -259,7 +259,9 @@ function GiveResources( event )
     end
 end
 
-function ChooseHelpSide(event)
+function ChooseHelpSide(eventSourceIndex, event)
+    DebugPrint("Choose help side: " .. eventSourceIndex);
+    DebugPrintTable(event);
     local team = event.team
     local pID = event.playerID
     local hero = PlayerResource:GetSelectedHeroEntity(pID)
