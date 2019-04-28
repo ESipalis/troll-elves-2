@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="declarations" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/API-master/declarations" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/API-master/declarations" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

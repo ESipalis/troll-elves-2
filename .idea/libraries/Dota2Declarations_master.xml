@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Dota2Declarations-master" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/Dota2Declarations-master" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/Dota2Declarations-master" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>
