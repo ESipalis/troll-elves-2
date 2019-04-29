@@ -121,6 +121,8 @@ function Activate()
   GameRules.lumberGiven = {}
   GameRules.scores = {}
   GameRules.types = {}
+  GameRules.trollID = nil
+  GameRules.trollHero = nil
   
   GameRules.test = true
   if GameRules.test then

@@ -59,8 +59,8 @@
 					<Label id="HeroNameAndDescription" text="#custom_scoreboard_hero_name_and_desc" />
 				</Panel>
 				<Panel id = "ResourcesAmount">
-					<Label id="TeammateGoldAmount" text="999" />
-					<Label id="TeammateLumberAmount" text="745" />
+					<Label id="PlayerGoldAmount" text="999" />
+					<Label id="PlayerLumberAmount" text="745" />
 				</Panel>
 				<Button id="MuteButton" onactivate="ToggleMute();" />
 			</Panel>

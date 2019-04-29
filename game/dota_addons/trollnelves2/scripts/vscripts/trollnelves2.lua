@@ -59,7 +59,6 @@ function SelectHeroes()
 	if not GameRules.test then
 	    PlayerResource:SetCustomTeamAssignment(trollPlayerID , DOTA_TEAM_BADGUYS)
 	    PlayerResource:SetSelectedHero(trollPlayerID, TROLL_HERO)
-		GameRules.trollID = trollPlayerID
 	end
 	local elfCount = PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS)
 	for i=1, elfCount do
@@ -75,6 +74,7 @@ end
 
 
 function trollnelves2:OnHeroInGame(hero)
+	DebugPrint("OnHeroInGame")
 	local team = hero:GetTeamNumber()
 	InitializeHero(hero)
 	if team == DOTA_TEAM_BADGUYS then
@@ -93,6 +93,7 @@ function trollnelves2:OnHeroInGame(hero)
 end
 
 function InitializeHero(hero)
+	DebugPrint("Initialize hero")
 	hero.buildings = {} -- This keeps the name and quantity of each building
 	hero.units = {}
 	hero.disabledBuildings = {}
@@ -112,6 +113,7 @@ function InitializeHero(hero)
 end
 
 function InitializeBadHero(hero)
+	DebugPrint("Initialize bad hero")
 	hero.hpReg = 0
 	hero.hpRegDebuff = 0
 	Timers:CreateTimer(function()
@@ -139,6 +141,7 @@ function InitializeBadHero(hero)
 end
 
 function InitializeBuilder(hero)
+	DebugPrint("Initialize builder")
 	hero.food = 0
 	hero.alive = true
 
@@ -166,8 +169,10 @@ function InitializeBuilder(hero)
 end
 
 function InitializeTroll(hero)
-	GameRules.trollHero = hero
+	DebugPrint("Initialize troll")
 	local playerID = hero:GetPlayerOwnerID()
+	GameRules.trollHero = hero
+	GameRules.trollID = trollPlayerID
 
 	local units = Entities:FindAllByClassname("npc_dota_creature")
 	for _,unit in pairs(units) do
@@ -201,17 +206,21 @@ function InitializeTroll(hero)
 end
 
 function InitializeAngel(hero)
+	DebugPrint("Initialize angel")
 	hero:AddItemByName("item_blink_datadriven")
 end
 
 function InitializeWolf(hero)
+	local playerID = hero:GetPlayerOwnerID()
+	DebugPrint("Initialize wolf, playerID: " .. playerID)
+	DebugPrint("GameRules.trollID: " .. GameRules.trollID)
 	local trollNetworth = GameRules.trollHero:GetNetworth()
 	local lumber = trollNetworth/64000 * WOLF_STARTING_RESOURCES_FRACTION
 	local gold = math.floor((lumber - math.floor(lumber))*64000)
 	lumber = math.floor(lumber)
 	PlayerResource:SetGold(hero, gold)
 	PlayerResource:SetLumber(hero, lumber)
-	PlayerResource:SetUnitShareMaskForPlayer(GameRules.trollID, pID, 2, true)
+	PlayerResource:SetUnitShareMaskForPlayer(GameRules.trollID, playerID, 2, true)
 end
 
 

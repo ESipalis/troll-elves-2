@@ -278,26 +278,21 @@
 	vertical-align: bottom;
 	horizontal-align: right;
 	flow-children:right;
+    visibility: collapse;
 }
 
-#TeammateGoldAmount{
+#PlayerGoldAmount{
 	color: #ffd300;
 	font-size: 13px;
 	text-shadow: 2px 2px 2px black;
-	visibility: collapse;
 }
-#TeammateLumberAmount{
+#PlayerLumberAmount{
 	color: green;
 	font-size: 13px;
 	text-shadow: 2px 2px 2px black;
-	visibility: collapse;
 }
 
-.local_player_team #TeammateGoldAmount
-{
-	visibility: visible;
-}
-.local_player_team #TeammateLumberAmount
+.local_player_team #ResourcesAmount
 {
 	visibility: visible;
 }

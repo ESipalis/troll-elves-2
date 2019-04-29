@@ -11,7 +11,8 @@ end
 
 -- An NPC has spawned somewhere in game.  This includes heroes
 function trollnelves2:OnNPCSpawned(keys)
-  DebugPrint("OnNPCSpawned ******************")
+  DebugPrint("OnNPCSpawned:")
+    DebugPrintTable(keys)
   local npc = EntIndexToHScript(keys.entindex)
 
   if npc.GetPhysicalArmorValue then
@@ -212,7 +213,9 @@ function CheckTrollVictory()
 end
 
 
-function GiveResources( event )
+function GiveResources(eventSourceIndex, event)
+    DebugPrint("Give resources, event source index: ", eventSourceIndex)
+    DebugPrintTable(event)
     local targetID = event.target
     local casterID = event.casterID
     local gold = math.floor(math.abs(tonumber(event.gold)))

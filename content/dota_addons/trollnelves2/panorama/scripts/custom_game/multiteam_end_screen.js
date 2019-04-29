@@ -4,6 +4,7 @@
 {
 	if ( ScoreboardUpdater_InitializeScoreboard === null ) { $.Msg( "WARNING: This file requires shared_scoreboard_updater.js to be included." ); }
 
+	$.Msg("Initializing multiteam_end_screen.js");
 	var scoreboardConfig =
 	{
 		"teamXmlName" : "file://{resources}/layout/custom_game/multiteam_end_screen_team.xml",
@@ -12,22 +13,45 @@
 
 	var endScoreboardHandle = ScoreboardUpdater_InitializeScoreboard( scoreboardConfig, $( "#TeamsContainer" ) );
 	$.GetContextPanel().SetHasClass( "endgame", 1 );
-	
+
 	var teamInfoList = ScoreboardUpdater_GetSortedTeamInfoList( endScoreboardHandle );
 	var delay = 0.2;
 	var delay_per_panel = 1 / teamInfoList.length;
 	for ( var teamInfo of teamInfoList )
 	{
-		var teamPanel = ScoreboardUpdater_GetTeamPanel( endScoreboardHandle, teamInfo.team_id );
+	    var teamId = teamInfo.team_id;
+		var teamPanel = ScoreboardUpdater_GetTeamPanel( endScoreboardHandle, teamId );
 		teamPanel.SetHasClass( "team_endgame", false );
 		var callback = function( panel )
 		{
 			return function(){ panel.SetHasClass( "team_endgame", 1 ); }
 		}( teamPanel );
-		$.Schedule( delay, callback )
+		$.Schedule( delay, callback );
 		delay += delay_per_panel;
+
+
+		var teamPlayers = Game.GetPlayerIDsOnTeam( teamId );
+		var playersContainer = teamPanel.FindChildInLayoutFile( "PlayersContainer" );
+		if ( playersContainer )
+		{
+			for (var playerId of teamPlayers ) {
+				var playerPanel = playersContainer.FindChild("_dynamic_player_" + playerId);
+				if(playerPanel){
+					var playerResourceStats = CustomNetTables.GetTableValue("resources",playerId + "_resource_stats");
+                    if(playerResourceStats) {
+						$.Msg("Setting end game resources for playerId: ", playerId, "; playerResourceStats: ", playerResourceStats, "; ");
+						_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerGoldAmount", playerResourceStats.gold );
+						_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerLumberAmount", playerResourceStats.lumber );
+						_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerGPSAmount", Math.round(playerResourceStats.goldGained/playerResourceStats.timePassed) );
+						_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerLPSAmount", Math.round(playerResourceStats.lumberGained/playerResourceStats.timePassed) );
+						_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerGoldGivenAmount", playerResourceStats.goldGiven );
+						_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerLumberGivenAmount", playerResourceStats.lumberGiven );
+					}
+				}
+			}
+		}
 	}
-	
+
 	var winningTeamId = Game.GetGameWinner();
 	var winningTeamDetails = Game.GetTeamDetails( winningTeamId );
 	var endScreenVictory = $( "#EndScreenVictory" );

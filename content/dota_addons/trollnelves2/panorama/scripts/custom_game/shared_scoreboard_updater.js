@@ -7,7 +7,7 @@ function _ScoreboardUpdater_SetTextSafe( panel, childName, textValue )
 {
 	if ( panel === null )
 		return;
-	var childPanel = panel.FindChildInLayoutFile( childName )
+	var childPanel = panel.FindChildInLayoutFile( childName );
 	if ( childPanel === null )
 		return;
 	
@@ -31,27 +31,15 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
 
 	playerPanel.SetHasClass( "is_local_player", ( playerId == Game.GetLocalPlayerID() ) );
 	playerPanel.pID = playerId;
-	
-	var goldValue = ui.playerGold[playerId];
-	var lumberValue = ui.playerLumber[playerId];
-	var goldGiven = -1;
-	var lumberGiven = -1;
-	var goldGained = -1;
-	var lumberGained = -1;
-	var secsPassed = -1;
+
 	var isTeammate = false;
 
 	var playerInfo = Game.GetPlayerInfo( playerId );
 	if ( playerInfo )
 	{
 		isTeammate = ( playerInfo.player_team_id == localPlayerTeamId );
-		
-		goldGained = CustomNetTables.GetTableValue("resources",playerId + "_resource_stats") && CustomNetTables.GetTableValue("resources",playerId + "_resource_stats").goldGained || 0;
-		lumberGained = CustomNetTables.GetTableValue("resources",playerId + "_resource_stats") && CustomNetTables.GetTableValue("resources",playerId + "_resource_stats").lumberGained || 0;
-		goldGiven = CustomNetTables.GetTableValue("resources",playerId + "_resource_stats") && CustomNetTables.GetTableValue("resources",playerId + "_resource_stats").goldGiven || 0;
-		lumberGiven = CustomNetTables.GetTableValue("resources",playerId + "_resource_stats") && CustomNetTables.GetTableValue("resources",playerId + "_resource_stats").lumberGiven || 0;
-		secsPassed = CustomNetTables.GetTableValue("resources",playerId + "_resource_stats") && CustomNetTables.GetTableValue("resources",playerId + "_resource_stats").timePassed || Game.GetDOTATime(true,true) + 50;
-		
+
+
 		playerPanel.SetHasClass( "player_dead", ( playerInfo.player_respawn_seconds >= 0 ) );
 		playerPanel.SetHasClass( "local_player_teammate", isTeammate && ( playerId != Game.GetLocalPlayerID() ) );
 
@@ -60,6 +48,13 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
 		_ScoreboardUpdater_SetTextSafe( playerPanel, "Level", playerInfo.player_level );
 		_ScoreboardUpdater_SetTextSafe( playerPanel, "Kills", playerInfo.player_kills );
 		_ScoreboardUpdater_SetTextSafe( playerPanel, "Deaths", playerInfo.player_deaths );
+
+		var goldValue = ui.playerGold[playerId];
+		var lumberValue = ui.playerLumber[playerId];
+
+		$.Msg("Scoreboard update... playerId: ", playerId, "; goldValue: ", goldValue, "; lumberValue: ", lumberValue);
+		_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerGoldAmount", goldValue );
+		_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerLumberAmount", lumberValue );
 
 		var playerPortrait = playerPanel.FindChildInLayoutFile( "HeroIcon" );
 		if ( playerPortrait )
@@ -159,25 +154,6 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
 			}
 		}
 	}
-	if(playerPanel.FindChildInLayoutFile("TeammateGoldAmount")){
-		if ( isTeammate)
-		{	
-			playerPanel.FindChildInLayoutFile("TeammateGoldAmount").style.visibility = "visible";
-			_ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateGoldAmount", 12 );
-			_ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateLumberAmount", 12 );
-		}else{
-			playerPanel.FindChildInLayoutFile("TeammateGoldAmount").style.visibility = "collapse";
-			_ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateGoldAmount", 12 );
-			_ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateLumberAmount", 12 );
-		}
-	}
-	_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerGoldAmount", goldValue );
-	_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerLumberAmount", lumberValue );
-	_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerGPSAmount", Math.round(goldGained/secsPassed) );
-	_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerLPSAmount", Math.round(lumberGained/secsPassed) );
-	_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerGoldGivenAmount", goldGiven );
-	_ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerLumberGivenAmount", lumberGiven );
-
 }
 
 
@@ -242,8 +218,8 @@ function _ScoreboardUpdater_UpdateTeamPanel( scoreboardConfig, containerPanel, t
 		}
 	}
 	
-	teamPanel.SetHasClass( "no_players", (teamPlayers.length == 0) )
-	teamPanel.SetHasClass( "one_player", (teamPlayers.length == 1) )
+	teamPanel.SetHasClass( "no_players", (teamPlayers.length == 0) );
+	teamPanel.SetHasClass( "one_player", (teamPlayers.length == 1) );
 	
 	if ( teamsInfo.max_team_players < teamPlayers.length )
 	{

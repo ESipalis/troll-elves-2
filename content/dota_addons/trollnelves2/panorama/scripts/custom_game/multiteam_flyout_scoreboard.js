@@ -5,14 +5,7 @@ var g_ScoreboardHandle = null;
 function SetFlyoutScoreboardVisible( bVisible )
 {
 	$.GetContextPanel().SetHasClass( "flyout_scoreboard_visible", bVisible );
-	if ( bVisible )
-	{
-		ScoreboardUpdater_SetScoreboardActive( g_ScoreboardHandle, true );
-	}
-	else
-	{
-		ScoreboardUpdater_SetScoreboardActive( g_ScoreboardHandle, false );
-	}
+	ScoreboardUpdater_SetScoreboardActive( g_ScoreboardHandle, bVisible );
 }
 
 

@@ -1,6 +1,8 @@
 Shop units
-HP Regen +++++++++++
-Sending resource values using nettables (don't send gps, lps until end of game)
-Refactor OnEntityKilled/BuildingHelper
 Helper respawn
-Hide cheese panel
+
++++++++++++++++++++++++
+Refactor OnEntityKilled/BuildingHelper
+Sending resource values using nettables (don't send gps, lps until end of game), include current gold and lumber +++++
+Hide cheese panel +++++++
+HP Regen +++++++++++
