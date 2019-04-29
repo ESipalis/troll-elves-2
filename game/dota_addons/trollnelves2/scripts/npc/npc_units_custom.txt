@@ -3095,9 +3095,9 @@
 	    // Visual
 	    //-----------------------------
 		"BaseClass"                 "npc_dota_creature"
-		"Model"						"models/heroes/drow/drow.vmdl"
+		"Model"						"models/heroes/drow/drow_base.vmdl"
 	    "precache"{
-			"model"						"models/heroes/drow/drow.vmdl"
+			"model"						"models/heroes/drow/drow_base.vmdl"
 	    }
 		"DisableTurning"			"0"
 		"ModelScale"                "1"
