@@ -8,7 +8,7 @@ function ChooseTeam(args) {
 //--------------------------------------------------------------------------------------------------
 // Update the state for the transition timer periodically
 //--------------------------------------------------------------------------------------------------
-var timer = 10;
+var timer = CustomNetTables.GetTableValue( "building_settings", "team_choice_time").value;
 function UpdateTimer() {
 	$("#TeamChoiceWrapper").SetDialogVariableInt("countdown_timer_seconds", timer);
 	if (timer-- > 0) {

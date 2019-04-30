@@ -67,6 +67,7 @@ function trollnelves2:_Inittrollnelves2()
   CustomGameEventManager:RegisterListener("choose_help_side", ChooseHelpSide)
   CustomGameEventManager:RegisterListener("player_team_choose", OnPlayerTeamChoose)
 
+  CustomNetTables:SetTableValue("building_settings", "team_choice_time", { value = TEAM_CHOICE_TIME })
 
   -- Debugging setup
   local spew = 0
