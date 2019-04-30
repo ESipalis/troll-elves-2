@@ -24,8 +24,8 @@
     horizontal-align: center;
     vertical-align: top;  
     flow-children: down;
-    margin-top: 35%;
-    padding: 10px 100px 10px 100px;
+    margin-top: 5%;
+    padding: 10px 1%;
     background-color: rgba(0, 0, 0, 0.9);
     border-bottom: 1px solid #404b4a11;
 }
@@ -36,6 +36,8 @@
     horizontal-align: center;
     margin-left: 10px;
     margin-top: 3px;
+    text-overflow: clip;
+    text-align: center;
 }
 
 #ChoiceButtonWrapper{

@@ -34,7 +34,7 @@ function OnPlayerTeamChoose(eventSourceIndex, args)
 end
 
 function trollnelves2:GameSetup()
-	Timers:CreateTimer(10, function()
+	Timers:CreateTimer(TEAM_CHOICE_TIME, function()
 		SelectHeroes()
 		GameRules:FinishCustomGameSetup()
 	end)

@@ -124,7 +124,7 @@ function Activate()
   GameRules.trollID = nil
   GameRules.trollHero = nil
   
-  GameRules.test = true
+  GameRules.test = false
   if GameRules.test then
     GameRules.trollTimer = 1
   end

@@ -181,6 +181,7 @@ function ElfKilled(killed)
         PlayerResource:SetCameraTarget(killedID, nil)
     end)
 
+    DebugPrint("Seconds elapsed: " .. GameRules:GetGameTime() - GameRules.startTime)
     if GameRules:GetGameTime() - GameRules.startTime >= WOLF_START_SPAWN_TIME then
         local orgPlayer = killed:GetPlayerOwner()
         if orgPlayer then
@@ -190,7 +191,7 @@ function ElfKilled(killed)
                     local args = {}
                     args.team = RandomInt(0, 1) == 1 and DOTA_TEAM_GOODGUYS or DOTA_TEAM_BADGUYS
                     args.playerID = killedID
-                    ChooseHelpSide(args)
+                    ChooseHelpSide(killedID, args)
                 end
             end)
         else
@@ -200,7 +201,7 @@ function ElfKilled(killed)
         local args = {}
         args.team = DOTA_TEAM_GOODGUYS
         args.playerID = killedID
-		ChooseHelpSide(args)
+		ChooseHelpSide(killedID, args)
     end
 
     return bounty
@@ -290,7 +291,9 @@ function ChooseHelpSide(eventSourceIndex, event)
         timer = WOLF_RESPAWN_TIME
         pos = Vector(0, -640, 256)
     end
-    GameRules:SendCustomMessage(message, playerID, 0)
+    Timers:CreateTimer(function()
+        GameRules:SendCustomMessage(message, playerID, 0)
+    end)
 
     PlayerResource:SetCustomTeamAssignment(playerID, team)
     hero:SetTimeUntilRespawn(timer)

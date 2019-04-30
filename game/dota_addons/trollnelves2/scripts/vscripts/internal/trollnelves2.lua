@@ -65,7 +65,7 @@ function trollnelves2:_Inittrollnelves2()
   -- Panorama event listeners
   CustomGameEventManager:RegisterListener("give_resources", GiveResources)
   CustomGameEventManager:RegisterListener("choose_help_side", ChooseHelpSide)
-	CustomGameEventManager:RegisterListener("player_team_choose", OnPlayerTeamChoose)
+  CustomGameEventManager:RegisterListener("player_team_choose", OnPlayerTeamChoose)
 
 
   -- Debugging setup
