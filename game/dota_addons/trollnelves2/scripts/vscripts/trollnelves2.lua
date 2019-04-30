@@ -144,6 +144,7 @@ function InitializeBuilder(hero)
 	DebugPrint("Initialize builder")
 	hero.food = 0
 	hero.alive = true
+	hero:SetRespawnsDisabled(true)
 
 	hero:AddItemByName("item_root_ability")
 	hero:AddItemByName("item_silence_ability")
@@ -169,10 +170,10 @@ function InitializeBuilder(hero)
 end
 
 function InitializeTroll(hero)
-	DebugPrint("Initialize troll")
 	local playerID = hero:GetPlayerOwnerID()
+	DebugPrint("Initialize troll, playerID: ", playerID)
 	GameRules.trollHero = hero
-	GameRules.trollID = trollPlayerID
+	GameRules.trollID = playerID
 
 	local units = Entities:FindAllByClassname("npc_dota_creature")
 	for _,unit in pairs(units) do

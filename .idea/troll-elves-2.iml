@@ -3,6 +3,9 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/API-master" />
+      <excludeFolder url="file://$MODULE_DIR$/Dota2Declarations-master" />
+      <excludeFolder url="file://$MODULE_DIR$/Dota2Jet-master" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
     </content>
