@@ -114,17 +114,22 @@ end
 
 function InitializeBadHero(hero)
 	DebugPrint("Initialize bad hero")
+
 	hero.hpReg = 0
 	hero.hpRegDebuff = 0
 	Timers:CreateTimer(function()
 		if hero:IsNull() then
 			return
 		end
-		local finalHpReg = math.max(hero.hpReg - hero.hpRegDebuff, 0)
-		if finalHpReg > 0 and hero:IsAlive() then
-			hero:SetHealth(hero:GetHealth() + finalHpReg)
+		local rate = FrameTime()
+		local fullHpReg = math.max(hero.hpReg - hero.hpRegDebuff, 0)
+		if fullHpReg > 0 and hero:IsAlive() then
+			local optimalRate = 1/fullHpReg
+			rate = optimalRate > rate and optimalRate or rate
+			local ratedHpReg = fullHpReg * rate
+			hero:SetHealth(hero:GetHealth() + ratedHpReg)
 		end
-		return 0.1
+		return rate
 	end)
 
 	-- Give small flying vision around hero to see elf walls/rocks on highground
@@ -154,7 +159,7 @@ function InitializeBuilder(hero)
 
 	hero.goldPerSecond = 0
 	hero.lumberPerSecond = 0
-	Timers:CreateTimer(function() 
+	Timers:CreateTimer(function()
 		if hero:IsNull() then
 			return
 		end
@@ -164,8 +169,8 @@ function InitializeBuilder(hero)
 	end)
 
 	UpdateSpells(hero)
-	PlayerResource:SetGold(hero, 30)
-	PlayerResource:SetLumber(hero, 0)
+	PlayerResource:SetGold(hero, ELF_STARTING_GOLD)
+	PlayerResource:SetLumber(hero, ELF_STARTING_LUMBER)
 	PlayerResource:ModifyFood(hero, 0)
 end
 
@@ -252,7 +257,8 @@ function trollnelves2:PreStart()
 				local trollSpawnTimer = TROLL_SPAWN_TIME
 				local trollHero = GameRules.trollHero
 				trollHero:AddNewModifier(nil, nil, "modifier_stunned", {duration=trollSpawnTimer})
-				PlayerResource:SetGold(trollHero, 0)
+				PlayerResource:SetGold(trollHero, TROLL_STARTING_GOLD)
+				PlayerResource:SetLumber(trollHero, TROLL_STARTING_LUMBER)
 
 				Timers:CreateTimer(function()
 					if trollSpawnTimer > 0 then
@@ -485,7 +491,7 @@ function UpdateUpgrades(building)
 					end
 					index = index + 1
 				end
-				for key,ability in pairs(abilities) do                    
+				for key,ability in pairs(abilities) do
 					local abName
 					local abPoints
 					abName,abPoints = unpack(ability)

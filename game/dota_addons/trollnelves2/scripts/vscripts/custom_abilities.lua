@@ -394,25 +394,24 @@ function BuyItem(event)
 
 	if not IsInsideShopArea(hero) then
 		SendErrorMessage(playerID, "#error_shop_out_of_range")
-		return false
+		return
 	end
 	if gold_cost > PlayerResource:GetGold(playerID) then
         SendErrorMessage(playerID, "#error_not_enough_gold")
-        return false
+        return
     end
 	if lumber_cost > PlayerResource:GetLumber(playerID) then
         SendErrorMessage(playerID, "#error_not_enough_lumber")
-        return false
+        return
     end
-	if not hero:HasAnyAvailableInventorySpace() then
+	if hero:GetNumItemsInInventory() >= 6 then
 		SendErrorMessage(playerID, "#error_full_inventory")
-        return false
+        return
     end
     PlayerResource:ModifyLumber(hero,-lumber_cost)
     PlayerResource:ModifyGold(hero,-gold_cost)
 	local item = CreateItem(item_name, hero, hero)
 	hero:AddItem(item)
-	return true
 end
 
 function IsInsideShopArea(unit) 

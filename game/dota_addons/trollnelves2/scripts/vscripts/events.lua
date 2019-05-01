@@ -33,18 +33,18 @@ function trollnelves2:OnPlayerReconnect(event)
 	end
 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
 	if hero then
+        -- Send info to client
+        PlayerResource:ModifyGold(hero,0)
+        PlayerResource:ModifyLumber(hero,0)
+        PlayerResource:ModifyFood(hero,0)
+        ModifyLumberPrice(0)
 		if hero:HasModifier("modifier_disconnected") then
 			hero:RemoveModifierByName("modifier_disconnected")
 		end
-		if hero:GetUnitName() == ELF_HERO and hero.alive == false then
+		if hero:IsElf() and hero.alive == false then
 			if hero.dced == true then
 				hero.alive = true
 				hero.dced = false
-				-- Send info to client
-				PlayerResource:ModifyGold(hero,0)
-				PlayerResource:ModifyLumber(hero,0)
-				PlayerResource:ModifyFood(hero,0)
-				ModifyLumberPrice(0)
 			else
 				local player = PlayerResource:GetPlayer(playerID)
 				if player then

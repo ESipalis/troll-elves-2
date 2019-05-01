@@ -23,12 +23,11 @@ end
 
 function CDOTA_PlayerResource:SetGold(hero,gold)
     local playerID = hero:GetPlayerOwnerID()
-    gold = math.floor(string.match(gold,"[-]?%d+")) or 0
     gold = math.min(gold, 1000000)
     GameRules.gold[playerID] = gold
 	CustomGameEventManager:Send_ServerToTeam(hero:GetTeam(), "player_custom_gold_changed", {
 		playerID = playerID,
-		gold = gold
+		gold = PlayerResource:GetGold(playerID)
 	})
 end
 
@@ -39,8 +38,7 @@ function CDOTA_PlayerResource:ModifyGold(hero,gold,noGain)
     end
     noGain = noGain or false
     local pID = hero:GetPlayerOwnerID()
-    gold = math.floor(string.match(gold,"[-]?%d+")) or 0
-    PlayerResource:SetGold(hero, PlayerResource:GetGold(pID) + gold)
+    PlayerResource:SetGold(hero, (GameRules.gold[pID] or 0) + gold)
     if gold > 0 and not noGain then
         PlayerResource:ModifyGoldGained(pID,gold)
     end
@@ -53,12 +51,11 @@ end
 
 function CDOTA_PlayerResource:SetLumber(hero, lumber)
     local playerID = hero:GetPlayerOwnerID()
-    lumber = math.floor(string.match(lumber,"[-]?%d+")) or 0
     lumber = math.min(lumber, 1000000)
 	GameRules.lumber[playerID] = lumber
 	CustomGameEventManager:Send_ServerToTeam(hero:GetTeam(), "player_lumber_changed", {
 		playerID = playerID,
-		lumber = lumber
+		lumber = PlayerResource:GetLumber(playerID)
 	})
 end
 
@@ -69,15 +66,14 @@ function CDOTA_PlayerResource:ModifyLumber(hero,lumber,noGain)
     end
     noGain = noGain or false
     local pID = hero:GetPlayerOwnerID()
-    lumber = math.floor(string.match(lumber,"[-]?%d+")) or 0
-    PlayerResource:SetLumber(hero,PlayerResource:GetLumber(pID) + lumber)
+    PlayerResource:SetLumber(hero, (GameRules.lumber[pID] or 0) + lumber)
     if lumber > 0 and not noGain then
       PlayerResource:ModifyLumberGained(pID, lumber)
     end
 end
 
 function CDOTA_PlayerResource:GetLumber(pID)
-  return GameRules.lumber[pID] or 0
+  return math.floor(GameRules.lumber[pID]) or 0
 end
 
 
@@ -125,7 +121,7 @@ function CDOTA_PlayerResource:ModifyFood(hero,food)
     food = string.match(food,"[-]?%d+") or 0
     local playerID = hero:GetPlayerOwnerID()
     hero.food = hero.food + food
-		CustomGameEventManager:Send_ServerToTeam(hero:GetTeam(), "player_food_changed", {
+	CustomGameEventManager:Send_ServerToTeam(hero:GetTeam(), "player_food_changed", {
 		playerID = playerID,
 		food = math.floor(hero.food),
 		maxFood = GameRules.maxFood,

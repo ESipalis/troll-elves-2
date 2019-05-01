@@ -1,8 +1,13 @@
-Shop units
-Helper respawn
+Fixed sons of nature not gathering lumber if gathering rate is less than 1 lumber per second.
+Fixed "Give All" resources button not working.
+Fixed troll losing resources when buying items with full inventory.
+Fixed troll items giving 10 times more hp regen than it actually should.
+Might have fixed showing food as "undefined" after reconnecting (Not sure as I can't really test it easily).
+Removed 2 spots on winter map where elves could blink-in and troll couldn't reach.
 
-+++++++++++++++++++++++
-Refactor OnEntityKilled/BuildingHelper
-Sending resource values using nettables (don't send gps, lps until end of game), include current gold and lumber +++++
-Hide cheese panel +++++++
-HP Regen +++++++++++
+TODO:
+Sometimes cannot choose elf/wolf.
+Sometimes buildings not removed.
+Fix troll invis
+
+

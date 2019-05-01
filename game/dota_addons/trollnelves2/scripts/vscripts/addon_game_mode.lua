@@ -125,9 +125,6 @@ function Activate()
   GameRules.trollHero = nil
   
   GameRules.test = false
-  if GameRules.test then
-    GameRules.trollTimer = 1
-  end
 
   GameRules.trollnelves2 = trollnelves2()
   GameRules.trollnelves2:Inittrollnelves2()

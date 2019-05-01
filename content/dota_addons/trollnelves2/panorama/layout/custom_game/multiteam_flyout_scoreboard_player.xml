@@ -27,12 +27,14 @@
 			playerPanel.FindChildInLayoutFile("LumberEntry").text = "";
 			GameEvents.SendCustomGameEventToServer( "give_resources", { gold:gold, lumber:lumber , target:target , casterID:casterID});	
 		}
+
+		var ui = GameUI.CustomUIConfig();
 		function OnGiveAllResourcesButton(){
 			var playerPanel = $.GetContextPanel();
 			var casterID = Players.GetLocalPlayer();
 			var target = playerPanel.pID;
-			gold = CustomNetTables.GetTableValue("resources",casterID) && CustomNetTables.GetTableValue("resources",casterID).gold || 0;
-			lumber = CustomNetTables.GetTableValue("resources",casterID) && CustomNetTables.GetTableValue("resources",casterID).lumber || 0;
+			var gold = ui.playerGold[casterID];
+			var lumber = ui.playerLumber[casterID];
 			playerPanel.FindChildInLayoutFile("GoldEntry").text = "";
 			playerPanel.FindChildInLayoutFile("LumberEntry").text = "";
 			GameEvents.SendCustomGameEventToServer( "give_resources", { gold:gold, lumber:lumber , target:target , casterID:casterID});	
