@@ -253,6 +253,20 @@ function BuildingHelper:OnEntityKilled(keys)
     local unitTable = killed:GetKeyValue()
     local gridTable = unitTable and unitTable["Grid"]
 
+
+    if killed.minimapEntity then
+        UTIL_Remove(killed.minimapEntity)
+    end
+    local hero = killed:GetOwner()
+    if hero and hero.units and hero.alive then -- hero.units can contain other units besides buildings
+        for i=#hero.units,1,-1 do
+            if hero.units[i] == killed then
+                table.remove(hero.units,i)
+                break
+            end
+        end
+    end
+
     if IsBuilder(killed) then
         BuildingHelper:ClearQueue(killed)
     elseif IsCustomBuilding(killed) or gridTable then
@@ -273,7 +287,6 @@ function BuildingHelper:OnEntityKilled(keys)
             end
         end
 
-        local hero = killed:GetOwner()
         if hero and hero.alive then -- Skip looping unnecesarrily when elf dies
             local name = killed:GetUnitName()
             if hero.buildings[name] and hero.buildings[name] > 0 then
@@ -286,12 +299,6 @@ function BuildingHelper:OnEntityKilled(keys)
                     end
                 end
             end
-            for i=#hero.units,1,-1 do
-                if hero.units[i] == killed then
-                    table.remove(hero.units,i)
-                end
-            end
-
             for k,v in pairs(hero.units) do
                 UpdateUpgrades(v)
             end
@@ -1284,10 +1291,12 @@ function BuildingHelper:UpgradeBuilding(building, newName)
 
 
     Timers:CreateTimer(buildTime,function()
-        newBuilding:RemoveModifierByName("modifier_stunned")
-        if not string.match(newBuilding:GetUnitName(),"troll_hut") then
-            local item = CreateItem("item_building_destroy", nil, nil)
-            newBuilding:AddItem(item)
+        if not newBuilding:IsNull() then
+            newBuilding:RemoveModifierByName("modifier_stunned")
+            if not string.match(newBuilding:GetUnitName(),"troll_hut") then
+                local item = CreateItem("item_building_destroy", nil, nil)
+                newBuilding:AddItem(item)
+            end
         end
     end)
 

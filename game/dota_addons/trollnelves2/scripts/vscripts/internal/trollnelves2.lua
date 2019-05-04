@@ -49,11 +49,20 @@ function trollnelves2:_Inittrollnelves2()
 
 	-- Remove TP Scrolls
 	GameRules:GetGameModeEntity():SetItemAddedToInventoryFilter(function(ctx, event)
+      DebugPrint("event")
+      DebugPrintTable(event)
+      local unit = EntIndexToHScript(event.inventory_parent_entindex_const)
       local item = EntIndexToHScript(event.item_entindex_const)
-	    return not (item:GetAbilityName() == "item_tpscroll" and item:GetPurchaser() == nil)
-	end, self)
+
+      if unit:IsHero() and unit:GetNumItemsInInventory() >= 6 then
+          CreateItemOnPositionSync(unit:GetAbsOrigin(), item)
+          return false
+      end
+      return not (item:GetAbilityName() == "item_tpscroll" and item:GetPurchaser() == nil)
+    end, self)
 
   LinkLuaModifier("modifier_custom_armor", "libraries/modifiers/modifier_custom_armor.lua", LUA_MODIFIER_MOTION_NONE)
+  LinkLuaModifier("modifier_generic_invisibility", "modifiers/modifier_generic_invisibility.lua", LUA_MODIFIER_MOTION_NONE)
 
   -- Event Hooks
   ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(trollnelves2, 'OnGameRulesStateChange'), self)

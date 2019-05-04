@@ -167,7 +167,7 @@ function ElfKilled(killed)
 	PlayerResource:SetLumber(killed,0)
 
     for i=1,#killed.units do
-		if killed.units[i] then
+		if killed.units[i] and not killed.units[i]:IsNull() then
 			local unit = killed.units[i]
             if unit.minimapEntity then
                 UTIL_Remove(unit.minimapEntity)

@@ -5,9 +5,13 @@ Fixed troll items giving 10 times more hp regen than it actually should.
 Might have fixed showing food as "undefined" after reconnecting (Not sure as I can't really test it easily).
 Removed 2 spots on winter map where elves could blink-in and troll couldn't reach.
 
-TODO:
-Sometimes cannot choose elf/wolf.
-Sometimes buildings not removed.
-Fix troll invis
 
+#2
+Reworked logic when units die, the change might have fixed elf's buildings not getting destroyed and not giving a choice for angel/wolf when elf dies.
+Reworked troll invis.
+Fixed allowing elves to blink outside the map.
+Fixed troll swallowing items when he had full inventory and wolves tried to give him items.
+
+TODO:
+Fix poison tower stuff
 
