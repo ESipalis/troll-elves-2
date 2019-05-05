@@ -12,6 +12,13 @@ Reworked troll invis.
 Fixed allowing elves to blink outside the map.
 Fixed troll swallowing items when he had full inventory and wolves tried to give him items.
 
+#3
+Added ability placeholders for max level troll hut and trader, so their abilities get the same hotkeys no matter what level the buildings are. (Should upgrade building ability be moved to an item instead?)
+Abilities that don't have hotkeys will be given unused item hotkeys (Don't change your hotkeys after starting the game (you can shuffle items in your inventory)).
+When gold wisps start building the gold mine they get deselected.
+
 TODO:
 Fix poison tower stuff
+Fix UpdateUpgrades
+Fix setup.js events wasting resources.
 

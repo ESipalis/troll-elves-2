@@ -91,6 +91,8 @@ function Precache( context )
   PrecacheUnitByNameSync("worker_5", context)
   PrecacheUnitByNameSync("gold_mine_1", context)
   PrecacheUnitByNameSync("wisp_1", context)
+  PrecacheUnitByNameSync("gold_wisp", context)
+
 
   PrecacheResource("particle_folder", "particles/buildinghelper", context)
   PrecacheResource("particle","particles/econ/events/league_teleport_2014/teleport_end_league.vpcf",context)

@@ -1487,6 +1487,7 @@ function BuildingHelper:StartBuilding(builder)
     -- Put the builder invulnerable inside the building in construction
     if bBuilderInside then
         BuildingHelper:HideBuilder(builder, location, building)
+        PlayerResource:RemoveFromSelection(playerID, builder)
     end
 
     -- Health Update Timer and Behaviors

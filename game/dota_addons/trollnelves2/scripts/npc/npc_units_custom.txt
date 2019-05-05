@@ -810,11 +810,7 @@
 		//----------------------------------------------------------------
 		"AbilityLayout"				"4"
 		"Ability1"					"gain_gold"
-		"Ability2"					""
-		"Ability3"					""
-		"Ability4"					""
-		"Ability10"					""
-	    
+
 	    // General
 	    //-----------------------------
 	    
@@ -3545,12 +3541,12 @@
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"5"
-		"Ability1"					"buy_lumber_10"
-		"Ability2"					"buy_lumber_200"
-		"Ability3"					"sell_lumber_10"
-		"Ability4"					"sell_lumber_200"
-		"Ability10"					""
-	    
+		"Ability1"                  "max_building_level"
+		"Ability2"					"buy_lumber_10"
+		"Ability3"					"buy_lumber_200"
+		"Ability4"					"sell_lumber_10"
+		"Ability5"					"sell_lumber_200"
+
 	    // General
 	    //-----------------------------
 	    
@@ -5977,12 +5973,13 @@
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"4"
-		"Ability1"					"gain_gold_team"
-		"Ability2"					"fountain_ability"
-		"Ability3"					"buy_lumber_1"
-		"Ability4"					"buy_lumber_8"
-		"Ability5"					"sell_lumber_1"
-		"Ability6"					"sell_lumber_8"
+		"Ability1"					"max_building_level"
+		"Ability2"					"gain_gold_team"
+		"Ability3"					"fountain_ability"
+		"Ability4"					"buy_lumber_1"
+		"Ability5"					"buy_lumber_8"
+		"Ability6"					"sell_lumber_1"
+		"Ability7"					"sell_lumber_8"
 		
 		"TeamGainGold"				"true"
 	    

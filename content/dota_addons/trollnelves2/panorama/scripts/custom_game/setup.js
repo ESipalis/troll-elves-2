@@ -1,30 +1,32 @@
 var customHealthRegenLabel;
 var customHpReg = {};
+var itemHotkeys = [];
+var uiWaitingSchedules = [];
 (function () {
     //GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false );      //Time of day (clock).
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false );     //Heroes and team score at the top of the HUD.
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_FLYOUT_SCOREBOARD, false );      //Lefthand flyout scoreboard.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false);     //Heroes and team score at the top of the HUD.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_FLYOUT_SCOREBOARD, false);      //Lefthand flyout scoreboard.
     //GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ACTION_PANEL, false );     //Hero actions UI.
     //GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ACTION_MINIMAP, false );     //Minimap.
     //GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_PANEL, false );      //Entire Inventory UI
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_SHOP, false );     //Shop portion of the Inventory.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_SHOP, false);     //Shop portion of the Inventory.
     //GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_ITEMS, false );      //Player items.
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_QUICKBUY, false );     //Quickbuy.
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_COURIER, false );      //Courier controls.
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_PROTECT, false );      //Glyph.
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_GOLD, false );     //Gold display.
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_SHOP_SUGGESTEDITEMS, false );      //Suggested items shop panel.
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS, false );     //Hero selection Radiant and Dire player lists.
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_GAME_NAME, false );     //Hero selection game mode name display.
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_CLOCK, false );     //Hero selection clock.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_QUICKBUY, false);     //Quickbuy.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_COURIER, false);      //Courier controls.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_PROTECT, false);      //Glyph.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_GOLD, false);     //Gold display.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_SHOP_SUGGESTEDITEMS, false);      //Suggested items shop panel.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS, false);     //Hero selection Radiant and Dire player lists.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_GAME_NAME, false);     //Hero selection game mode name display.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_CLOCK, false);     //Hero selection clock.
     //GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_MENU_BUTTONS, false );     //Top-left menu buttons in the HUD.
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ENDGAME, false );      //Endgame scoreboard.    
-    GameUI.SetDefaultUIEnabled( DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_BAR_BACKGROUND, false );     //Top-left menu buttons in the HUD.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ENDGAME, false);      //Endgame scoreboard.
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_BAR_BACKGROUND, false);     //Top-left menu buttons in the HUD.
 
     // These lines set up the panorama colors used by each team (for game select/setup, etc)
     GameUI.CustomUIConfig().team_colors = {}
     GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_GOODGUYS] = "#00CC00;";
-    GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_BADGUYS ] = "#FF0000;";
+    GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_BADGUYS] = "#FF0000;";
 
     var tooltipManager = $.GetContextPanel().GetParent().GetParent().FindChildTraverse("Tooltips");
     tooltipManager.AddClass("CustomTooltipStyle");
@@ -40,8 +42,10 @@ var customHpReg = {};
     centerBlock.FindChildTraverse("StatBranch").style.visibility = "collapse";
     //you are not spawning the talent UI, fuck off (Disabling mouseover and onactivate)
     //We also don't want to crash, valve plz
-    centerBlock.FindChildTraverse("StatBranch").SetPanelEvent("onmouseover", function(){});
-    centerBlock.FindChildTraverse("StatBranch").SetPanelEvent("onactivate", function(){});
+    centerBlock.FindChildTraverse("StatBranch").SetPanelEvent("onmouseover", function () {
+    });
+    centerBlock.FindChildTraverse("StatBranch").SetPanelEvent("onactivate", function () {
+    });
 
     // Remove xp circle
     centerBlock.FindChildTraverse("xp").style.visibility = "collapse";
@@ -56,23 +60,52 @@ var customHpReg = {};
     var backpack = inventory.FindChildTraverse("inventory_backpack_list")
     backpack.style.visibility = "collapse";
     //Add resource panel instead of backpack 
-    var resourcePanel = $.CreatePanel( "Panel", inventory, "" );
-    resourcePanel.BLoadLayout( "file://{resources}/layout/custom_game/resource.xml", false, false );
+    var resourcePanel = $.CreatePanel("Panel", inventory, "");
+    resourcePanel.BLoadLayout("file://{resources}/layout/custom_game/resource.xml", false, false);
 
     var healthContainer = centerBlock.FindChildTraverse("HealthContainer");
     var healthRegenLabel = healthContainer.FindChildTraverse("HealthRegenLabel");
     InitializeCustomHpRegenLabel(healthContainer);
     healthContainer.FindChildTraverse("HealthRegenLabel").style.visibility = "collapse";
-    
-	GameEvents.Subscribe( "gameui_activated", UpdateUI);
-	GameEvents.Subscribe( "dota_portrait_ability_layout_changed", UpdateAbilityTooltips);
-	GameEvents.Subscribe( "dota_ability_changed", UpdateAbilityTooltips);
-	GameEvents.Subscribe( "dota_inventory_changed", UpdateItemTooltips);
-	GameEvents.Subscribe( "dota_inventory_item_changed", UpdateItemTooltips);
-	GameEvents.Subscribe( "m_event_keybind_changed", UpdateTooltips);
-	GameEvents.Subscribe( "dota_player_update_selected_unit", UpdateUI);
-	GameEvents.Subscribe( "dota_player_update_query_unit", UpdateUI);
-	GameEvents.Subscribe( "custom_hp_reg", function(args){customHpReg[args.unit] = args.value;UpdateHpRegLabel();});
+
+    SetupUnusedItemHotkeys();
+
+    GameEvents.Subscribe("gameui_activated", UpdateUI);
+    GameEvents.Subscribe("dota_portrait_ability_layout_changed", UpdateAbilityTooltips);
+    GameEvents.Subscribe("dota_ability_changed", UpdateAbilityTooltips);
+    GameEvents.Subscribe("dota_inventory_changed", UpdateItemTooltipsAndAbilityCustomHotkeys);
+    GameEvents.Subscribe("dota_inventory_item_changed", UpdateItemTooltipsAndAbilityCustomHotkeys);
+    GameEvents.Subscribe("m_event_keybind_changed", UpdateTooltips);
+    GameEvents.Subscribe("dota_player_update_selected_unit", UpdateUI);
+    GameEvents.Subscribe("dota_player_update_query_unit", UpdateUI);
+
+    // GameEvents.Subscribe("dota_portrait_ability_layout_changed", function(args) {
+    //     $.Msg("dota_portrait_ability_layout_changed: ", args);
+    // });
+    // GameEvents.Subscribe("dota_ability_changed", function(args) {
+    //     $.Msg("dota_ability_changed: ", args);
+    // });
+    // GameEvents.Subscribe("dota_inventory_changed", function(args) {
+    //     $.Msg("dota_inventory_changed: ", args);
+    // });
+    // GameEvents.Subscribe("dota_inventory_item_changed", function(args) {
+    //     $.Msg("dota_inventory_item_changed: ", args);
+    // });
+    // GameEvents.Subscribe("m_event_keybind_changed", function(args) {
+    //     $.Msg("m_event_keybind_changed: ", args);
+    // });
+    // GameEvents.Subscribe("dota_player_update_selected_unit", function(args) {
+    //     var selectedUnit = Players.GetLocalPlayerPortraitUnit();
+    //     $.Msg("dota_player_update_selected_unit: ", selectedUnit);
+    // });
+    // GameEvents.Subscribe("dota_player_update_query_unit", function(args) {
+    //     $.Msg("dota_player_update_query_unit: ", args)
+    // });
+    // GameEvents.Subscribe("custom_hp_reg", function (args) {
+    //     customHpReg[args.unit] = args.value;
+    //     UpdateHpRegLabel();
+    // });
+
 })();
 
 function InitializeCustomHpRegenLabel(healthContainer) {
@@ -91,9 +124,9 @@ function InitializeCustomHpRegenLabel(healthContainer) {
     customHealthRegenLabel.style.paddingRight = "2px";
 }
 
-function UpdateHpRegLabel(){
+function UpdateHpRegLabel() {
     var localHero = Players.GetLocalPlayerPortraitUnit();
-	customHealthRegenLabel.text = "+" + parseFloat(Entities.GetHealthThinkRegen(localHero) + (customHpReg[localHero] || 0)).toFixed(2);
+    customHealthRegenLabel.text = "+" + parseFloat(Entities.GetHealthThinkRegen(localHero) + (customHpReg[localHero] || 0)).toFixed(2);
 }
 
 function UpdateTooltips() {
@@ -106,50 +139,209 @@ function UpdateUI() {
     UpdateHpRegLabel();
 }
 
+var unusedHotkeyAbilitySlots;
+
+function SetupUnusedItemHotkeys() {
+    itemHotkeys.push(GetKeyBind("InventoryTp"));
+    for (var i = 0; i < 6; i++) {
+        itemHotkeys.push(Game.GetKeybindForInventorySlot(i));
+    }
+    $.Msg("Setup unused item hotkeys");
+    for (var i = 0; i < itemHotkeys.length; i++) {
+        var hotkey = itemHotkeys[i];
+        (function (hotkey, slot) {
+            Game.AddCommand("UseHotkey_" + hotkey, function (data) {
+                UseItemCommandCalled(data, hotkey, slot);
+            }, "", 0);
+        })(hotkey, i-1);
+        Game.CreateCustomKeyBind(hotkey, "UseHotkey_" + hotkey);
+    }
+}
+
+function UseItemCommandCalled(data, hotkey, slot) {
+    $.Msg("Use item command called: ", data, "; ", hotkey, "; ");
+    var selectedUnitID = Players.GetLocalPlayerPortraitUnit();
+    var itemID = Entities.GetItemInSlot(selectedUnitID, slot);
+    var abilitySlot = unusedHotkeyAbilitySlots[hotkey];
+    $.Msg("ItemID: ", itemID);
+    if (itemID !== -1) {
+        Abilities.ExecuteAbility(itemID, selectedUnitID, false);
+    } else if (abilitySlot != null) {
+        var abilityID = Entities.GetAbility(selectedUnitID, abilitySlot);
+        Abilities.ExecuteAbility(abilityID, selectedUnitID, false);
+    }
+}
 
 function UpdateAbilityTooltips() {
+    $.Msg("UpdateAbilityTooltips");
+    CleanUpUiSchedules();
     const abilityListPanel = $.GetContextPanel().GetParent().GetParent().FindChildTraverse("HUDElements").FindChildTraverse("abilities");
-    for(var i = 0; i < 16; i++) {
-        var abilityPanel = abilityListPanel.FindChildTraverse("Ability" + i);
-        if(abilityPanel != null) {
+    var selectedUnit = Players.GetLocalPlayerPortraitUnit();
+    $.Msg("Selected unit: ", selectedUnit);
+    var x = {nextHotkeyIndex: 0};
+    unusedHotkeyAbilitySlots = [];
+    for (var i = 0; i < 16; i++) {
+        var abilityID = Entities.GetAbility(selectedUnit, i);
+        $.Msg("Ability: ", abilityID, "; name: ", Abilities.GetAbilityName(abilityID));
+        if (abilityID === -1) {
+            break;
+        }
+        if (!Abilities.IsDisplayedAbility(abilityID)) {
+            continue;
+        }
+
+        waitForValveUI(i, 0);
+
+        function waitForValveUI(abilitySlot, tries) {
+            var abilityPanel = abilityListPanel.FindChildTraverse("Ability" + abilitySlot);
+            $.Msg("Ability panel, ", abilitySlot, ": ", abilityPanel);
+            if (abilityPanel == null) {
+                $.Msg("AbilityPanel", abilitySlot, " is null, rescheduling...");
+                if(tries < 3) {
+                    uiWaitingSchedules.push($.Schedule(0.1, function() {
+                        waitForValveUI(abilitySlot, tries + 1);
+                    }));
+                }
+                return;
+            }
+
             var buttonWell = abilityPanel.FindChildTraverse("ButtonWell");
-            abilityPanel.SetPanelEvent("onmouseover", (function(index, tooltipParent) {
-                return function(){
+            abilityPanel.SetPanelEvent("onmouseover", (function (index, tooltipParent) {
+                return function () {
                     var entityIndex = Players.GetLocalPlayerPortraitUnit();
                     var abilityName = Abilities.GetAbilityName(Entities.GetAbility(entityIndex, index));
                     $.DispatchEvent("UIShowCustomLayoutParametersTooltip", tooltipParent, "AbilityTooltip",
-                        "file://{resources}/layout/custom_game/ability_tooltip.xml", "entityIndex=" + entityIndex + "&abilityName="+abilityName);
+                        "file://{resources}/layout/custom_game/ability_tooltip.xml", "entityIndex=" + entityIndex + "&abilityName=" + abilityName);
                 }
-            })(i, buttonWell));
-            abilityPanel.SetPanelEvent("onmouseout", 
-                function(){
-            		$.DispatchEvent("UIHideCustomLayoutTooltip","AbilityTooltip");
+            })(abilitySlot, buttonWell));
+            abilityPanel.SetPanelEvent("onmouseout",
+                function () {
+                    $.DispatchEvent("UIHideCustomLayoutTooltip", "AbilityTooltip");
                 });
+            if (abilitySlot > 5) {
+                UpdateAbilityCustomHotkey(selectedUnit, abilitySlot, abilityPanel, x);
+            }
         }
     }
 }
 
 function UpdateItemTooltips() {
+    $.Msg("UpdateItemTooltips");
     const inventoryListContainer = $.GetContextPanel().GetParent().GetParent().FindChildTraverse("HUDElements").FindChildTraverse("inventory_list_container");
-    for(var i = 0; i < 6; i++) {
+    for (var i = 0; i < 6; i++) {
         var inventoryPanel = inventoryListContainer.FindChildTraverse("inventory_slot_" + i);
-        if(inventoryPanel != null) {
+        if (inventoryPanel != null) {
             var buttonWell = inventoryPanel.FindChildTraverse("ButtonWell");
-            inventoryPanel.SetPanelEvent("onmouseover", (function(index, tooltipParent, inventoryPanel) {
-                return function(){
-                    if(inventoryPanel.BHasClass("no_ability")) {
+            inventoryPanel.SetPanelEvent("onmouseover", (function (index, tooltipParent, inventoryPanel) {
+                return function () {
+                    if (inventoryPanel.BHasClass("no_ability")) {
                         return;
                     }
                     var entityIndex = Players.GetLocalPlayerPortraitUnit();
                     var abilityName = Abilities.GetAbilityName(Entities.GetItemInSlot(entityIndex, index));
                     $.DispatchEvent("UIShowCustomLayoutParametersTooltip", tooltipParent, "AbilityTooltip",
-                        "file://{resources}/layout/custom_game/ability_tooltip.xml", "entityIndex=" + entityIndex + "&abilityName="+abilityName);
+                        "file://{resources}/layout/custom_game/ability_tooltip.xml", "entityIndex=" + entityIndex + "&abilityName=" + abilityName);
                 }
             })(i, buttonWell, inventoryPanel));
-            inventoryPanel.SetPanelEvent("onmouseout", 
-                function(){
-            		$.DispatchEvent("UIHideCustomLayoutTooltip","AbilityTooltip");
+            inventoryPanel.SetPanelEvent("onmouseout",
+                function () {
+                    $.DispatchEvent("UIHideCustomLayoutTooltip", "AbilityTooltip");
                 });
         }
     }
+}
+
+function UpdateItemTooltipsAndAbilityCustomHotkeys() {
+    UpdateItemTooltips();
+    UpdateAbilityCustomHotkeys();
+}
+
+function UpdateAbilityCustomHotkeys() {
+    CleanUpUiSchedules();
+    $.Msg("UpdateAbilityCustomHotkeys");
+    const abilityListPanel = $.GetContextPanel().GetParent().GetParent().FindChildTraverse("HUDElements").FindChildTraverse("abilities");
+    var selectedUnit = Players.GetLocalPlayerPortraitUnit();
+    $.Msg("Selected unit: ", selectedUnit);
+    var x = {nextHotkeyIndex: 0};
+    unusedHotkeyAbilitySlots = [];
+    var abilityCount = Entities.GetAbilityCount(selectedUnit);
+    for (var i = 6; i < abilityCount; i++) {
+        var abilityID = Entities.GetAbility(selectedUnit, i);
+        $.Msg("Ability: ", abilityID, "; name: ", Abilities.GetAbilityName(abilityID));
+        if(abilityID === -1) {
+            break;
+        }
+        if(!Abilities.IsDisplayedAbility(abilityID)) {
+            continue;
+        }
+
+        waitForValveUI(i, 0);
+
+        function waitForValveUI(abilitySlot, tries) {
+            var abilityPanel = abilityListPanel.FindChildTraverse("Ability" + abilitySlot);
+            $.Msg("Ability panel, ", abilitySlot, ": ", abilityPanel);
+            if (abilityPanel == null) {
+                $.Msg("AbilityPanel", abilitySlot, " is null, rescheduling...");
+                if(tries < 3) {
+                    uiWaitingSchedules.push($.Schedule(0.1, function() {
+                        waitForValveUI(abilitySlot, tries + 1);
+                    }));
+                }
+                return;
+            }
+            UpdateAbilityCustomHotkey(selectedUnit, abilitySlot, abilityPanel, x);
+        }
+    }
+}
+
+function UpdateAbilityCustomHotkey(selectedUnit, abilitySlot, abilityPanel, x) {
+    $.Msg("Checking hotkeys for ability slot: ", abilitySlot);
+    var hotkey = null;
+    while (hotkey == null && x.nextHotkeyIndex < itemHotkeys.length) {
+        if (IsHotkeyAvailable(selectedUnit, x.nextHotkeyIndex)) {
+            hotkey = itemHotkeys[x.nextHotkeyIndex];
+        }
+        $.Msg("Checking hotkey: ", x.nextHotkeyIndex, "; ", hotkey);
+        x.nextHotkeyIndex = x.nextHotkeyIndex + 1;
+    }
+    var foundFreeItemHotkey = hotkey != null;
+    var hotkeyPanel = abilityPanel.FindChildTraverse("HotkeyContainer").FindChildTraverse("Hotkey");
+    hotkeyPanel.SetHasClass("no_hotkey", !foundFreeItemHotkey);
+    hotkeyPanel.style.visibility = foundFreeItemHotkey ? "visible" : "collapse";
+    hotkeyPanel.FindChild("HotkeyText").text = foundFreeItemHotkey ? hotkey : "hotkey";
+    if (foundFreeItemHotkey) {
+        unusedHotkeyAbilitySlots[hotkey] = abilitySlot;
+        $.Msg("Adding hotkey: ", hotkey, "; for ability slot: ", abilitySlot);
+    }
+}
+
+function IsHotkeyAvailable(selectedUnit, index) {
+    if(index === 0) {
+        return true;
+    }
+    return Entities.GetItemInSlot(selectedUnit, index-1) === -1;
+}
+
+function CleanUpUiSchedules() {
+    for (var a = 0; a < uiWaitingSchedules.length; a++) {
+        try {
+            $.Msg("Canceling schedule: ", uiWaitingSchedules[a]);
+            $.CancelScheduled(uiWaitingSchedules[a]);
+        } catch (e) {
+            $.Msg("................................................................An error occured: ", e);
+        }
+    }
+    uiWaitingSchedules.length = 0;
+}
+
+// Utility method to get hotkey
+// name is string, like: "IventoryTp"
+function GetKeyBind(name) {
+    const context_panel = $.GetContextPanel();
+    context_panel.BCreateChildren('<DOTAHotkey keybind="' + name + '" />');
+
+    const key_element = context_panel.GetChild(context_panel.GetChildCount() - 1);
+    key_element.DeleteAsync(0);
+
+    return (key_element.GetChild(0)).text;
 }

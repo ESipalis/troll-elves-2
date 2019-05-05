@@ -59,6 +59,13 @@
 			}
 		}		
 	}
+
+	"max_building_level"{
+		"BaseClass"						"ability_datadriven"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"MaxLevel"						"1"
+	}
+
 	"dummy_tree"
 	{
 	    "BaseClass"         "ability_datadriven"
@@ -4305,7 +4312,5 @@
 			}
 		}
 	}
-	
-	
-	
+
 }

@@ -137,6 +137,9 @@
 		"DOTA_Tooltip_ability_ability_building"                                           "Ability Building"
 		"DOTA_Tooltip_ability_ability_building_Description"                               ""
 
+		"DOTA_Tooltip_ability_max_building_level"                                         "Max building level"
+		"DOTA_Tooltip_ability_max_building_level_Description"                             "This ability does nothing, it's just here, so the hotkeys don't get messed up."
+
 		"DOTA_Tooltip_ability_ability_tower"                                              "Ability Tower"
 		"DOTA_Tooltip_ability_ability_tower_Description"                                  ""
 
@@ -1135,14 +1138,9 @@
 		"team_choice_yes"                                                                   "Yes"
 		"team_choice_no"                                                                    "No"
 		
-		"loading_text"																		"&lt;=Click this for tips! 
-																							<br>Important: 
-																							<br>&nbsp;&nbsp;&nbsp;&nbsp;To give resources use scoreboard! 
-																							<br>&nbsp;&nbsp;&nbsp;&nbsp;You can become wolf after your death only if you survived more than 7 minutes!
-																							<br>&nbsp;&nbsp;&nbsp;&nbsp;Winter map done by: hajebazil.
-																							<br>&nbsp;&nbsp;&nbsp;&nbsp;To see the grid when building click ALT.
-																							<br>&nbsp;&nbsp;&nbsp;&nbsp;Support is welcome at http://patreon.com/ssam ,Thank You!
-		"
+		"loading_text"																		"&lt;=Click this for tips!<br>
+		                                                                                    Don't change your hotkeys after starting the game.
+		                                                                                    "
 		
 		"DOTA_Chat_PlayerKilled"                    ""
         "DOTA_Chat_PlayerKilledNearby"              ""
