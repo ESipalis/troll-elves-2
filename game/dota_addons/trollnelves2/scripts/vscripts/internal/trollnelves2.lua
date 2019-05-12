@@ -49,8 +49,6 @@ function trollnelves2:_Inittrollnelves2()
 
 	-- Remove TP Scrolls
 	GameRules:GetGameModeEntity():SetItemAddedToInventoryFilter(function(ctx, event)
-      DebugPrint("event")
-      DebugPrintTable(event)
       local unit = EntIndexToHScript(event.inventory_parent_entindex_const)
       local item = EntIndexToHScript(event.item_entindex_const)
 

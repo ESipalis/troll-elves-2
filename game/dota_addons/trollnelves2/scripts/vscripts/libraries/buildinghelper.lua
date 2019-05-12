@@ -75,6 +75,8 @@ function BuildingHelper:Init()
 
     self:HookBoilerplate()
 
+
+    DebugPrintTable(GameRules.buildingRequirements)
 end
 function BuildingHelper:HookBoilerplate()
     if not __ACTIVATE_HOOK then
@@ -146,7 +148,54 @@ function BuildingHelper:LoadSettings()
     end
 end
 
+function ParseRequirements(requirementClasses, allRequirements, requirements)
+    for requirementName, requirementCount in pairs(requirements) do
+        allRequirements[requirementName] = requirementCount
+        local requirementClass = GetClass(requirementName)
+        local requirementLevel = GetUnitKV(requirementName).Level
+        local currentRequirementClassLevel = requirementClasses[requirementClass] and requirementClasses[requirementClass].level or 0
+        if requirementLevel > currentRequirementClassLevel then
+            requirementClasses[requirementClass] = {level = requirementLevel, unitName = requirementName}
+        end
+    end
+end
+
+function AddBuildingRequirements(name, info, previousRequirements)
+    if not GameRules.buildingRequirements[name] then
+        GameRules.buildingRequirements[name] = {}
+    end
+
+
+    local requirementClasses = {}
+    local allRequirements = {}
+
+    ParseRequirements(requirementClasses, allRequirements, previousRequirements)
+
+    local requirements = info["Requirements"]
+    if requirements then
+        ParseRequirements(requirementClasses, allRequirements, requirements)
+    end
+    for requirementClass, requirementClassValue in pairs(requirementClasses) do
+        table.insert(GameRules.buildingRequirements[name], requirementClassValue.unitName)
+    end
+    local upgrades = info["Upgrades"]
+    if upgrades then
+        local count = upgrades["Count"]
+        for i = 1,count do
+            local upgradedUnitName = info['Upgrades'][tostring(i)]['unit_name']
+            AddBuildingRequirements(upgradedUnitName, GetUnitKV(upgradedUnitName), allRequirements)
+        end
+    end
+
+
+    --for requirementName, requirementCount in pairs(requirements) do
+    --    local currentRequirementCount = GameRules.buildingRequirements[name][requirementName] or 0
+    --    GameRules.buildingRequirements[name][requirementName] = math.max(currentRequirementCount, requirementCount)
+    --end
+end
+
 function BuildingHelper:ParseKV()
+    GameRules.buildingRequirements = {};
     for name,info in pairs(KeyValues.All) do
         if type(info) == "table" then
             local isBuilding = info["ConstructionSize"]
@@ -165,6 +214,9 @@ function BuildingHelper:ParseKV()
 
                 if info['Requirements'] then
                     values.requirements = info["Requirements"]
+                end
+                if info["StartingBuilding"] == 1 then
+                    AddBuildingRequirements(name, info, {})
                 end
 
                 if info['Upgrades'] then
@@ -299,7 +351,7 @@ function BuildingHelper:OnEntityKilled(keys)
                     end
                 end
             end
-            for k,v in pairs(hero.units) do
+            for _, v in ipairs(hero.units) do
                 UpdateUpgrades(v)
             end
             UpdateSpells(hero)
@@ -740,19 +792,17 @@ function BuildingHelper:OrderFilter(order)
         end
 
 
-
-
-
         local ability = EntIndexToHScript(abilityIndex)
         if ability then
             local abilityName = ability:GetAbilityName()
             local selectedEntities = PlayerResource:GetSelectedEntities(issuerID)
             local count = 0
             if string.match(abilityName,"upgrade_to") then
+                local unitName = unit:GetUnitName()
                 for k,v in pairs(selectedEntities) do
                     local ounit = EntIndexToHScript(v)
-                    if ounit and ounit:GetUnitName() == unit:GetUnitName() then
-                        for a = 0,15 do
+                    if ounit and ounit:GetUnitName() == unitName then
+                        for a = 0, ounit:GetAbilityCount()-1 do
                             local upgradeAbility = ounit:GetAbilityByIndex(a)
                             if upgradeAbility then
                                 if upgradeAbility:GetAbilityName() == abilityName then

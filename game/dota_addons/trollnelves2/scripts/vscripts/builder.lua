@@ -81,6 +81,8 @@ function Build( event )
         unit:AddNewModifier(nil, nil, "modifier_stunned", {})
         FindClearSpaceForUnit(caster, caster:GetAbsOrigin(), true)
         caster:AddNewModifier(caster, nil, "modifier_phased", {duration=0.03})
+
+        AddUpgradeAbilities(unit)
         table.insert(hero.units,unit)
         UpdateSpells(hero)
 
@@ -109,32 +111,29 @@ function Build( event )
         if item then
             UTIL_Remove(item)
         end
-        
-        if hero.buildings[unit:GetUnitName()] then
-            hero.buildings[unit:GetUnitName()] = hero.buildings[unit:GetUnitName()] + 1
-        else
-            hero.buildings[unit:GetUnitName()] = 1
-        end
-        UpdateSpells(hero)
 
-        for key,value in pairs(hero.units) do
+        local unitName = unit:GetUnitName()
+        local currentBuildingCount = hero.buildings[unitName] or 0
+        hero.buildings[unitName] = currentBuildingCount + 1
+
+        UpdateSpells(hero)
+        for _, value in ipairs(hero.units) do
             UpdateUpgrades(value)
         end
-        -- Play construction complete sound
 
         -- Give the unit their original attack capability
         unit:RemoveModifierByName("modifier_stunned")
-        local item = CreateItem("item_building_destroy", nil, nil)
-        unit:AddItem(item)
+        local itemBuildingDestroy = CreateItem("item_building_destroy", nil, nil)
+        unit:AddItem(itemBuildingDestroy)
         unit.attackers = {}
 
         for i=0, unit:GetAbilityCount()-1 do
-            local ability = unit:GetAbilityByIndex(i)
-            if ability then
-                local constructionCompleModifiers = GetAbilityKV(ability:GetAbilityName(), "ConstructionCompleteModifiers")
-                if constructionCompleModifiers then
-                    for k,modifier in pairs(constructionCompleModifiers) do
-                        ability:ApplyDataDrivenModifier(unit, unit, modifier, {})
+            local buildingAbility = unit:GetAbilityByIndex(i)
+            if buildingAbility then
+                local constructionCompleteModifiers = GetAbilityKV(buildingAbility:GetAbilityName(), "ConstructionCompleteModifiers")
+                if constructionCompleteModifiers then
+                    for k,modifier in pairs(constructionCompleteModifiers) do
+                        buildingAbility:ApplyDataDrivenModifier(unit, unit, modifier, {})
                     end
                 end
             end
@@ -236,28 +235,29 @@ function UpgradeBuilding( event )
     
     PlayerResource:ModifyGold(hero,-gold_cost)
     PlayerResource:ModifyLumber(hero,-lumber_cost)
+    AddUpgradeAbilities(newBuilding)
     for i=0, newBuilding:GetAbilityCount()-1 do
-        local ability = newBuilding:GetAbilityByIndex(i)
-        if ability then
-            local constructionCompleModifiers = GetAbilityKV(ability:GetAbilityName(), "ConstructionCompleteModifiers")
-            if constructionCompleModifiers then
-                for k,modifier in pairs(constructionCompleModifiers) do
-                    ability:ApplyDataDrivenModifier(newBuilding, newBuilding, modifier, {})
+        local newBuildingAbility = newBuilding:GetAbilityByIndex(i)
+        if newBuildingAbility then
+            local constructionCompleteModifiers = GetAbilityKV(newBuildingAbility:GetAbilityName(), "ConstructionCompleteModifiers")
+            if constructionCompleteModifiers then
+                for k,modifier in pairs(constructionCompleteModifiers) do
+                    newBuildingAbility:ApplyDataDrivenModifier(newBuilding, newBuilding, modifier, {})
                 end
             end
-            local constructionStartModifiers = GetAbilityKV(ability:GetAbilityName(), "ConstructionStartModifiers")
+            local constructionStartModifiers = GetAbilityKV(newBuildingAbility:GetAbilityName(), "ConstructionStartModifiers")
             if constructionStartModifiers then
                 for k,modifier in pairs(constructionStartModifiers) do
-                    ability:ApplyDataDrivenModifier(newBuilding, newBuilding, modifier, {})
+                    newBuildingAbility:ApplyDataDrivenModifier(newBuilding, newBuilding, modifier, {})
                 end
             end
         end
     end
     Timers:CreateTimer(buildTime,function()
-        for key,value in pairs(hero.units) do
+        UpdateSpells(hero)
+        for _, value in ipairs(hero.units) do
             UpdateUpgrades(value)
         end
-        UpdateSpells(hero)
     end)
     UTIL_Remove(building)
 end

@@ -70,14 +70,20 @@ var uiWaitingSchedules = [];
 
     SetupUnusedItemHotkeys();
 
+    // GameEvents.Subscribe("dota_portrait_ability_layout_changed", UpdateAbilityTooltips);
+    // GameEvents.Subscribe("dota_ability_changed", UpdateAbilityTooltips);
+
     GameEvents.Subscribe("gameui_activated", UpdateUI);
-    GameEvents.Subscribe("dota_portrait_ability_layout_changed", UpdateAbilityTooltips);
-    GameEvents.Subscribe("dota_ability_changed", UpdateAbilityTooltips);
     GameEvents.Subscribe("dota_inventory_changed", UpdateItemTooltipsAndAbilityCustomHotkeys);
     GameEvents.Subscribe("dota_inventory_item_changed", UpdateItemTooltipsAndAbilityCustomHotkeys);
     GameEvents.Subscribe("m_event_keybind_changed", UpdateTooltips);
     GameEvents.Subscribe("dota_player_update_selected_unit", UpdateUI);
     GameEvents.Subscribe("dota_player_update_query_unit", UpdateUI);
+    GameEvents.Subscribe("game_rules_state_change", HidePickScreen);
+    GameEvents.Subscribe("custom_hp_reg", function (args) {
+        customHpReg[args.unit] = args.value;
+        UpdateHpRegLabel();
+    });
 
     // GameEvents.Subscribe("dota_portrait_ability_layout_changed", function(args) {
     //     $.Msg("dota_portrait_ability_layout_changed: ", args);
@@ -100,10 +106,6 @@ var uiWaitingSchedules = [];
     // });
     // GameEvents.Subscribe("dota_player_update_query_unit", function(args) {
     //     $.Msg("dota_player_update_query_unit: ", args)
-    // });
-    // GameEvents.Subscribe("custom_hp_reg", function (args) {
-    //     customHpReg[args.unit] = args.value;
-    //     UpdateHpRegLabel();
     // });
 
 })();
@@ -153,7 +155,7 @@ function SetupUnusedItemHotkeys() {
             Game.AddCommand("UseHotkey_" + hotkey, function (data) {
                 UseItemCommandCalled(data, hotkey, slot);
             }, "", 0);
-        })(hotkey, i-1);
+        })(hotkey, i - 1);
         Game.CreateCustomKeyBind(hotkey, "UseHotkey_" + hotkey);
     }
 }
@@ -197,8 +199,8 @@ function UpdateAbilityTooltips() {
             $.Msg("Ability panel, ", abilitySlot, ": ", abilityPanel);
             if (abilityPanel == null) {
                 $.Msg("AbilityPanel", abilitySlot, " is null, rescheduling...");
-                if(tries < 3) {
-                    uiWaitingSchedules.push($.Schedule(0.1, function() {
+                if (tries < 3) {
+                    uiWaitingSchedules.push($.Schedule(0.1, function () {
                         waitForValveUI(abilitySlot, tries + 1);
                     }));
                 }
@@ -268,10 +270,10 @@ function UpdateAbilityCustomHotkeys() {
     for (var i = 6; i < abilityCount; i++) {
         var abilityID = Entities.GetAbility(selectedUnit, i);
         $.Msg("Ability: ", abilityID, "; name: ", Abilities.GetAbilityName(abilityID));
-        if(abilityID === -1) {
+        if (abilityID === -1) {
             break;
         }
-        if(!Abilities.IsDisplayedAbility(abilityID)) {
+        if (!Abilities.IsDisplayedAbility(abilityID)) {
             continue;
         }
 
@@ -282,8 +284,8 @@ function UpdateAbilityCustomHotkeys() {
             $.Msg("Ability panel, ", abilitySlot, ": ", abilityPanel);
             if (abilityPanel == null) {
                 $.Msg("AbilityPanel", abilitySlot, " is null, rescheduling...");
-                if(tries < 3) {
-                    uiWaitingSchedules.push($.Schedule(0.1, function() {
+                if (tries < 3) {
+                    uiWaitingSchedules.push($.Schedule(0.1, function () {
                         waitForValveUI(abilitySlot, tries + 1);
                     }));
                 }
@@ -316,10 +318,10 @@ function UpdateAbilityCustomHotkey(selectedUnit, abilitySlot, abilityPanel, x) {
 }
 
 function IsHotkeyAvailable(selectedUnit, index) {
-    if(index === 0) {
+    if (index === 0) {
         return true;
     }
-    return Entities.GetItemInSlot(selectedUnit, index-1) === -1;
+    return Entities.GetItemInSlot(selectedUnit, index - 1) === -1;
 }
 
 function CleanUpUiSchedules() {
@@ -344,4 +346,10 @@ function GetKeyBind(name) {
     key_element.DeleteAsync(0);
 
     return (key_element.GetChild(0)).text;
+}
+
+
+function HidePickScreen() {
+    var dotaHud = $.GetContextPanel().GetParent().GetParent();
+    dotaHud.FindChild("PreGame").visible = false;
 }

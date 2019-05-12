@@ -126,7 +126,7 @@ function Activate()
   GameRules.trollID = nil
   GameRules.trollHero = nil
   
-  GameRules.test = false
+  GameRules.test = true
 
   GameRules.trollnelves2 = trollnelves2()
   GameRules.trollnelves2:Inittrollnelves2()

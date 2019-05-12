@@ -105,7 +105,7 @@ function InitializeHero(hero)
 
 	hero:ClearInventory()
 	-- Learn all abilities (this isn't necessary on creatures)
-	for i=0,15 do
+	for i=0, hero:GetAbilityCount()-1 do
 		local ability = hero:GetAbilityByIndex(i)
 		if ability then ability:SetLevel(ability:GetMaxLevel()) end
 	end
@@ -361,37 +361,27 @@ function SellItem(args)
 end
 
 function UpdateSpells(unit)
-	local hero = unit:IsRealHero() and unit or PlayerResource:GetSelectedHeroEntity(unit:GetPlayerOwnerID())
-	for a = 0,15 do
+	local playerID = unit:GetPlayerOwnerID()
+	local hero = unit
+	for a = 0, unit:GetAbilityCount()-1 do
 		local tempAbility = unit:GetAbilityByIndex(a)
 		if tempAbility then
-			local bIsBuilding = GetAbilityKV(tempAbility:GetAbilityName()) and GetAbilityKV(tempAbility:GetAbilityName()).Building or 0
+            local abilityKV = GetAbilityKV(tempAbility:GetAbilityName());
+			local bIsBuilding = abilityKV and abilityKV.Building or 0
 			if bIsBuilding == 1 then
-				local bDisabled = false
-				local requirements = GetUnitKV(GetAbilityKV(tempAbility:GetAbilityName()).UnitName).Requirements
-				if requirements then
-					local ReqsTable = {}
-					for uname, ucount in pairs(requirements) do
-						if not hero.buildings[uname] or hero.buildings[uname] < ucount then
-							ReqsTable[uname] = ucount
-							bDisabled = true
-						end
-					end
-					CustomNetTables:SetTableValue("buildings",unit:GetPlayerOwnerID() .. GetAbilityKV(tempAbility:GetAbilityName()).UnitName , ReqsTable)
-				end
-				local building_name = GetAbilityKV(tempAbility:GetAbilityName()).UnitName
-				local unique = GetAbilityKV(tempAbility:GetAbilityName()).UniqueBuilding or 0
-				local limit = GetUnitKV(building_name,"Limit") or 0
-				if limit > 0 then
+				local buildingName = abilityKV.UnitName
+				local disableAbility = DisableAbilityIfMissingRequirements(playerID, hero, tempAbility, buildingName, true)
+				local limit = GetUnitKV(buildingName, "Limit") or 0
+				if not disableAbility and limit > 0 then
 					local currentCount = 0
-					for k,v in pairs(hero.units) do
-						if v and not v:IsNull() then
-							if v:GetUnitName() == building_name then
+					for _, ownedUnit in ipairs(hero.units) do
+						if ownedUnit and not ownedUnit:IsNull() then
+							if ownedUnit:GetUnitName() == buildingName then
 								currentCount = currentCount + 1
 							end
-							if v.ancestors then
-								for key,uname in pairs(v.ancestors) do
-									if uname == building_name then
+							if ownedUnit.ancestors then
+								for _, ancestorName in ipairs(ownedUnit.ancestors) do
+									if ancestorName == buildingName then
 										currentCount = currentCount + 1
 									end
 								end
@@ -399,17 +389,17 @@ function UpdateSpells(unit)
 						end
 					end
 					if currentCount >= limit then
-						bDisabled = true
+						disableAbility = true
 					end
 				end
 
-				if bDisabled and not GameRules.test then
+				if disableAbility and not GameRules.test then
 					tempAbility:SetLevel(0)
-					hero.disabledBuildings[building_name] = true
+					hero.disabledBuildings[buildingName] = true
 				else
 					tempAbility:SetLevel(1)
-					if hero.disabledBuildings[building_name] then
-						hero.disabledBuildings[building_name] = false
+					if hero.disabledBuildings[buildingName] then
+						hero.disabledBuildings[buildingName] = false
 					end
 				end
 			end
@@ -418,93 +408,83 @@ function UpdateSpells(unit)
 end
 
 function UpdateUpgrades(building)
-	if building and not building:IsNull() then
-		local hero = building.builder or building:GetOwner()
-		local upgrades = GetUnitKV(building:GetUnitName()).Upgrades
-		if upgrades then
-			if upgrades.Count then
-				local abilities = {}
-				for a = 0,15 do
-					local tempAbility = building:GetAbilityByIndex(a)
-					if tempAbility then
-						table.insert(abilities,{tempAbility:GetAbilityName(),tempAbility:GetLevel()})
-						building:RemoveAbility(tempAbility:GetAbilityName())
-					end
-				end
-				local index = 0
-				local count = tonumber(upgrades.Count)
-				for i = 1, count, 1 do
-					local upgrade = upgrades[tostring(i)]
-					local upgraded_unit_name = upgrade.unit_name
-					local bDisabled = false
-					local ReqsTable = {}
-					local ReqsClasses = {}
-					--Check the requirements of upgraded unit
-					if GetUnitKV(upgraded_unit_name).Requirements then
-						for uname, ucount in pairs(GetUnitKV(upgraded_unit_name).Requirements) do
-							if not hero.buildings[uname] or hero.buildings[uname] < ucount then
-								bDisabled = true
-								if not ReqsClasses[GetClass(uname)] then
-									ReqsTable[uname] = ucount
-									ReqsClasses[GetClass(uname)] = 1
-								end
-							end
-						end
-					end
-					--Check the current building requirements
-					if GetUnitKV(building:GetUnitName()).Requirements then
-						for uname, ucount in pairs(GetUnitKV(building:GetUnitName()).Requirements) do
-							if not hero.buildings[uname] or hero.buildings[uname] < ucount then
-								bDisabled = true
-								if not ReqsClasses[GetClass(uname)] then
-									ReqsTable[uname] = ucount
-									ReqsClasses[GetClass(uname)] = 1
-								end
-							end
-						end
-					end
-					--Check the requirements of ancestors
-					if building.ancestors then
-						for _,ancestor in pairs(building.ancestors) do
-							if GetUnitKV(ancestor).Requirements then
-								for uname, ucount in pairs(GetUnitKV(ancestor).Requirements) do
-									if not hero.buildings[uname] or hero.buildings[uname] < ucount then
-										bDisabled = true
-										if not ReqsClasses[GetClass(uname)] then
-											ReqsTable[uname] = ucount
-											ReqsClasses[GetClass(uname)] = 1
-										end
-									end
-								end
-							end
-						end
-					end
-					CustomNetTables:SetTableValue("buildings", building:GetPlayerOwnerID() .. upgraded_unit_name , ReqsTable)
-					local abilityName = "upgrade_to_" .. upgraded_unit_name
-					building:AddAbility(abilityName)
-					local upgradeAbility = building:GetAbilityByIndex(index)
-					local unique = GetAbilityKV(abilityName).UniqueBuilding or 0
-					if bDisabled and not GameRules.test then
-						upgradeAbility:SetLevel(0)
-					else
-						upgradeAbility:SetLevel(1)
-					end
-					index = index + 1
-				end
-				for key,ability in pairs(abilities) do
-					local abName
-					local abPoints
-					abName,abPoints = unpack(ability)
-					if not string.match(abName,"upgrade_to") then
-						building:AddAbility(abName)
-						local tempAbility = building:GetAbilityByIndex(index)
-						tempAbility:SetLevel(abPoints)
-						index = index + 1
-					end
-				end
+	if not building or building:IsNull() then
+		return
+	end
+
+	local playerID = building:GetPlayerOwnerID()
+	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
+    for a = 0, building:GetAbilityCount()-1 do
+        local ability = building:GetAbilityByIndex(a)
+        if ability and ability.upgradedUnitName then
+			DisableAbilityIfMissingRequirements(playerID, hero, ability, ability.upgradedUnitName)
+        end
+    end
+end
+
+function AddUpgradeAbilities(building)
+	if not building or building:IsNull() then
+		return
+	end
+
+	local upgrades = GetUnitKV(building:GetUnitName()).Upgrades
+	if upgrades and upgrades.Count then
+		local playerID = building:GetPlayerOwnerID()
+		local hero = PlayerResource:GetSelectedHeroEntity(playerID)
+		local abilities = {}
+		for a = 0, building:GetAbilityCount()-1 do
+			local tempAbility = building:GetAbilityByIndex(a)
+			if tempAbility then
+				table.insert(abilities,{tempAbility:GetAbilityName(),tempAbility:GetLevel()})
+				building:RemoveAbility(tempAbility:GetAbilityName())
+			end
+		end
+		local count = tonumber(upgrades.Count)
+		for i = 1, count, 1 do
+			local upgrade = upgrades[tostring(i)]
+			local upgradedUnitName = upgrade.unit_name
+
+			local abilityName = "upgrade_to_" .. upgradedUnitName
+			local upgradeAbility = building:AddAbility(abilityName)
+			upgradeAbility.upgradedUnitName = upgradedUnitName
+
+			DisableAbilityIfMissingRequirements(playerID, hero, upgradeAbility, upgradedUnitName)
+		end
+		for _,ability in ipairs(abilities) do
+			local abilityName, abilityLevel = unpack(ability)
+			if not string.match(abilityName,"upgrade_to") then
+				local abilityHandle = building:AddAbility(abilityName)
+				abilityHandle:SetLevel(abilityLevel)
 			end
 		end
 	end
+end
+
+function DisableAbilityIfMissingRequirements(playerID, hero, abilityHandle, unitName, dontDisable)
+	dontDisable = dontDisable or false
+	local missingRequirements = {}
+	local disableAbility = false
+
+	local requirements = GameRules.buildingRequirements[unitName]
+	if requirements then
+		for _, requiredUnitName in ipairs(requirements) do
+			local requiredBuildingCurrentCount = hero.buildings[requiredUnitName] or 0
+			if requiredBuildingCurrentCount < 1 then
+				table.insert(missingRequirements, requiredUnitName)
+				disableAbility = true
+			end
+		end
+	end
+	CustomNetTables:SetTableValue("buildings", playerID .. unitName, missingRequirements)
+
+	if not dontDisable then
+		if disableAbility and not GameRules.test then
+			abilityHandle:SetLevel(0)
+		else
+			abilityHandle:SetLevel(1)
+		end
+	end
+    return disableAbility
 end
 
 function GetClass(unitName)
