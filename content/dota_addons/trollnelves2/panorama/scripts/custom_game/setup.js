@@ -64,7 +64,6 @@ var uiWaitingSchedules = [];
     resourcePanel.BLoadLayout("file://{resources}/layout/custom_game/resource.xml", false, false);
 
     var healthContainer = centerBlock.FindChildTraverse("HealthContainer");
-    var healthRegenLabel = healthContainer.FindChildTraverse("HealthRegenLabel");
     InitializeCustomHpRegenLabel(healthContainer);
     healthContainer.FindChildTraverse("HealthRegenLabel").style.visibility = "collapse";
 
@@ -76,7 +75,6 @@ var uiWaitingSchedules = [];
     GameEvents.Subscribe("gameui_activated", UpdateUI);
     GameEvents.Subscribe("dota_inventory_changed", UpdateItemTooltipsAndAbilityCustomHotkeys);
     GameEvents.Subscribe("dota_inventory_item_changed", UpdateItemTooltipsAndAbilityCustomHotkeys);
-    GameEvents.Subscribe("m_event_keybind_changed", UpdateTooltips);
     GameEvents.Subscribe("dota_player_update_selected_unit", UpdateUI);
     GameEvents.Subscribe("dota_player_update_query_unit", UpdateUI);
     GameEvents.Subscribe("game_rules_state_change", HidePickScreen);

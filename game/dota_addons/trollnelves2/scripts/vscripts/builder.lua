@@ -82,8 +82,10 @@ function Build( event )
         FindClearSpaceForUnit(caster, caster:GetAbsOrigin(), true)
         caster:AddNewModifier(caster, nil, "modifier_phased", {duration=0.03})
 
+        local unitName = unit:GetUnitName()
+        ModifyStartedConstructionBuildingCount(hero, unitName, 1)
+        table.insert(hero.units, unit)
         AddUpgradeAbilities(unit)
-        table.insert(hero.units,unit)
         UpdateSpells(hero)
 
         local item = CreateItem("item_building_cancel", unit, unit)
@@ -113,8 +115,7 @@ function Build( event )
         end
 
         local unitName = unit:GetUnitName()
-        local currentBuildingCount = hero.buildings[unitName] or 0
-        hero.buildings[unitName] = currentBuildingCount + 1
+        ModifyCompletedConstructionBuildingCount(hero, unitName, 1)
 
         UpdateSpells(hero)
         for _, value in ipairs(hero.units) do
@@ -220,16 +221,24 @@ function UpgradeBuilding( event )
         return false
     end
     local newBuilding = BuildingHelper:UpgradeBuilding(building,NewBuildingName)
+    local newBuildingName = newBuilding:GetUnitName()
     newBuilding.state = "complete"
+
+    newBuilding.ancestors = building.ancestors
+    table.insert(newBuilding.ancestors,building:GetUnitName())
+    for _, ancestorUnitName in pairs(newBuilding.ancestors) do
+        ModifyStartedConstructionBuildingCount(hero, ancestorUnitName, 1)
+        ModifyCompletedConstructionBuildingCount(hero, ancestorUnitName, 1)
+    end
+    table.insert(hero.units, newBuilding)
+    ModifyStartedConstructionBuildingCount(hero, newBuildingName, 1)
+
     local ability = event.ability
     local skips = GetAbilityKV(ability:GetAbilityName(),"SkipRequirements")
     if skips then
-        for k,v in pairs(skips) do
-            if hero.buildings[v] then
-                hero.buildings[v] = hero.buildings[v] + 1
-            else
-                hero.buildings[v] = 1
-            end
+        for _, skipUnitName in pairs(skips) do
+            ModifyStartedConstructionBuildingCount(hero, skipUnitName, 1)
+            ModifyCompletedConstructionBuildingCount(hero, skipUnitName, 1)
         end
     end
     
@@ -241,23 +250,32 @@ function UpgradeBuilding( event )
         if newBuildingAbility then
             local constructionCompleteModifiers = GetAbilityKV(newBuildingAbility:GetAbilityName(), "ConstructionCompleteModifiers")
             if constructionCompleteModifiers then
-                for k,modifier in pairs(constructionCompleteModifiers) do
+                for _, modifier in pairs(constructionCompleteModifiers) do
                     newBuildingAbility:ApplyDataDrivenModifier(newBuilding, newBuilding, modifier, {})
                 end
             end
             local constructionStartModifiers = GetAbilityKV(newBuildingAbility:GetAbilityName(), "ConstructionStartModifiers")
             if constructionStartModifiers then
-                for k,modifier in pairs(constructionStartModifiers) do
+                for _, modifier in pairs(constructionStartModifiers) do
                     newBuildingAbility:ApplyDataDrivenModifier(newBuilding, newBuilding, modifier, {})
                 end
             end
         end
     end
+    building:ForceKill(true) --This will call RemoveBuilding
     Timers:CreateTimer(buildTime,function()
+        if newBuilding:IsNull() or not newBuilding:IsAlive() then
+            return
+        end
+        newBuilding:RemoveModifierByName("modifier_stunned")
+        if not string.match(newBuildingName,"troll_hut") then
+            local item = CreateItem("item_building_destroy", nil, nil)
+            newBuilding:AddItem(item)
+        end
+        ModifyCompletedConstructionBuildingCount(hero, newBuildingName, 1)
         UpdateSpells(hero)
         for _, value in ipairs(hero.units) do
             UpdateUpgrades(value)
         end
     end)
-    UTIL_Remove(building)
 end

@@ -1920,8 +1920,6 @@
 			}
 	    }
 		"Requirements"{
-			"research_lab"			"1"
-			"barracks_3"			"1"
 		}
 		
 		// Abilities
@@ -1982,8 +1980,6 @@
 	    "Level"                     "18"
 	    "BuildTime"                 "1"
 		"Requirements"{
-			"research_lab"			"1"
-			"barracks_3"			"1"
 		}
 		
 		// Abilities
@@ -2944,8 +2940,6 @@
 	    }
 		
 		"Requirements"{
-			"research_lab"			"1"
-			"trader_3"				"1"
 		}
 		
 		// Abilities
@@ -3045,8 +3039,6 @@
 	    }
 		
 		"Requirements"{
-			"research_lab"			"1"
-			"trader_3"				"1"
 		}
 		
 		// Abilities
@@ -3135,8 +3127,6 @@
 	    }
 		
 		"Requirements"{
-			"research_lab"			"1"
-			"trader_3"				"1"
 		}
 		
 		// Abilities
@@ -3736,12 +3726,12 @@
 		"ModelScale"                            "0.6"
 		"Level"                                 "2"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "0"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
@@ -3751,7 +3741,7 @@
 		"AttackAnimationPoint"					"0.5"
 		"AttackAcquisitionRange"				"500"
 		"AttackRange"							"90"
-		
+
 		"AbilityLayout"				"4"
 		"Ability1" 					"repair"
 		"Ability2" 					"commit_suicide"
@@ -3766,48 +3756,48 @@
 		"RepairAbility"				"repair"
 		"FixedRepair"				"0"
 		"RepairSpeed"				"1"
-	   
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_SMALL"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Building Cost Stats
 		//----------------------------------------------------------------
 		"FoodCost"                              "1"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "10"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
 		"CombatClassAttack"						"DOTA_COMBAT_CLASS_ATTACK_BASIC"
 		"CombatClassDefend"						"DOTA_COMBAT_CLASS_DEFEND_HERO"
 		"UnitRelationShipClass"					"DOTA_NPC_UNIT_RELATIONSHIP_TYPE_DEFAULT"
-	   
+
 		// Creature Data
 		//----------------------------------------------------------------
 		"Creature"
@@ -3835,12 +3825,12 @@
 		"ModelScale"                            "0.6"
 		"Level"                                 "2"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "1"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
@@ -3850,7 +3840,7 @@
 		"AttackAnimationPoint"					"0.5"
 		"AttackAcquisitionRange"				"500"
 		"AttackRange"							"90"
-		
+
 		"AbilityLayout"				"4"
 		"Ability1" 					"repair"
 		"Ability2" 					"commit_suicide"
@@ -3865,48 +3855,48 @@
 		"RepairAbility"				"repair"
 		"FixedRepair"				"0"
 		"RepairSpeed"				"2"
-	   
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_SMALL"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Building Cost Stats
 		//----------------------------------------------------------------
 		"FoodCost"                              "2"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "50"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
 		"CombatClassAttack"						"DOTA_COMBAT_CLASS_ATTACK_BASIC"
 		"CombatClassDefend"						"DOTA_COMBAT_CLASS_DEFEND_HERO"
 		"UnitRelationShipClass"					"DOTA_NPC_UNIT_RELATIONSHIP_TYPE_DEFAULT"
-	   
+
 		// Creature Data
 		//----------------------------------------------------------------
 		"Creature"
@@ -3935,12 +3925,12 @@
 		"ModelScale"                            "0.6"
 		"Level"                                 "2"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "2"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
@@ -3950,7 +3940,7 @@
 		"AttackAnimationPoint"					"0.5"
 		"AttackAcquisitionRange"				"500"
 		"AttackRange"							"90"
-		
+
 		"AbilityLayout"				"4"
 		"Ability1" 					"repair"
 		"Ability2" 					"commit_suicide"
@@ -3965,48 +3955,48 @@
 		"RepairAbility"				"repair"
 		"FixedRepair"				"0"
 		"RepairSpeed"				"3"
-	   
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_SMALL"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Building Cost Stats
 		//----------------------------------------------------------------
 		"FoodCost"                              "4"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "150"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
 		"CombatClassAttack"						"DOTA_COMBAT_CLASS_ATTACK_BASIC"
 		"CombatClassDefend"						"DOTA_COMBAT_CLASS_DEFEND_HERO"
 		"UnitRelationShipClass"					"DOTA_NPC_UNIT_RELATIONSHIP_TYPE_DEFAULT"
-	   
+
 		// Creature Data
 		//----------------------------------------------------------------
 		"Creature"
@@ -4037,12 +4027,12 @@
 		"ModelScale"                            "0.6"
 		"Level"                                 "2"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "2"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
@@ -4052,7 +4042,7 @@
 		"AttackAnimationPoint"					"0.5"
 		"AttackAcquisitionRange"				"500"
 		"AttackRange"							"90"
-		
+
 		"AbilityLayout"				"4"
 		"Ability1" 					"repair"
 		"Ability2" 					"commit_suicide"
@@ -4067,48 +4057,48 @@
 		"RepairAbility"				"repair"
 		"FixedRepair"				"0"
 		"RepairSpeed"				"4"
-	   
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_SMALL"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Building Cost Stats
 		//----------------------------------------------------------------
 		"FoodCost"                              "6"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "250"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
 		"CombatClassAttack"						"DOTA_COMBAT_CLASS_ATTACK_BASIC"
 		"CombatClassDefend"						"DOTA_COMBAT_CLASS_DEFEND_HERO"
 		"UnitRelationShipClass"					"DOTA_NPC_UNIT_RELATIONSHIP_TYPE_DEFAULT"
-	   
+
 		// Creature Data
 		//----------------------------------------------------------------
 		"Creature"
@@ -4134,12 +4124,12 @@
 		"ModelScale"                            "0.6"
 		"Level"                                 "2"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "2"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
@@ -4149,7 +4139,7 @@
 		"AttackAnimationPoint"					"0.5"
 		"AttackAcquisitionRange"				"500"
 		"AttackRange"							"90"
-		
+
 		"AbilityLayout"				"4"
 		"Ability1" 					"repair"
 		"Ability2" 					"commit_suicide"
@@ -4164,48 +4154,48 @@
 		"RepairAbility"				"repair"
 		"FixedRepair"				"0"
 		"RepairSpeed"				"5"
-	   
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_SMALL"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Building Cost Stats
 		//----------------------------------------------------------------
 		"FoodCost"                              "10"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "420"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
 		"CombatClassAttack"						"DOTA_COMBAT_CLASS_ATTACK_BASIC"
 		"CombatClassDefend"						"DOTA_COMBAT_CLASS_DEFEND_HERO"
 		"UnitRelationShipClass"					"DOTA_NPC_UNIT_RELATIONSHIP_TYPE_DEFAULT"
-	   
+
 		// Creature Data
 		//----------------------------------------------------------------
 		"Creature"
@@ -4221,7 +4211,7 @@
 	        }
 	    }
 	}
-	
+
 	"wisp_1"
 	{
 		// General
@@ -4232,19 +4222,19 @@
 		"Level"                                 "1"
 		"HealthBarOffset"                       "140"
 		"UnitLabel"								"lumber_harvester"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "0"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
 		"AttackDamageMin"                       "1.0"
 		"AttackDamageMax"                       "1.0"
 		"AttackRate"                            "1.00"
-		
+
 		"AbilityLayout"				"4"
 		"Ability1" 					"gather_lumber"
 		"Ability2"					"commit_suicide"
@@ -4252,37 +4242,37 @@
 		"Ability4"					""
 		"LumberInterval"			"8"
 		"LumberAmount"				"1"
-	   
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_HERO"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "1"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
@@ -4299,19 +4289,19 @@
 		"ModelScale"                            "0.9"
 		"Level"                                 "1"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "0"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
 		"AttackDamageMin"                       "1.0"
 		"AttackDamageMax"                       "1.0"
 		"AttackRate"                            "1.00"
-		
+
 		"AbilityLayout"							"4"
 		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
@@ -4319,38 +4309,38 @@
 		"Ability4"								""
 		"LumberInterval"						"4"
 		"LumberAmount"							"1"
-		
-	   
+
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_HERO"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "1"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
@@ -4367,19 +4357,19 @@
 		"ModelScale"                            "0.9"
 		"Level"                                 "1"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "0"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
 		"AttackDamageMin"                       "1.0"
 		"AttackDamageMax"                       "1.0"
 		"AttackRate"                            "1.00"
-		
+
 		"AbilityLayout"							"4"
 		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
@@ -4387,38 +4377,38 @@
 		"Ability4"								""
 		"LumberAmount"							"1"
 		"LumberInterval"						"2"
-		
-	   
+
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_HERO"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "1"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
@@ -4435,19 +4425,19 @@
 		"ModelScale"                            "0.9"
 		"Level"                                 "1"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "0"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
 		"AttackDamageMin"                       "1.0"
 		"AttackDamageMax"                       "1.0"
 		"AttackRate"                            "1.00"
-		
+
 		"AbilityLayout"							"4"
 		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
@@ -4455,38 +4445,38 @@
 		"Ability4"								""
 		"LumberAmount"							"1"
 		"LumberInterval"						"1"
-		
-	   
+
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_HERO"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "1"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
@@ -4503,19 +4493,19 @@
 		"ModelScale"                            "0.9"
 		"Level"                                 "1"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "0"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
 		"AttackDamageMin"                       "1.0"
 		"AttackDamageMax"                       "1.0"
 		"AttackRate"                            "1.00"
-		
+
 		"AbilityLayout"							"4"
 		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
@@ -4523,38 +4513,38 @@
 		"Ability4"								""
 		"LumberAmount"							"6"
 		"LumberInterval"						"1"
-		
-	   
+
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_HERO"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "1"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
@@ -4571,19 +4561,19 @@
 		"ModelScale"                            "0.9"
 		"Level"                                 "1"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "0"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
 		"AttackDamageMin"                       "1.0"
 		"AttackDamageMax"                       "1.0"
 		"AttackRate"                            "1.00"
-		
+
 		"AbilityLayout"							"4"
 		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
@@ -4591,38 +4581,38 @@
 		"Ability4"								""
 		"LumberAmount"							"36"
 		"LumberInterval"						"1"
-		
-	   
+
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_HERO"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "1"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
@@ -4639,19 +4629,19 @@
 		"ModelScale"                            "0.9"
 		"Level"                                 "1"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "0"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
 		"AttackDamageMin"                       "1.0"
 		"AttackDamageMax"                       "1.0"
 		"AttackRate"                            "1.00"
-		
+
 		"AbilityLayout"							"4"
 		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
@@ -4659,38 +4649,38 @@
 		"Ability4"								""
 		"LumberAmount"							"216"
 		"LumberInterval"						"1"
-		
-	   
+
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_HERO"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "1"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
@@ -4707,19 +4697,19 @@
 		"ModelScale"                            "0.9"
 		"Level"                                 "1"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "0"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
 		"AttackDamageMin"                       "1.0"
 		"AttackDamageMax"                       "1.0"
 		"AttackRate"                            "1.00"
-		
+
 		"AbilityLayout"							"4"
 		"Ability1" 								"gather_lumber"
 		"Ability2"								"commit_suicide"
@@ -4727,38 +4717,38 @@
 		"Ability4"								""
 		"LumberAmount"							"1296"
 		"LumberInterval"						"1"
-		
-	   
+
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_HERO"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "1"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
@@ -4775,19 +4765,19 @@
 		"ModelScale"                            "0.6"
 		"Level"                                 "1"
 		"HealthBarOffset"                       "140"
-	   
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"                         "0"
 		"MagicalResistance"                     "0"
-	   
+
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"            		"DOTA_UNIT_CAP_NO_ATTACK"
 		"AttackDamageMin"                       "1.0"
 		"AttackDamageMax"                       "1.0"
 		"AttackRate"                            "1.00"
-		
+
 		"AbilityLayout"							"1"
 		"Ability1" 								"build_gold_mine_1"
 		"Ability2"								"build_gold_mine_2"
@@ -4798,7 +4788,7 @@
 		"Ability7"								"build_gold_mine_7"
 		"Ability8"								"build_gold_mine_8"
 		"Ability9"								"commit_suicide"
-		
+
 		"Creature"
 	    {
 	        "AttachWearables"
@@ -4806,37 +4796,37 @@
 	            "1" { "ItemDef" "536" }
 	        }
 	    }
-	   
+
 		// Bounty
 		//----------------------------------------------------------------
 		"BountyGoldMin"                         "0.0"
 		"BountyGoldMax"                         "0.0"
-	   
+
 		// Bounds
 		//----------------------------------------------------------------
 		"BoundsHullName"                        "DOTA_HULL_SIZE_HERO"
 		"RingRadius"                            "70"
 		"CollisionSize"                         "8"
 		"FormationRank"                         "0"
-	   
+
 		// Movement
 		//----------------------------------------------------------------
 		"MovementCapabilities"					"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"                         "270"
 		"MovementTurnRate"                      "0.6"
-	   
+
 		// Status
 		//----------------------------------------------------------------
 		"StatusHealth"                          "1"
 		"StatusHealthRegen"                     "0.25"
 		"StatusMana"                            "0"
 		"StatusManaRegen"                       "0"
-	   
+
 		// Vision
 		//----------------------------------------------------------------
 		"VisionDaytimeRange"					"1400"
 		"VisionNighttimeRange"					"800"
-	   
+
 		// Team
 		//----------------------------------------------------------------
 		"TeamName"								"DOTA_TEAM_NEUTRALS"
@@ -4847,7 +4837,7 @@
 
 	//=================================================================================
 	// Building: Gold Mine 1
-	//=================================================================================	
+	//=================================================================================
 	"gold_mine_1"
 	{
 	    // Visual
@@ -4864,12 +4854,12 @@
 		"ConsumesBuilder"			"1"
 		"BuilderInside"				"1"
 		"MaxGold"					"2000000"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
 	    "BuildTime"                 "3"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"1"
@@ -4878,29 +4868,29 @@
 		"Ability3"					""
 		"Ability4"					""
 		"Ability10"					""
-	    
+
 		"GoldAmount"				"1"
-		
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "50"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "2"
 	    "BlockPathingSize"          "2"
 		"CollisionSize"				"64"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
@@ -4909,7 +4899,7 @@
 	}
 	//=================================================================================
 	// Building: Gold Mine 2
-	//=================================================================================	
+	//=================================================================================
 	"gold_mine_2"
 	{
 	    // Visual
@@ -4923,12 +4913,12 @@
 		"ConsumesBuilder"			"1"
 		"BuilderInside"				"1"
 		"MaxGold"					"2000000"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
 	    "BuildTime"                 "3"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"1"
@@ -4937,29 +4927,29 @@
 		"Ability3"					""
 		"Ability4"					""
 		"Ability10"					""
-	    
+
 		"GoldAmount"				"8"
-		
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "50"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "2"
 	    "BlockPathingSize"          "2"
 		"CollisionSize"				"64"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
@@ -4968,7 +4958,7 @@
 	}
 	//=================================================================================
 	// Building: Gold Mine 3
-	//=================================================================================	
+	//=================================================================================
 	"gold_mine_3"
 	{
 	    // Visual
@@ -4982,12 +4972,12 @@
 		"ConsumesBuilder"			"1"
 		"BuilderInside"				"1"
 		"MaxGold"					"2000000"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
 	    "BuildTime"                 "3"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"1"
@@ -4996,29 +4986,29 @@
 		"Ability3"					""
 		"Ability4"					""
 		"Ability10"					""
-	    
+
 		"GoldAmount"				"32"
-		
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "50"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "2"
 	    "BlockPathingSize"          "2"
 		"CollisionSize"				"64"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
@@ -5027,7 +5017,7 @@
 	}
 	//=================================================================================
 	// Building: Gold Mine 4
-	//=================================================================================	
+	//=================================================================================
 	"gold_mine_4"
 	{
 	    // Visual
@@ -5041,12 +5031,12 @@
 		"ConsumesBuilder"			"1"
 		"BuilderInside"				"1"
 		"MaxGold"					"2000000"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
 	    "BuildTime"                 "3"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"1"
@@ -5055,29 +5045,29 @@
 		"Ability3"					""
 		"Ability4"					""
 		"Ability10"					""
-	    
+
 		"GoldAmount"				"128"
-		
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "50"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "2"
 	    "BlockPathingSize"          "2"
 		"CollisionSize"				"64"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
@@ -5086,7 +5076,7 @@
 	}
 	//=================================================================================
 	// Building: Gold Mine 5
-	//=================================================================================	
+	//=================================================================================
 	"gold_mine_5"
 	{
 	    // Visual
@@ -5100,12 +5090,12 @@
 		"ConsumesBuilder"			"1"
 		"BuilderInside"				"1"
 		"MaxGold"					"2000000"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
 	    "BuildTime"                 "3"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"1"
@@ -5114,29 +5104,29 @@
 		"Ability3"					""
 		"Ability4"					""
 		"Ability10"					""
-	    
+
 		"GoldAmount"				"512"
-		
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "50"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "4"
 	    "BlockPathingSize"          "4"
 		"CollisionSize"				"128"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
@@ -5145,7 +5135,7 @@
 	}
 	//=================================================================================
 	// Building: Gold Mine 6
-	//=================================================================================	
+	//=================================================================================
 	"gold_mine_6"
 	{
 	    // Visual
@@ -5159,12 +5149,12 @@
 		"ConsumesBuilder"			"1"
 		"BuilderInside"				"1"
 		"MaxGold"					"2000000"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
 	    "BuildTime"                 "3"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"1"
@@ -5173,29 +5163,29 @@
 		"Ability3"					""
 		"Ability4"					""
 		"Ability10"					""
-	    
+
 		"GoldAmount"				"2048"
-		
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "50"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "4"
 	    "BlockPathingSize"          "4"
 		"CollisionSize"				"128"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
@@ -5204,7 +5194,7 @@
 	}
 	//=================================================================================
 	// Building: Gold Mine 7
-	//=================================================================================	
+	//=================================================================================
 	"gold_mine_7"
 	{
 	    // Visual
@@ -5218,12 +5208,12 @@
 		"ConsumesBuilder"			"1"
 		"BuilderInside"				"1"
 		"MaxGold"					"2000000"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
 	    "BuildTime"                 "3"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"1"
@@ -5232,29 +5222,29 @@
 		"Ability3"					""
 		"Ability4"					""
 		"Ability10"					""
-	    
+
 		"GoldAmount"				"8192"
-		
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "50"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "4"
 	    "BlockPathingSize"          "4"
 		"CollisionSize"				"128"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
@@ -5263,7 +5253,7 @@
 	}
 	//=================================================================================
 	// Building: Gold Mine 8
-	//=================================================================================	
+	//=================================================================================
 	"gold_mine_8"
 	{
 	    // Visual
@@ -5277,12 +5267,12 @@
 		"ConsumesBuilder"			"1"
 		"BuilderInside"				"1"
 		"MaxGold"					"2000000"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
 	    "BuildTime"                 "3"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"1"
@@ -5291,40 +5281,40 @@
 		"Ability3"					""
 		"Ability4"					""
 		"Ability10"					""
-	    
+
 		"GoldAmount"				"32768"
-		
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "50"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "4"
 	    "BlockPathingSize"          "4"
 		"CollisionSize"				"128"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
 	    "MovementCapabilities"      "DOTA_UNIT_CAP_MOVE_NONE"
 	    "MovementSpeed"             "0"
 	}
-	
-		
+
+
 	//=================================================================================
 	// Building: Shop 1 Weapon shop
-	//=================================================================================	
+	//=================================================================================
 	"weapon_shop"
 	{
 	    // Visual
@@ -5338,11 +5328,11 @@
 	    "ModelRotation"             "90"
 		"HealthBarOffset"			"150"
 		"PlayerCanControl"			"1"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"12"
@@ -5358,37 +5348,37 @@
 		"Ability10"					"buy_item_dmg_10"
 		"Ability11"					"buy_item_dmg_11"
 		"Ability12"					"buy_item_dmg_12"
-	    
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "250"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "1"
 	    "BlockPathingSize"          "1"
 		"CollisionSize"				"32"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
 	    "MovementCapabilities"      "DOTA_UNIT_CAP_MOVE_NONE"
 	    "MovementSpeed"             "0"
 	}
-	
+
 	//=================================================================================
 	// Building: Shop 2 Armor shop
-	//=================================================================================	
+	//=================================================================================
 	"armor_shop"
 	{
 	    // Visual
@@ -5402,11 +5392,11 @@
 	    "ModelRotation"             "90"
 		"HealthBarOffset"			"150"
 		"PlayerCanControl"			"1"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"6"
@@ -5422,37 +5412,37 @@
 		"Ability10"					"buy_item_armor_10"
 		"Ability11"					"buy_item_armor_11"
 		"Ability12"					"buy_item_armor_12"
-	    
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "250"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "1"
 	    "BlockPathingSize"          "1"
 		"CollisionSize"				"32"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
 	    "MovementCapabilities"      "DOTA_UNIT_CAP_MOVE_NONE"
 	    "MovementSpeed"             "0"
 	}
-	
+
 	//=================================================================================
 	// Building: Shop 3 HP Shop
-	//=================================================================================	
+	//=================================================================================
 	"hp_shop"
 	{
 	    // Visual
@@ -5466,11 +5456,11 @@
 	    "ModelRotation"             "90"
 		"HealthBarOffset"			"150"
 		"PlayerCanControl"			"1"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"6"
@@ -5485,27 +5475,27 @@
 		"Ability9"					"buy_item_hp_9"
 		"Ability10"					"buy_item_hp_10"
 		"Ability11"					"buy_item_hp_11"
-	    
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "250"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "1"
 	    "BlockPathingSize"          "1"
 		"CollisionSize"				"32"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
@@ -5514,7 +5504,7 @@
 	}
 	//=================================================================================
 	// Building: Shop 3 HP Shop
-	//=================================================================================	
+	//=================================================================================
 	"hp_reg_shop"
 	{
 	    // Visual
@@ -5528,11 +5518,11 @@
 	    "ModelRotation"             "90"
 		"HealthBarOffset"			"150"
 		"PlayerCanControl"			"1"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"6"
@@ -5547,27 +5537,27 @@
 		"Ability9"					"buy_item_hp_reg_9"
 		"Ability10"					"buy_item_hp_reg_10"
 		"Ability11"					"buy_item_hp_reg_11"
-	    
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "250"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "1"
 	    "BlockPathingSize"          "1"
 		"CollisionSize"				"32"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
@@ -5576,7 +5566,7 @@
 	}
 	//=================================================================================
 	// Building: Shop 3 Atk Spd Shop
-	//=================================================================================	
+	//=================================================================================
 	"atk_spd_shop"
 	{
 	    // Visual
@@ -5590,11 +5580,11 @@
 	    "ModelRotation"             "90"
 		"HealthBarOffset"			"150"
 		"PlayerCanControl"			"1"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"6"
@@ -5610,37 +5600,37 @@
 		"Ability10"					"buy_lumber_8"
 		"Ability11"					"sell_lumber_1"
 		"Ability12"					"sell_lumber_8"
-	    
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "250"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "1"
 	    "BlockPathingSize"          "1"
 		"CollisionSize"				"32"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
 	    "MovementCapabilities"      "DOTA_UNIT_CAP_MOVE_NONE"
 	    "MovementSpeed"             "0"
 	}
-	
+
 	//=================================================================================
 	// Building: Troll Hut
-	//=================================================================================	
+	//=================================================================================
 	"troll_hut_1"
 	{
 	    // Visual
@@ -5656,9 +5646,9 @@
 		"PlayerCanControl"			"1"
 		"UniqueBuilding"			"1"
 		"RequiresRepair"			"1"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "1"
 	    "BuildTime"                 "2"
 	    "Upgrades"
@@ -5671,9 +5661,9 @@
 			}
 	    }
 		"Requirements"{
-		
+
 		}
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"4"
@@ -5685,27 +5675,27 @@
 		"Ability6"					"sell_lumber_1"
 		"Ability7"					"sell_lumber_8"
 		"TeamGainGold"				"true"
-	    
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "30"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "30"
 	    "BlockPathingSize"          "4"
 		"CollisionSize"				"128"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_HERO"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
@@ -5714,7 +5704,7 @@
 	}
 	//=================================================================================
 	// Building: Troll Hut
-	//=================================================================================	
+	//=================================================================================
 	"troll_hut_2"
 	{
 	    // Visual
@@ -5730,9 +5720,9 @@
 		"PlayerCanControl"			"1"
 		"UniqueBuilding"			"1"
 		"RequiresRepair"			"1"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "2"
 	    "BuildTime"                 "2"
 	    "Upgrades"
@@ -5745,9 +5735,9 @@
 			}
 	    }
 		"Requirements"{
-		
+
 		}
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"4"
@@ -5759,27 +5749,27 @@
 		"Ability6"					"sell_lumber_8"
 		"Ability10"					""
 		"TeamGainGold"				"true"
-	    
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "30"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "30"
 	    "BlockPathingSize"          "4"
 		"CollisionSize"				"128"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
@@ -5788,7 +5778,7 @@
 	}
 	//=================================================================================
 	// Building: Troll Hut
-	//=================================================================================	
+	//=================================================================================
 	"troll_hut_3"
 	{
 	    // Visual
@@ -5804,9 +5794,9 @@
 		"PlayerCanControl"			"1"
 		"UniqueBuilding"			"1"
 		"RequiresRepair"			"1"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "3"
 	    "BuildTime"                 "2"
 	    "Upgrades"
@@ -5819,9 +5809,9 @@
 			}
 	    }
 		"Requirements"{
-		
+
 		}
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"4"
@@ -5833,27 +5823,27 @@
 		"Ability6"					"sell_lumber_8"
 		"Ability10"					""
 		"TeamGainGold"				"true"
-	    
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "30"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "30"
 	    "BlockPathingSize"          "4"
 		"CollisionSize"				"128"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
@@ -5862,7 +5852,7 @@
 	}
 	//=================================================================================
 	// Building: Troll Hut
-	//=================================================================================	
+	//=================================================================================
 	"troll_hut_4"
 	{
 	    // Visual
@@ -5878,15 +5868,15 @@
 		"PlayerCanControl"			"1"
 		"UniqueBuilding"			"1"
 		"RequiresRepair"			"1"
-		
+
 	    // Stats
-	    //----------------------------- 
+	    //-----------------------------
 	    "Level"                     "4"
 	    "BuildTime"                 "2"
 		"Requirements"{
-		
+
 		}
-		
+
 		// Abilities
 		//----------------------------------------------------------------
 		"AbilityLayout"				"4"
@@ -5897,35 +5887,35 @@
 		"Ability5"					"buy_lumber_8"
 		"Ability6"					"sell_lumber_1"
 		"Ability7"					"sell_lumber_8"
-		
+
 		"TeamGainGold"				"true"
-	    
+
 	    // General
 	    //-----------------------------
-	    
+
 	    "ArmorPhysical"             "5"
 		"StatusHealth"              "30"
 	    "StatusHealthRegen"         "0"
 	    "StatusMana"                "0"
 	    "StatusManaRegen"           "0"
 	    "MagicalResistance"         "0"
-		
+
 		"ConstructionSize"          "30"
 	    "BlockPathingSize"          "4"
 		"CollisionSize"				"128"
-		
+
 	    "BoundsHullName"            "DOTA_HULL_SIZE_BUILDING"
 	    "TeamName"                  "DOTA_TEAM_NEUTRALS"
 	    "CombatClassDefend"         "DOTA_COMBAT_CLASS_DEFEND_HERO"
 	    "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_BUILDING"
 	    "VisionDaytimeRange"        "1800"
-	    "VisionNighttimeRange"      "900"  
+	    "VisionNighttimeRange"      "900"
 	    "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
 	    "ProjectileCollisionSize"   "100"
 	    "RingRadius"                "100"
 	    "MovementCapabilities"      "DOTA_UNIT_CAP_MOVE_NONE"
 	    "MovementSpeed"             "0"
 	}
-	
+
 
 }

@@ -17,8 +17,16 @@ Added ability placeholders for max level troll hut and trader, so their abilitie
 Abilities that don't have hotkeys will be given unused item hotkeys (Don't change your hotkeys after starting the game (you can shuffle items in your inventory)).
 When gold wisps start building the gold mine they get deselected.
 
+
+#4
+Reworked building building/upgrading logic, should be way more efficient.
+Modified entity dying logic (Please report if wall glitches or troll respawning glitches still happen).
+
+
 TODO:
-Fix poison tower stuff
-Fix UpdateUpgrades
+Fix poison tower stuff.
 Fix setup.js events wasting resources.
+Fix 2 trolls (game stages).
+Fix building upgrading ancestor logic.
+Fix "Dead" notification when upgrading multiple units at once.
 

@@ -75,8 +75,6 @@ function BuildingHelper:Init()
 
     self:HookBoilerplate()
 
-
-    DebugPrintTable(GameRules.buildingRequirements)
 end
 function BuildingHelper:HookBoilerplate()
     if not __ACTIVATE_HOOK then
@@ -148,59 +146,52 @@ function BuildingHelper:LoadSettings()
     end
 end
 
-function ParseRequirements(requirementClasses, allRequirements, requirements)
+function ParseRequirements(unitName, requirements, allRequirements, allBuildingRequirementClasses)
     for requirementName, requirementCount in pairs(requirements) do
         allRequirements[requirementName] = requirementCount
         local requirementClass = GetClass(requirementName)
         local requirementLevel = GetUnitKV(requirementName).Level
-        local currentRequirementClassLevel = requirementClasses[requirementClass] and requirementClasses[requirementClass].level or 0
+        local currentRequirementClassData = allBuildingRequirementClasses[unitName][requirementClass]
+        local currentRequirementClassLevel =  currentRequirementClassData and currentRequirementClassData.level or 0
         if requirementLevel > currentRequirementClassLevel then
-            requirementClasses[requirementClass] = {level = requirementLevel, unitName = requirementName}
+            allBuildingRequirementClasses[unitName][requirementClass] = {level = requirementLevel, unitName = requirementName}
         end
     end
 end
 
-function AddBuildingRequirements(name, info, previousRequirements)
-    if not GameRules.buildingRequirements[name] then
-        GameRules.buildingRequirements[name] = {}
+function AddBuildingRequirements(name, info, previousRequirements, allBuildingRequirementClasses)
+    if not allBuildingRequirementClasses[name] then
+        allBuildingRequirementClasses[name] = {}
     end
 
-
-    local requirementClasses = {}
     local allRequirements = {}
 
-    ParseRequirements(requirementClasses, allRequirements, previousRequirements)
+    ParseRequirements(name, previousRequirements, allRequirements, allBuildingRequirementClasses)
 
     local requirements = info["Requirements"]
     if requirements then
-        ParseRequirements(requirementClasses, allRequirements, requirements)
-    end
-    for requirementClass, requirementClassValue in pairs(requirementClasses) do
-        table.insert(GameRules.buildingRequirements[name], requirementClassValue.unitName)
+        ParseRequirements(name, requirements, allRequirements, allBuildingRequirementClasses)
     end
     local upgrades = info["Upgrades"]
     if upgrades then
         local count = upgrades["Count"]
         for i = 1,count do
             local upgradedUnitName = info['Upgrades'][tostring(i)]['unit_name']
-            AddBuildingRequirements(upgradedUnitName, GetUnitKV(upgradedUnitName), allRequirements)
+            AddBuildingRequirements(upgradedUnitName, GetUnitKV(upgradedUnitName), allRequirements, allBuildingRequirementClasses)
         end
     end
-
-
-    --for requirementName, requirementCount in pairs(requirements) do
-    --    local currentRequirementCount = GameRules.buildingRequirements[name][requirementName] or 0
-    --    GameRules.buildingRequirements[name][requirementName] = math.max(currentRequirementCount, requirementCount)
-    --end
 end
 
 function BuildingHelper:ParseKV()
-    GameRules.buildingRequirements = {};
+    GameRules.buildingNames = {}
+    GameRules.buildingRequirements = {}
+    local allBuildingRequirementClasses = {}
     for name,info in pairs(KeyValues.All) do
         if type(info) == "table" then
             local isBuilding = info["ConstructionSize"]
             local isBuildingAbility = info["Building"]
             if isBuilding then
+                table.insert(GameRules.buildingNames, name)
                 -- Build NetTable with the building properties
                 local values = {}
 
@@ -216,7 +207,7 @@ function BuildingHelper:ParseKV()
                     values.requirements = info["Requirements"]
                 end
                 if info["StartingBuilding"] == 1 then
-                    AddBuildingRequirements(name, info, {})
+                    AddBuildingRequirements(name, info, {}, allBuildingRequirementClasses)
                 end
 
                 if info['Upgrades'] then
@@ -277,6 +268,12 @@ function BuildingHelper:ParseKV()
             end
         end
     end
+    for unitName, requirementClasses in pairs(allBuildingRequirementClasses) do
+        GameRules.buildingRequirements[unitName] = {}
+        for requirementClass, requirementClassData in pairs(requirementClasses) do
+            table.insert(GameRules.buildingRequirements[unitName], requirementClassData.unitName)
+        end
+    end
 end
 
 function BuildingHelper:OnGameRulesStateChange(keys)
@@ -305,11 +302,9 @@ function BuildingHelper:OnEntityKilled(keys)
     local unitTable = killed:GetKeyValue()
     local gridTable = unitTable and unitTable["Grid"]
 
+    local killedPlayerID = killed:GetPlayerOwnerID()
+    local hero = PlayerResource:GetSelectedHeroEntity(killedPlayerID)
 
-    if killed.minimapEntity then
-        UTIL_Remove(killed.minimapEntity)
-    end
-    local hero = killed:GetOwner()
     if hero and hero.units and hero.alive then -- hero.units can contain other units besides buildings
         for i=#hero.units,1,-1 do
             if hero.units[i] == killed then
@@ -339,15 +334,17 @@ function BuildingHelper:OnEntityKilled(keys)
             end
         end
 
-        if hero and hero.alive then -- Skip looping unnecesarrily when elf dies
+        if hero and hero.alive then -- Skip looping unnecessarily when elf dies
             local name = killed:GetUnitName()
-            if hero.buildings[name] and hero.buildings[name] > 0 then
-                hero.buildings[name] = hero.buildings[name] - 1
+            ModifyStartedConstructionBuildingCount(hero, name, -1)
+            if killed.state == "complete" then
+                ModifyCompletedConstructionBuildingCount(hero, name, -1)
             end
             if killed.ancestors then
-                for key,aname in pairs(killed.ancestors) do
-                    if name ~= aname then
-                        hero.buildings[aname] = hero.buildings[aname] - 1
+                for _, ancestorUnitName in pairs(killed.ancestors) do
+                    if name ~= ancestorUnitName then
+                        ModifyStartedConstructionBuildingCount(hero, ancestorUnitName, -1)
+                        ModifyCompletedConstructionBuildingCount(hero, ancestorUnitName, -1)
                     end
                 end
             end
@@ -1251,23 +1248,7 @@ function BuildingHelper:UpgradeBuilding(building, newName)
         end
     end
     newBuilding:AddNewModifier(nil, nil, "modifier_stunned", {})
-    newBuilding.ancestors = building.ancestors
     newBuilding.constructionCompleted = true
-    table.insert(newBuilding.ancestors,building:GetUnitName())
-    for key,name in pairs(newBuilding.ancestors) do
-        if hero.buildings[name] then
-            hero.buildings[name] = hero.buildings[name] + 1
-        else
-            hero.buildings[name] = 1
-        end
-        DebugPrint(name .. " is set to " ..hero.buildings[name])
-    end
-    table.insert(hero.units,newBuilding)
-    if hero.buildings[newBuilding:GetUnitName()] then
-        hero.buildings[newBuilding:GetUnitName()] = hero.buildings[newBuilding:GetUnitName()] + 1
-    else
-        hero.buildings[newBuilding:GetUnitName()] = 1
-    end
 
     local buildTime = GetUnitKV(newName, "BuildTime")
     local bScale = GetUnitKV(newName, "Scale") or 0
@@ -1301,7 +1282,6 @@ function BuildingHelper:UpgradeBuilding(building, newName)
     -- Kill the old building
     building:AddEffects(EF_NODRAW) --Hide it, so that it's still accessible after this script
     building.upgraded = true --Skips visual effects
-    building:ForceKill(true) --This will call RemoveBuilding
 
     -- Block the grid
     newBuilding.construction_size = BuildingHelper:GetConstructionSize(newName)
@@ -1339,16 +1319,6 @@ function BuildingHelper:UpgradeBuilding(building, newName)
         end)
     end
 
-
-    Timers:CreateTimer(buildTime,function()
-        if not newBuilding:IsNull() then
-            newBuilding:RemoveModifierByName("modifier_stunned")
-            if not string.match(newBuilding:GetUnitName(),"troll_hut") then
-                local item = CreateItem("item_building_destroy", nil, nil)
-                newBuilding:AddItem(item)
-            end
-        end
-    end)
 
     if building.units_repairing then
         for _,builder in pairs(building.units_repairing) do

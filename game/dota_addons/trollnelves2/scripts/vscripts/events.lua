@@ -117,13 +117,13 @@ function trollnelves2:OnEntityKilled(keys)
             bounty = ElfKilled(killed)
             if CheckTrollVictory() then
                 SetResourceValues()
-                Stats.SubmitMatchData(DOTA_TEAM_BADGUYS, callback)
+                --Stats.SubmitMatchData(DOTA_TEAM_BADGUYS, callback)
                 GameRules:SetGameWinner(DOTA_TEAM_BADGUYS)
                 return
             end
         elseif killed:IsTroll() then
             SetResourceValues()
-            Stats.SubmitMatchData(DOTA_TEAM_GOODGUYS, callback)
+            --Stats.SubmitMatchData(DOTA_TEAM_GOODGUYS, callback)
             GameRules:SetGameWinner(DOTA_TEAM_GOODGUYS)
         elseif killed:IsWolf() then
             bounty = math.max(killed:GetNetworth() * 0.10,GameRules:GetGameTime())
@@ -169,9 +169,6 @@ function ElfKilled(killed)
     for i=1,#killed.units do
 		if killed.units[i] and not killed.units[i]:IsNull() then
 			local unit = killed.units[i]
-            if unit.minimapEntity then
-                UTIL_Remove(unit.minimapEntity)
-			end
 			unit:ForceKill(false)
         end
     end
@@ -255,7 +252,7 @@ function GiveResources(eventSourceIndex, event)
                         text = text .. "<font color = '#009900'>" .. lumber .. "</font> lumber"
                     end
                     text = text ..  " to " .. PlayerResource:GetPlayerName(hero:GetPlayerOwnerID()) .. "(" .. GetModifiedName(hero:GetUnitName()) .. ")!"
-                    GameRules:SendCustomMessageToTeam(text,casterHero:GetTeamNumber(),0,0)
+                    GameRules:SendCustomMessageToTeam(text, casterHero:GetTeamNumber(), 0, 0)
                 end
             else
                 SendErrorMessage(event.casterID, "#error_enter_only_digits")

@@ -10,7 +10,8 @@ function setupTooltip() {
     var gold_cost = resources && resources.gold_cost || 0;
     var lumber_cost = resources && resources.lumber_cost || 0;
     var food_cost = resources && resources.food_cost || 0;
-    var requirements = upgradedUnitName.length > 0 && CustomNetTables.GetTableValue("buildings", (Players.GetLocalPlayer() + upgradedUnitName)) || {};
+    var requirementsObject = upgradedUnitName.length > 0 && CustomNetTables.GetTableValue("buildings", (Players.GetLocalPlayer() + upgradedUnitName)) || {};
+    var requirementKeys = Object.keys(requirementsObject);
     var gold_gain = upgradedUnitName.length > 0 && CustomNetTables.GetTableValue("buildings", upgradedUnitName) && CustomNetTables.GetTableValue("buildings", upgradedUnitName).gold_gain || 0;
 
     var item = CustomNetTables.GetTableValue("items", "buy_" + abilityName) || CustomNetTables.GetTableValue("items", abilityName);
@@ -32,11 +33,11 @@ function setupTooltip() {
     SetText("costs", (gold_cost > 0 ? ("<img src='file://{images}/custom_game/gold_icon32.png'/>" + gold_cost) : "") + (lumber_cost > 0 ? ("<img src='file://{images}/custom_game/lumber_icon32.png'/>" + lumber_cost) : "") + (food_cost > 0 ? ("<img src='file://{images}/custom_game/cheese_icon32.png'/>" + food_cost) : ""));
     SetText("description", locDescription);
     var reqText = "";
-    if (Object.keys(requirements).length > 0) {
+    if (requirementKeys.length > 0) {
         reqText = reqText + "<br>Requirements:";
     }
-    for (var key in requirements) {
-        reqText = reqText + "<br>" + $.Localize(key);
+    for (var requirementKey of requirementKeys) {
+        reqText = reqText + "<br>" + $.Localize(requirementsObject[requirementKey]);
     }
     SetText("requirements", reqText);
     SetText("gold_gain", (gold_gain > 0 && "Gold per second:" + gold_gain || ""));

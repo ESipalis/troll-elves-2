@@ -115,7 +115,7 @@ function CDOTA_PlayerResource:GetAllStats(pID)
 	local sum = 0
 	sum = sum + PlayerResource:GetGoldGained(pID) + PlayerResource:GetGoldGiven(pID) + PlayerResource:GetLumberGiven(pID) + PlayerResource:GetLumberGained(pID)
 	return sum
-end	
+end
 
 function CDOTA_PlayerResource:ModifyFood(hero,food)
     food = string.match(food,"[-]?%d+") or 0
@@ -144,13 +144,13 @@ end
 
 function CDOTA_PlayerResource:GetType(pID)
 	local heroName = PlayerResource:GetSelectedHeroName(pID)
-    return string.match(heroName,TROLL_HERO) and "troll" 
+    return string.match(heroName,TROLL_HERO) and "troll"
             or string.match(heroName,ANGEL_HERO) and "angel"
             or string.match(heroName,WOLF_HERO) and "wolf"
             or "elf"
 end
 
-function CDOTA_PlayerResource:GetScoreBonus(pID)	
+function CDOTA_PlayerResource:GetScoreBonus(pID)
 	local scoreBonus = PlayerResource:GetScoreBonusGoldGained(pID) + PlayerResource:GetScoreBonusGoldGiven(pID) + PlayerResource:GetScoreBonusLumberGained(pID) + PlayerResource:GetScoreBonusLumberGiven(pID) + PlayerResource:GetScoreBonusRank(pID)
 	return math.floor(scoreBonus)
 end
@@ -171,7 +171,7 @@ function CDOTA_PlayerResource:GetScoreBonusGoldGained(pID)
 	local value = math.floor((math.max(playerSum,teamAvg)/math.min(playerSum,teamAvg)*goldGainedImportance/10)+add)
 	value = math.min(goldGainedImportance,value)
 	return (value*sign)
-	
+
 end
 function CDOTA_PlayerResource:GetScoreBonusGoldGiven(pID)
 	local team = PlayerResource:GetTeam(pID)
@@ -234,7 +234,7 @@ function CDOTA_PlayerResource:GetScoreBonusRank(pID)
 	local value = math.floor((math.abs(enemyTeamScore - allyTeamScore))*rankImportance/500)
 	value = math.min(rankImportance,value)
 	return (value*sign)
-end	
+end
 
 
 
@@ -264,4 +264,14 @@ function CDOTA_BaseNPC_Hero:GetNetworth()
     end
     sum = sum + PlayerResource:GetGold(self:GetPlayerOwnerID())
     return sum
+end
+
+function ModifyStartedConstructionBuildingCount(hero, unitName, number)
+    local buildingCounts = hero.buildings[unitName]
+    buildingCounts.startedConstructionCount = buildingCounts.startedConstructionCount + number
+end
+
+function ModifyCompletedConstructionBuildingCount(hero, unitName, number)
+	local buildingCounts = hero.buildings[unitName]
+    buildingCounts.completedConstructionCount = buildingCounts.completedConstructionCount + number
 end

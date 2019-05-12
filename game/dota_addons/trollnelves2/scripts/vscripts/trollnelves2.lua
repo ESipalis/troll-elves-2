@@ -94,9 +94,6 @@ end
 
 function InitializeHero(hero)
 	DebugPrint("Initialize hero")
-	hero.buildings = {} -- This keeps the name and quantity of each building
-	hero.units = {}
-	hero.disabledBuildings = {}
 	PlayerResource:SetGold(hero, 0)
 	PlayerResource:SetLumber(hero, 0)
 	if not GameRules.startTime then
@@ -149,6 +146,12 @@ function InitializeBuilder(hero)
 	DebugPrint("Initialize builder")
 	hero.food = 0
 	hero.alive = true
+	hero.units = {}
+	hero.disabledBuildings = {}
+	hero.buildings = {} -- This keeps the name and quantity of each building
+	for _, buildingName in ipairs(GameRules.buildingNames) do
+		hero.buildings[buildingName] = {startedConstructionCount = 0, completedConstructionCount = 0}
+	end
 	hero:SetRespawnsDisabled(true)
 
 	hero:AddItemByName("item_root_ability")
@@ -180,6 +183,15 @@ function InitializeTroll(hero)
 	GameRules.trollHero = hero
 	GameRules.trollID = playerID
 
+	hero.units = {}
+	hero.disabledBuildings = {}
+	hero.buildings = {} -- This keeps the name and quantity of each building
+    hero.buildings["troll_hut_1"] = {startedConstructionCount = 0, completedConstructionCount = 0}
+	hero.buildings["troll_hut_2"] = {startedConstructionCount = 0, completedConstructionCount = 0}
+	hero.buildings["troll_hut_3"] = {startedConstructionCount = 0, completedConstructionCount = 0}
+	hero.buildings["troll_hut_4"] = {startedConstructionCount = 0, completedConstructionCount = 0}
+
+
 	local units = Entities:FindAllByClassname("npc_dota_creature")
 	for _,unit in pairs(units) do
 		local unit_name = unit:GetUnitName();
@@ -190,11 +202,8 @@ function InitializeTroll(hero)
 			unit:AddNewModifier(unit,nil,"modifier_phased",{})
 			if string.match(unit_name,"troll_hut") then
 				unit.ancestors = {}
-				if hero.buildings[unit:GetUnitName()] then
-					hero.buildings[unit:GetUnitName()] = hero.buildings[unit:GetUnitName()] + 1
-				else
-					hero.buildings[unit:GetUnitName()] = 1
-				end
+				ModifyStartedConstructionBuildingCount(hero, unit_name, 1)
+				ModifyCompletedConstructionBuildingCount(hero, unit_name, 1)
 				BuildingHelper:AddModifierBuilding(unit)
 				BuildingHelper:BlockGridSquares(GetUnitKV(unit_name,"ConstructionSize"), 0, unit:GetAbsOrigin())
 			end
@@ -286,7 +295,7 @@ function StartCreatingMinimapBuildings()
 		-- Create minimap entities for buildings that are visible and don't already have a minimap entity
 		local allEntities = Entities:FindAllByClassname("npc_dota_creature")
 		for _, unit in pairs(allEntities) do
-			if IsCustomBuilding(unit) and not unit:IsNull() and not unit.minimapEntity and unit:GetTeamNumber() ~= DOTA_TEAM_BADGUYS and IsLocationVisible(DOTA_TEAM_BADGUYS, unit:GetAbsOrigin()) then
+			if not unit:IsNull() and IsCustomBuilding(unit) and not unit.minimapEntity and unit:GetTeamNumber() ~= DOTA_TEAM_BADGUYS and IsLocationVisible(DOTA_TEAM_BADGUYS, unit:GetAbsOrigin()) then
 				unit.minimapEntity = CreateUnitByName("minimap_entity", unit:GetAbsOrigin(), false, unit:GetOwner(), unit:GetOwner(), unit:GetTeamNumber())
 				unit.minimapEntity:AddNewModifier(unit.minimapEntity, nil, "modifier_minimap", {})
 				unit.minimapEntity.correspondingEntity = unit
@@ -294,11 +303,11 @@ function StartCreatingMinimapBuildings()
 		end
 		-- Kill minimap entities of dead buildings when location is scouted
 		local minimapEntities = Entities:FindAllByClassname("npc_dota_building")
-		for k,minimapEnt in pairs(minimapEntities) do
-			if not minimapEnt:IsNull() and minimapEnt.correspondingEntity == "dead" and IsLocationVisible(DOTA_TEAM_BADGUYS, minimapEnt:GetAbsOrigin()) then
-				minimapEnt.correspondingEntity = nil
-				minimapEnt:ForceKill(false)
-				UTIL_Remove(minimapEnt)
+		for k, minimapEntity in pairs(minimapEntities) do
+			if not minimapEntity:IsNull() and minimapEntity.correspondingEntity == "dead" and IsLocationVisible(DOTA_TEAM_BADGUYS, minimapEntity:GetAbsOrigin()) then
+				minimapEntity.correspondingEntity = nil
+				minimapEntity:ForceKill(false)
+				UTIL_Remove(minimapEntity)
 			end
 		end
 		return 0.3
@@ -370,38 +379,7 @@ function UpdateSpells(unit)
 			local bIsBuilding = abilityKV and abilityKV.Building or 0
 			if bIsBuilding == 1 then
 				local buildingName = abilityKV.UnitName
-				local disableAbility = DisableAbilityIfMissingRequirements(playerID, hero, tempAbility, buildingName, true)
-				local limit = GetUnitKV(buildingName, "Limit") or 0
-				if not disableAbility and limit > 0 then
-					local currentCount = 0
-					for _, ownedUnit in ipairs(hero.units) do
-						if ownedUnit and not ownedUnit:IsNull() then
-							if ownedUnit:GetUnitName() == buildingName then
-								currentCount = currentCount + 1
-							end
-							if ownedUnit.ancestors then
-								for _, ancestorName in ipairs(ownedUnit.ancestors) do
-									if ancestorName == buildingName then
-										currentCount = currentCount + 1
-									end
-								end
-							end
-						end
-					end
-					if currentCount >= limit then
-						disableAbility = true
-					end
-				end
-
-				if disableAbility and not GameRules.test then
-					tempAbility:SetLevel(0)
-					hero.disabledBuildings[buildingName] = true
-				else
-					tempAbility:SetLevel(1)
-					if hero.disabledBuildings[buildingName] then
-						hero.disabledBuildings[buildingName] = false
-					end
-				end
+				DisableAbilityIfMissingRequirements(playerID, hero, tempAbility, buildingName)
 			end
 		end
 	end
@@ -439,6 +417,7 @@ function AddUpgradeAbilities(building)
 				building:RemoveAbility(tempAbility:GetAbilityName())
 			end
 		end
+
 		local count = tonumber(upgrades.Count)
 		for i = 1, count, 1 do
 			local upgrade = upgrades[tostring(i)]
@@ -460,15 +439,14 @@ function AddUpgradeAbilities(building)
 	end
 end
 
-function DisableAbilityIfMissingRequirements(playerID, hero, abilityHandle, unitName, dontDisable)
-	dontDisable = dontDisable or false
+function DisableAbilityIfMissingRequirements(playerID, hero, abilityHandle, unitName)
 	local missingRequirements = {}
 	local disableAbility = false
 
 	local requirements = GameRules.buildingRequirements[unitName]
 	if requirements then
 		for _, requiredUnitName in ipairs(requirements) do
-			local requiredBuildingCurrentCount = hero.buildings[requiredUnitName] or 0
+			local requiredBuildingCurrentCount = hero.buildings[requiredUnitName].completedConstructionCount
 			if requiredBuildingCurrentCount < 1 then
 				table.insert(missingRequirements, requiredUnitName)
 				disableAbility = true
@@ -477,14 +455,21 @@ function DisableAbilityIfMissingRequirements(playerID, hero, abilityHandle, unit
 	end
 	CustomNetTables:SetTableValue("buildings", playerID .. unitName, missingRequirements)
 
-	if not dontDisable then
-		if disableAbility and not GameRules.test then
-			abilityHandle:SetLevel(0)
-		else
-			abilityHandle:SetLevel(1)
+	local limit = GetUnitKV(unitName, "Limit")
+	if limit ~= nil then
+		local currentCount = hero.buildings[unitName].startedConstructionCount
+		if currentCount >= limit then
+			disableAbility = true
 		end
 	end
-    return disableAbility
+
+	if disableAbility and not GameRules.test then
+		abilityHandle:SetLevel(0)
+		hero.disabledBuildings[unitName] = true
+	else
+		abilityHandle:SetLevel(1)
+		hero.disabledBuildings[unitName] = false
+	end
 end
 
 function GetClass(unitName)
