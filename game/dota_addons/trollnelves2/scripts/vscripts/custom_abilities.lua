@@ -344,7 +344,7 @@ function GoldMineCreate(keys)
 	local maxGold = GetUnitKV(caster:GetUnitName(),"MaxGold") or 2000000
 	hero.goldPerSecond = hero.goldPerSecond + amountPerSecond
 	local secondsToLive = maxGold/amountPerSecond;
-	Timers:CreateTimer(secondsToLive, 
+	caster.destroyTimer = Timers:CreateTimer(secondsToLive,
 		function()
 			caster:ForceKill(false)
 		end)
@@ -360,6 +360,7 @@ function GoldMineDestroy(keys)
 	local hero = caster:GetOwner()
 	local amountPerSecond = GetUnitKV(caster:GetUnitName()).GoldAmount * GameRules.MapSpeed
 	hero.goldPerSecond = hero.goldPerSecond - amountPerSecond
+	Timers:RemoveTimer(caster.destroyTimer)
 	local dataTable = { entityIndex = caster:GetEntityIndex() }
 	local player = hero:GetPlayerOwner()
 	if player then

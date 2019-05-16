@@ -108,11 +108,11 @@ end
 function trollnelves2:OnEntityKilled(keys)
     local killed = EntIndexToHScript(keys.entindex_killed)
     local attacker = EntIndexToHScript(keys.entindex_attacker)
-    local bounty = -1
-    local killedID = killed:GetPlayerOwnerID()
-    local attackerID = attacker:GetPlayerOwnerID()
+    local killedPlayerID = killed:GetPlayerOwnerID()
+    local attackerPlayerID = attacker:GetPlayerOwnerID()
 
     if killed:IsRealHero() then
+        local bounty = -1
         if killed:IsElf() and killed.alive then
             bounty = ElfKilled(killed)
             if CheckTrollVictory() then
@@ -130,7 +130,7 @@ function trollnelves2:OnEntityKilled(keys)
             killed:SetRespawnPosition(Vector(0, -640, 256))
             killed:SetTimeUntilRespawn(WOLF_RESPAWN_TIME)
         elseif killed:IsAngel() then
-            bounty = math.max(PlayerResource:GetGold(killedID),GameRules:GetGameTime())
+            bounty = math.max(PlayerResource:GetGold(killedPlayerID),GameRules:GetGameTime())
             PlayerResource:SetGold(killed, 0)
             killed:SetRespawnPosition(RandomAngelLocation())
             killed:SetTimeUntilRespawn(ANGEL_RESPAWN_TIME)
@@ -138,23 +138,76 @@ function trollnelves2:OnEntityKilled(keys)
                 hero:AddNewModifier(killed, nil, "modifier_invulnerable", {duration = 5})
             end)
         end
-    end
-    if bounty>=0 and attacker~=killed then
-        local killedName = PlayerResource:GetSelectedHeroEntity(killedID)
-                and PlayerResource:GetSelectedHeroEntity(killedID):GetUnitName() or killed:GetUnitName()
-        local attackerName = PlayerResource:GetSelectedHeroEntity(attackerID)
-                and PlayerResource:GetSelectedHeroEntity(attackerID):GetUnitName() or attacker:GetUnitName()
-        bounty = math.floor(bounty)
-        PlayerResource:ModifyGold(attacker,bounty)
-        local message = "%s1 (" .. GetModifiedName(attackerName)  .. ") killed " .. PlayerResource:GetPlayerName(killedID) .. " (" .. GetModifiedName(killedName) .. ") for <font color='#F0BA36'>"..bounty.."</font> gold!"
-        GameRules:SendCustomMessage(message, attackerID, 0)
-    end
-    if not killed:IsNull() and killed:GetKeyValue("FoodCost") then
-        local food_cost = killed:GetKeyValue("FoodCost")
-        local hero = PlayerResource:GetSelectedHeroEntity(killedID)
-        PlayerResource:ModifyFood(hero,-food_cost)
-    end
+        if bounty>=0 and attacker~=killed then
+            local killedName = PlayerResource:GetSelectedHeroEntity(killedPlayerID)
+                    and PlayerResource:GetSelectedHeroEntity(killedPlayerID):GetUnitName() or killed:GetUnitName()
+            local attackerName = PlayerResource:GetSelectedHeroEntity(attackerPlayerID)
+                    and PlayerResource:GetSelectedHeroEntity(attackerPlayerID):GetUnitName() or attacker:GetUnitName()
+            bounty = math.floor(bounty)
+            PlayerResource:ModifyGold(attacker,bounty)
+            local message = "%s1 (" .. GetModifiedName(attackerName)  .. ") killed " .. PlayerResource:GetPlayerName(killedPlayerID) .. " (" .. GetModifiedName(killedName) .. ") for <font color='#F0BA36'>"..bounty.."</font> gold!"
+            GameRules:SendCustomMessage(message, attackerPlayerID, 0)
+        end
+    else
 
+        local unitTable = killed:GetKeyValue()
+        local gridTable = unitTable and unitTable["Grid"]
+
+        local hero = PlayerResource:GetSelectedHeroEntity(killedPlayerID)
+
+        if hero and hero.units and hero.alive then -- hero.units can contain other units besides buildings
+            for i=#hero.units,1,-1 do
+                if hero.units[i]:GetEntityIndex() == killed:GetEntityIndex() then
+                    table.remove(hero.units,i)
+                    break
+                end
+            end
+        end
+
+        if IsBuilder(killed) then
+            BuildingHelper:ClearQueue(killed)
+        elseif IsCustomBuilding(killed) or gridTable then
+            -- Building Helper grid cleanup
+            BuildingHelper:RemoveBuilding(killed, false)
+
+            if gridTable then
+                for grid_type,v in pairs(gridTable) do
+                    if tobool(v.RemoveOnDeath) then
+                        local location = killed:GetAbsOrigin()
+                        BuildingHelper:print("Clearing special grid of "..grid_type)
+                        if (v.Radius) then
+                            BuildingHelper:RemoveGridType(v.Radius, location, grid_type, "radius")
+                        elseif (v.Square) then
+                            BuildingHelper:RemoveGridType(v.Square, location, grid_type)
+                        end
+                    end
+                end
+            end
+
+            if hero and hero.alive then -- Skip looping unnecessarily when elf dies
+                local name = killed:GetUnitName()
+                ModifyStartedConstructionBuildingCount(hero, name, -1)
+                if killed.state == "complete" then
+                    ModifyCompletedConstructionBuildingCount(hero, name, -1)
+                end
+                if killed.ancestors then
+                    for _, ancestorUnitName in pairs(killed.ancestors) do
+                        if name ~= ancestorUnitName then
+                            ModifyStartedConstructionBuildingCount(hero, ancestorUnitName, -1)
+                            ModifyCompletedConstructionBuildingCount(hero, ancestorUnitName, -1)
+                        end
+                    end
+                end
+                for _, v in ipairs(hero.units) do
+                    UpdateUpgrades(v)
+                end
+                UpdateSpells(hero)
+            end
+        elseif killed:GetKeyValue("FoodCost") then
+            local foodCost = killed:GetKeyValue("FoodCost")
+            PlayerResource:ModifyFood(hero, -foodCost)
+        end
+    end
 end
 
 function ElfKilled(killed)

@@ -22,6 +22,10 @@ When gold wisps start building the gold mine they get deselected.
 Reworked building building/upgrading logic, should be way more efficient.
 Modified entity dying logic (Please report if wall glitches or troll respawning glitches still happen).
 
+#5
+Attempted to fix wall glitch (Please report if they still happen).
+Limited to 40 towers per player.
+
 
 TODO:
 Fix poison tower stuff.
@@ -29,4 +33,6 @@ Fix setup.js events wasting resources.
 Fix 2 trolls (game stages).
 Fix building upgrading ancestor logic.
 Fix "Dead" notification when upgrading multiple units at once.
+Rework building requirement parsing to use previous classes.
+Merge UpgradeBuilding functions into one
 

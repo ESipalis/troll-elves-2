@@ -46,7 +46,6 @@ function BuildingHelper:Init()
      -- Game Event Listeners
     ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(BuildingHelper, 'OnGameRulesStateChange'), self)
     ListenToGameEvent('npc_spawned', Dynamic_Wrap(BuildingHelper, 'OnNPCSpawned'), self)
-    ListenToGameEvent('entity_killed', Dynamic_Wrap(BuildingHelper, 'OnEntityKilled'), self)
 
     if BuildingHelper.Settings["UPDATE_TREES"] then
         ListenToGameEvent('tree_cut', Dynamic_Wrap(BuildingHelper, 'OnTreeCut'), self)
@@ -295,66 +294,6 @@ function BuildingHelper:OnNPCSpawned(keys)
     if collision_size and collision_size ~= hull_radius then
         npc:SetHullRadius(collision_size)
     end
-end
-
-function BuildingHelper:OnEntityKilled(keys)
-    local killed = EntIndexToHScript(keys.entindex_killed)
-    local unitTable = killed:GetKeyValue()
-    local gridTable = unitTable and unitTable["Grid"]
-
-    local killedPlayerID = killed:GetPlayerOwnerID()
-    local hero = PlayerResource:GetSelectedHeroEntity(killedPlayerID)
-
-    if hero and hero.units and hero.alive then -- hero.units can contain other units besides buildings
-        for i=#hero.units,1,-1 do
-            if hero.units[i] == killed then
-                table.remove(hero.units,i)
-                break
-            end
-        end
-    end
-
-    if IsBuilder(killed) then
-        BuildingHelper:ClearQueue(killed)
-    elseif IsCustomBuilding(killed) or gridTable then
-        -- Building Helper grid cleanup
-        BuildingHelper:RemoveBuilding(killed, false)
-
-        if gridTable then
-            for grid_type,v in pairs(gridTable) do
-                if tobool(v.RemoveOnDeath) then
-                    local location = killed:GetAbsOrigin()
-                    BuildingHelper:print("Clearing special grid of "..grid_type)
-                    if (v.Radius) then
-                        BuildingHelper:RemoveGridType(v.Radius, location, grid_type, "radius")
-                    elseif (v.Square) then
-                        BuildingHelper:RemoveGridType(v.Square, location, grid_type)
-                    end                
-                end
-            end
-        end
-
-        if hero and hero.alive then -- Skip looping unnecessarily when elf dies
-            local name = killed:GetUnitName()
-            ModifyStartedConstructionBuildingCount(hero, name, -1)
-            if killed.state == "complete" then
-                ModifyCompletedConstructionBuildingCount(hero, name, -1)
-            end
-            if killed.ancestors then
-                for _, ancestorUnitName in pairs(killed.ancestors) do
-                    if name ~= ancestorUnitName then
-                        ModifyStartedConstructionBuildingCount(hero, ancestorUnitName, -1)
-                        ModifyCompletedConstructionBuildingCount(hero, ancestorUnitName, -1)
-                    end
-                end
-            end
-            for _, v in ipairs(hero.units) do
-                UpdateUpgrades(v)
-            end
-            UpdateSpells(hero)
-        end
-    end
-
 end
 
 function BuildingHelper:OnTreeCut(keys)
@@ -793,27 +732,22 @@ function BuildingHelper:OrderFilter(order)
         if ability then
             local abilityName = ability:GetAbilityName()
             local selectedEntities = PlayerResource:GetSelectedEntities(issuerID)
-            local count = 0
             if string.match(abilityName,"upgrade_to") then
                 local unitName = unit:GetUnitName()
-                for k,v in pairs(selectedEntities) do
-                    local ounit = EntIndexToHScript(v)
-                    if ounit and ounit:GetUnitName() == unitName then
-                        for a = 0, ounit:GetAbilityCount()-1 do
-                            local upgradeAbility = ounit:GetAbilityByIndex(a)
-                            if upgradeAbility then
-                                if upgradeAbility:GetAbilityName() == abilityName then
-                                    ExecuteOrderFromTable({UnitIndex = v, OrderType = DOTA_UNIT_ORDER_CAST_NO_TARGET, TargetIndex = targetIndex, AbilityIndex = upgradeAbility:GetEntityIndex(), Queue = queue})
-                                    count = count + 1
-                                    break
-                                end
+                for _, selectedEntityIndex in pairs(selectedEntities) do
+                    local selectedEntityHandle = EntIndexToHScript(selectedEntityIndex)
+                    if selectedEntityHandle and selectedEntityHandle:GetUnitName() == unitName then
+                        for a = 0, selectedEntityHandle:GetAbilityCount()-1 do
+                            local upgradeAbility = selectedEntityHandle:GetAbilityByIndex(a)
+                            if upgradeAbility and upgradeAbility:GetAbilityName() == abilityName then
+                                ExecuteOrderFromTable({ UnitIndex = selectedEntityIndex, OrderType = DOTA_UNIT_ORDER_CAST_NO_TARGET, TargetIndex = targetIndex, AbilityIndex = upgradeAbility:GetEntityIndex(), Queue = false})
+                                goto entityLoop
                             end
                         end
                     end
+                    ::entityLoop::
                 end
-                if count == 1 then
-                    return false
-                end
+                return false
             end
         end
     end

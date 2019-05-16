@@ -2037,6 +2037,7 @@
 		"Scale"						"1"
 		"RequiresRepair"			"1"
 		"StartingBuilding"          "1"
+		"Limit"						"40"
 
 	    // Stats
 	    //----------------------------- 

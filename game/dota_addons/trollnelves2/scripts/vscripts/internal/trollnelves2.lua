@@ -29,8 +29,8 @@ function trollnelves2:_Inittrollnelves2()
   GameRules:SetHideKillMessageHeaders(true)
 
   -- local player_count = string.match(GetMapName(),"winter") and 12 or 8
-  GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_GOODGUYS, 12)
-  GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS, 12)
+  GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS, 13)
+  GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_GOODGUYS, 13)
 
   -- Setup game mode
   mode = GameRules:GetGameModeEntity()        
