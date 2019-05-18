@@ -2,10 +2,11 @@ modifier_poison = class({})
 
 function modifier_poison:OnCreated(event)
     local hero = self:GetParent()
+    DebugPrint("modifierPoison created: ", hero:GetUnitName())
     local value = hero.hpReg * 0.05
     self.value = value
     hero.hpRegDebuff = hero.hpRegDebuff + value
-    CustomGameEventManager:Send_ServerToAllClients("custom_hp_reg", { value=(hero.hpReg-hero.hpRegDebuff),unit=hero:GetEntityIndex() })
+    CustomGameEventManager:Send_ServerToAllClients("custom_hp_reg", { value=math.max(hero.hpReg-hero.hpRegDebuff, 0),unit=hero:GetEntityIndex() })
 end
 
 function modifier_poison:OnRefresh(event)
@@ -13,9 +14,10 @@ end
 
 function modifier_poison:OnDestroy(event)
     local hero = self:GetParent()
+    DebugPrint("modifierPoison destroyed: ", hero:GetUnitName())
     local value = self.value
     hero.hpRegDebuff = hero.hpRegDebuff - value
-    CustomGameEventManager:Send_ServerToAllClients("custom_hp_reg", { value=(hero.hpReg-hero.hpRegDebuff),unit=hero:GetEntityIndex() })
+    CustomGameEventManager:Send_ServerToAllClients("custom_hp_reg", { value=math.max(hero.hpReg-hero.hpRegDebuff, 0),unit=hero:GetEntityIndex() })
 end
 
 function modifier_poison:GetAttributes()

@@ -238,20 +238,20 @@ end
 
 
 
-function CDOTA_BaseNPC_Hero:IsElf()
+function CDOTA_BaseNPC:IsElf()
     return self:GetUnitName() == ELF_HERO
 end
-function CDOTA_BaseNPC_Hero:IsTroll()
+function CDOTA_BaseNPC:IsTroll()
     return self:GetUnitName() == TROLL_HERO
 end
-function CDOTA_BaseNPC_Hero:IsAngel()
+function CDOTA_BaseNPC:IsAngel()
     return self:GetUnitName() == ANGEL_HERO
 end
-function CDOTA_BaseNPC_Hero:IsWolf()
+function CDOTA_BaseNPC:IsWolf()
     return self:GetUnitName() == WOLF_HERO
 end
 
-function CDOTA_BaseNPC_Hero:GetNetworth()
+function CDOTA_BaseNPC:GetNetworth()
     local sum = 0
     for i = 0, 5, 1 do
         local item = self:GetItemInSlot(i)

@@ -69,9 +69,6 @@ var uiWaitingSchedules = [];
 
     SetupUnusedItemHotkeys();
 
-    // GameEvents.Subscribe("dota_portrait_ability_layout_changed", UpdateAbilityTooltips);
-    // GameEvents.Subscribe("dota_ability_changed", UpdateAbilityTooltips);
-
     GameEvents.Subscribe("gameui_activated", UpdateUI);
     GameEvents.Subscribe("dota_inventory_changed", UpdateItemTooltipsAndAbilityCustomHotkeys);
     GameEvents.Subscribe("dota_inventory_item_changed", UpdateItemTooltipsAndAbilityCustomHotkeys);
@@ -82,30 +79,6 @@ var uiWaitingSchedules = [];
         customHpReg[args.unit] = args.value;
         UpdateHpRegLabel();
     });
-
-    // GameEvents.Subscribe("dota_portrait_ability_layout_changed", function(args) {
-    //     $.Msg("dota_portrait_ability_layout_changed: ", args);
-    // });
-    // GameEvents.Subscribe("dota_ability_changed", function(args) {
-    //     $.Msg("dota_ability_changed: ", args);
-    // });
-    // GameEvents.Subscribe("dota_inventory_changed", function(args) {
-    //     $.Msg("dota_inventory_changed: ", args);
-    // });
-    // GameEvents.Subscribe("dota_inventory_item_changed", function(args) {
-    //     $.Msg("dota_inventory_item_changed: ", args);
-    // });
-    // GameEvents.Subscribe("m_event_keybind_changed", function(args) {
-    //     $.Msg("m_event_keybind_changed: ", args);
-    // });
-    // GameEvents.Subscribe("dota_player_update_selected_unit", function(args) {
-    //     var selectedUnit = Players.GetLocalPlayerPortraitUnit();
-    //     $.Msg("dota_player_update_selected_unit: ", selectedUnit);
-    // });
-    // GameEvents.Subscribe("dota_player_update_query_unit", function(args) {
-    //     $.Msg("dota_player_update_query_unit: ", args)
-    // });
-
 })();
 
 function InitializeCustomHpRegenLabel(healthContainer) {
@@ -182,7 +155,6 @@ function UpdateAbilityTooltips() {
     unusedHotkeyAbilitySlots = [];
     for (var i = 0; i < 16; i++) {
         var abilityID = Entities.GetAbility(selectedUnit, i);
-        $.Msg("Ability: ", abilityID, "; name: ", Abilities.GetAbilityName(abilityID));
         if (abilityID === -1) {
             break;
         }
@@ -194,9 +166,7 @@ function UpdateAbilityTooltips() {
 
         function waitForValveUI(abilitySlot, tries) {
             var abilityPanel = abilityListPanel.FindChildTraverse("Ability" + abilitySlot);
-            $.Msg("Ability panel, ", abilitySlot, ": ", abilityPanel);
             if (abilityPanel == null) {
-                $.Msg("AbilityPanel", abilitySlot, " is null, rescheduling...");
                 if (tries < 3) {
                     uiWaitingSchedules.push($.Schedule(0.1, function () {
                         waitForValveUI(abilitySlot, tries + 1);
@@ -267,7 +237,6 @@ function UpdateAbilityCustomHotkeys() {
     var abilityCount = Entities.GetAbilityCount(selectedUnit);
     for (var i = 6; i < abilityCount; i++) {
         var abilityID = Entities.GetAbility(selectedUnit, i);
-        $.Msg("Ability: ", abilityID, "; name: ", Abilities.GetAbilityName(abilityID));
         if (abilityID === -1) {
             break;
         }
@@ -279,9 +248,7 @@ function UpdateAbilityCustomHotkeys() {
 
         function waitForValveUI(abilitySlot, tries) {
             var abilityPanel = abilityListPanel.FindChildTraverse("Ability" + abilitySlot);
-            $.Msg("Ability panel, ", abilitySlot, ": ", abilityPanel);
             if (abilityPanel == null) {
-                $.Msg("AbilityPanel", abilitySlot, " is null, rescheduling...");
                 if (tries < 3) {
                     uiWaitingSchedules.push($.Schedule(0.1, function () {
                         waitForValveUI(abilitySlot, tries + 1);
@@ -295,13 +262,11 @@ function UpdateAbilityCustomHotkeys() {
 }
 
 function UpdateAbilityCustomHotkey(selectedUnit, abilitySlot, abilityPanel, x) {
-    $.Msg("Checking hotkeys for ability slot: ", abilitySlot);
     var hotkey = null;
     while (hotkey == null && x.nextHotkeyIndex < itemHotkeys.length) {
         if (IsHotkeyAvailable(selectedUnit, x.nextHotkeyIndex)) {
             hotkey = itemHotkeys[x.nextHotkeyIndex];
         }
-        $.Msg("Checking hotkey: ", x.nextHotkeyIndex, "; ", hotkey);
         x.nextHotkeyIndex = x.nextHotkeyIndex + 1;
     }
     var foundFreeItemHotkey = hotkey != null;

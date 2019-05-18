@@ -1270,7 +1270,20 @@ end
     * Removes a building, removing it from the gridnav, with an optional parameter to skip particle effects
 ]]--
 function BuildingHelper:RemoveBuilding(building, bSkipEffects)
-    BuildingHelper:print("Removing Building: "..building:GetUnitName())
+    if building.blockers then
+        for _, v in pairs(building.blockers) do
+            UTIL_Remove(v)
+        end
+    end
+    BuildingHelper:FreeGridSquares(BuildingHelper:GetConstructionSize(building), building:GetAbsOrigin())
+
+    if building.prop then
+        UTIL_Remove(building.prop)
+    end
+
+    if building.minimapEntity then
+        building.minimapEntity.correspondingEntity = "dead"
+    end
 
     -- Don't show the destruction effects when specified or killed to due UpgradeBuilding
     if not bSkipEffects and building.upgraded ~= true then
@@ -1286,23 +1299,6 @@ function BuildingHelper:RemoveBuilding(building, bSkipEffects)
         end
     end
 
-    if building.prop then
-        UTIL_Remove(building.prop)
-    end
-
-    if building.minimapEntity then
-        building.minimapEntity.correspondingEntity = "dead"
-    end
-
-    BuildingHelper:FreeGridSquares(BuildingHelper:GetConstructionSize(building), building:GetAbsOrigin())
-
-    if not building.blockers then 
-        return 
-    end
-
-    for k, v in pairs(building.blockers) do
-        UTIL_Remove(v)
-    end
     Timers:CreateTimer(10,function()
         UTIL_Remove(building)
     end)

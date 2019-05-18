@@ -111,6 +111,9 @@ function trollnelves2:OnEntityKilled(keys)
     local killedPlayerID = killed:GetPlayerOwnerID()
     local attackerPlayerID = attacker:GetPlayerOwnerID()
 
+    if IsBuilder(killed) then
+        BuildingHelper:ClearQueue(killed)
+    end
     if killed:IsRealHero() then
         local bounty = -1
         if killed:IsElf() and killed.alive then
@@ -149,24 +152,20 @@ function trollnelves2:OnEntityKilled(keys)
             GameRules:SendCustomMessage(message, attackerPlayerID, 0)
         end
     else
-
-        local unitTable = killed:GetKeyValue()
-        local gridTable = unitTable and unitTable["Grid"]
-
         local hero = PlayerResource:GetSelectedHeroEntity(killedPlayerID)
 
         if hero and hero.units and hero.alive then -- hero.units can contain other units besides buildings
             for i=#hero.units,1,-1 do
-                if hero.units[i]:GetEntityIndex() == killed:GetEntityIndex() then
+                if hero.units[i]:GetEntityIndex() == keys.entindex_killed then
                     table.remove(hero.units,i)
                     break
                 end
             end
         end
 
-        if IsBuilder(killed) then
-            BuildingHelper:ClearQueue(killed)
-        elseif IsCustomBuilding(killed) or gridTable then
+        local unitTable = killed:GetKeyValue()
+        local gridTable = unitTable and unitTable["Grid"]
+        if IsCustomBuilding(killed) or gridTable then
             -- Building Helper grid cleanup
             BuildingHelper:RemoveBuilding(killed, false)
 
@@ -341,16 +340,17 @@ function ChooseHelpSide(eventSourceIndex, event)
         timer = WOLF_RESPAWN_TIME
         pos = Vector(0, -640, 256)
     end
+    PlayerResource:SetCustomTeamAssignment(playerID, team)
     Timers:CreateTimer(function()
         GameRules:SendCustomMessage(message, playerID, 0)
     end)
 
-    PlayerResource:SetCustomTeamAssignment(playerID, team)
     hero:SetTimeUntilRespawn(timer)
     Timers:CreateTimer(timer, function()
         PlayerResource:ReplaceHeroWith(playerID, newHeroName, 0, 0)
         UTIL_Remove(hero)
         hero = PlayerResource:GetSelectedHeroEntity(playerID)
+        PlayerResource:SetCustomTeamAssignment(playerID, team)  -- A workaround for wolves sometimes getting stuck on elves team, I don't know why or how it happens.
         FindClearSpaceForUnit(hero, pos, true)
     end)
 end
