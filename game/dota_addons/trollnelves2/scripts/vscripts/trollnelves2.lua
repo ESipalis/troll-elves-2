@@ -41,20 +41,23 @@ function trollnelves2:GameSetup()
 end
 
 function SelectHeroes()
-	local playerCount = PlayerResource:GetPlayerCount()
+    local allPlayersIDs = {}
 	local wannabeTrollIDs = {}
-	for pID=0, playerCount-1 do
-		PlayerResource:SetCustomTeamAssignment(pID, DOTA_TEAM_GOODGUYS)
-		local playerSelection = GameRules.playerTeamChoices[pID]
-		if playerSelection == "troll" then
-			table.insert(wannabeTrollIDs, pID)
+	for pID=0, DOTA_MAX_TEAM_PLAYERS do
+		if PlayerResource:IsValidPlayerID(pID) then
+			table.insert(allPlayersIDs, pID)
+			local playerSelection = GameRules.playerTeamChoices[pID]
+			if playerSelection == "troll" then
+				table.insert(wannabeTrollIDs, pID)
+			end
+			PlayerResource:SetCustomTeamAssignment(pID, DOTA_TEAM_GOODGUYS)
 		end
 	end
 	local trollPlayerID
 	if #wannabeTrollIDs > 0 then
 		trollPlayerID = wannabeTrollIDs[math.random(#wannabeTrollIDs)]
 	else
-		trollPlayerID = math.random(playerCount) - 1
+		trollPlayerID = allPlayersIDs[math.random(#allPlayersIDs)]
 	end
 	if not GameRules.test then
 	    PlayerResource:SetCustomTeamAssignment(trollPlayerID , DOTA_TEAM_BADGUYS)
