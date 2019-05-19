@@ -207,24 +207,24 @@ function StartBuildingHelper( params )
         }
 
         // Update treeGrid (slowly, as its the most expensive)
-        /*if (update_trees)
+        if (update_trees)
         {
-            var time = Game.GetGameTime()
-            var time_since_last_tree_update = time - last_tree_update
+            var time = Game.GetGameTime();
+            var time_since_last_tree_update = time - last_tree_update;
             if (time_since_last_tree_update > tree_update_interval)
             {
                 last_tree_update = time
-                tree_entities = Entities.GetAllEntitiesByClassname('ent_dota_tree')
+                tree_entities = Entities.GetAllEntitiesByClassname('ent_dota_tree');
                 treeGrid = [];
                 for (var i = 0; i < tree_entities.length; i++)
                 {
-                    var treePos = Entities.GetAbsOrigin(tree_entities[i])
+                    var treePos = Entities.GetAbsOrigin(tree_entities[i]);
                     // Block the grid if the tree isn't chopped
                     if (cutTrees[treePos] === undefined)
-                        BlockGridSquares(treePos, 2, "TREE")                    
+                        BlockGridSquares(treePos, 2, "TREE")
                 }
             }
-        }*/
+        }
 
         var mPos = GameUI.GetCursorPosition();
         //var GamePos = Game.ScreenXYToWorld(mPos[0], mPos[1]);
@@ -523,6 +523,15 @@ function RegisterGNV(msg){
     {
         tab[arr[i].toString()]++;
     }
+
+    var treeEntities = Entities.GetAllEntitiesByClassname('ent_dota_tree');
+    treeGrid = [];
+    for (var i = 0; i < treeEntities.length; i++)
+    {
+        var treePos = Entities.GetAbsOrigin(treeEntities[i]);
+        BlockGridSquares(treePos, 2, "TREE")
+    }
+
     $.Msg("Free: ",tab["1"]," Blocked: ",tab["2"], " gnvLen: ", msg.gnv.length)
 }
 
@@ -595,7 +604,7 @@ function IsBlocked(position) {
         return true
 
     // If there's a tree standing, its invalid
-    if (update_trees && treeGrid[x] && (treeGrid[x][y] & GRID_TYPES["BLOCKED"]))
+    if (treeGrid[x] && (treeGrid[x][y] & GRID_TYPES["BLOCKED"]))
         return true
 
     return false
