@@ -215,6 +215,7 @@ function UpdateAbilityTooltips() {
             manaCostElement.style.marginBottom = "14px";
             manaCostElement.style.color = "#00d700";
             manaCostElement.style.fontWeight = "bold";
+            manaCostElement.style.fontSize = "14px";
             manaCostElement.text = lumber_cost;
             manaCostElement.style.textShadow = "1px 1px 1px 3.0 #000000";
 
