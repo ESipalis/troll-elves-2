@@ -213,7 +213,7 @@ function UpdateAbilityTooltips() {
             manaCostElement.style.visibility = lumber_cost > 0 ? "visible" : "collapse";
             manaCostElement.style.marginRight = "0px";
             manaCostElement.style.marginBottom = "14px";
-            manaCostElement.style.color = "#00a400";
+            manaCostElement.style.color = "#00d700";
             manaCostElement.style.fontWeight = "bold";
             manaCostElement.text = lumber_cost;
             manaCostElement.style.textShadow = "1px 1px 1px 3.0 #000000";
