@@ -175,19 +175,49 @@ function UpdateAbilityTooltips() {
                 return;
             }
 
+            var abilityName = Abilities.GetAbilityName(Entities.GetAbility(selectedUnit, abilitySlot));
+
             var buttonWell = abilityPanel.FindChildTraverse("ButtonWell");
             abilityPanel.SetPanelEvent("onmouseover", (function (index, tooltipParent) {
                 return function () {
-                    var entityIndex = Players.GetLocalPlayerPortraitUnit();
-                    var abilityName = Abilities.GetAbilityName(Entities.GetAbility(entityIndex, index));
                     $.DispatchEvent("UIShowCustomLayoutParametersTooltip", tooltipParent, "AbilityTooltip",
-                        "file://{resources}/layout/custom_game/ability_tooltip.xml", "entityIndex=" + entityIndex + "&abilityName=" + abilityName);
+                        "file://{resources}/layout/custom_game/ability_tooltip.xml", "entityIndex=" + selectedUnit + "&abilityName=" + abilityName);
                 }
             })(abilitySlot, buttonWell));
             abilityPanel.SetPanelEvent("onmouseout",
                 function () {
                     $.DispatchEvent("UIHideCustomLayoutTooltip", "AbilityTooltip");
                 });
+            var buttonSize = buttonWell.FindChildTraverse("ButtonSize");
+
+            var upgradedUnitName = CustomNetTables.GetTableValue("buildings", abilityName) && CustomNetTables.GetTableValue("buildings", abilityName).upgradeUnitName || "";
+            var building = selectedUnit && CustomNetTables.GetTableValue("buildings", Entities.GetUnitName(selectedUnit));
+            var resources = (building && upgradedUnitName.length > 0 && building[upgradedUnitName]) || CustomNetTables.GetTableValue("buildings", abilityName) || CustomNetTables.GetTableValue("abilities", abilityName);
+            var gold_cost = 0;
+            var lumber_cost = 0;
+
+            if (resources) {
+                gold_cost = resources.gold_cost || 0;
+                lumber_cost = resources.lumber_cost || 0;
+            } else {
+                var item = CustomNetTables.GetTableValue("items", "buy_" + abilityName) || CustomNetTables.GetTableValue("items", abilityName);
+                gold_cost = item && item.gold_cost || 0;
+                lumber_cost = item && item.lumber_cost || 0;
+            }
+
+            var goldCostElement = buttonSize.FindChildTraverse("GoldCost");
+            goldCostElement.style.visibility = gold_cost > 0 ? "visible" : "collapse";
+            goldCostElement.text = gold_cost;
+            goldCostElement.style.textShadow = "1px 1px 1px 3.0 #000000";
+            var manaCostElement = buttonSize.FindChildTraverse("ManaCost");
+            manaCostElement.style.visibility = lumber_cost > 0 ? "visible" : "collapse";
+            manaCostElement.style.marginRight = "0px";
+            manaCostElement.style.marginBottom = "14px";
+            manaCostElement.style.color = "#00a400";
+            manaCostElement.style.fontWeight = "bold";
+            manaCostElement.text = lumber_cost;
+            manaCostElement.style.textShadow = "1px 1px 1px 3.0 #000000";
+
             if (abilitySlot > 5) {
                 UpdateAbilityCustomHotkey(selectedUnit, abilitySlot, abilityPanel, x);
             }

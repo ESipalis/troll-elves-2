@@ -138,7 +138,7 @@ function trollnelves2:OnEntityKilled(keys)
             killed:SetRespawnPosition(RandomAngelLocation())
             killed:SetTimeUntilRespawn(ANGEL_RESPAWN_TIME)
             Timers:CreateTimer(ANGEL_RESPAWN_TIME, function ()
-                hero:AddNewModifier(killed, nil, "modifier_invulnerable", {duration = 5})
+                killed:AddNewModifier(killed, nil, "modifier_invulnerable", {duration = 5})
             end)
         end
         if bounty>=0 and attacker~=killed then
