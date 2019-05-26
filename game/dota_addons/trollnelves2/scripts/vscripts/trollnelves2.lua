@@ -263,7 +263,9 @@ function trollnelves2:PreStart()
 				for i=1, elfCount do
 					local pID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS, i)
 					local playerHero = PlayerResource:GetSelectedHeroEntity(pID)
-					playerHero:RemoveModifierByName("modifier_stunned")
+					if playerHero then
+						playerHero:RemoveModifierByName("modifier_stunned")
+					end
 				end
 
 				local trollSpawnTimer = TROLL_SPAWN_TIME

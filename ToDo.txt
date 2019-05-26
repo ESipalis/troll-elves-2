@@ -26,6 +26,10 @@ Modified entity dying logic (Please report if wall glitches or troll respawning 
 Attempted to fix wall glitch (Please report if they still happen).
 Limited to 40 towers per player.
 
+#6
+Fixed high armor values making troll invulnerable after the latest dota patch.
+Attempt to fix sometimes some elves and troll getting stunned indefinitely at the start of the game.
+
 
 TODO:
 Fix poison tower stuff.

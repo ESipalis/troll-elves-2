@@ -30,7 +30,7 @@ if IsServer() then
       return 0
     else
       self.checkArmor = true
-      local armor = self:GetParent():GetPhysicalArmorValue()
+      local armor = self:GetParent():GetPhysicalArmorValue(false)
       self.checkArmor = false
       return armor * -1; -- Return negative armor, so dota 2 thinks the armor is 0 and gives 0 physical resistance
     end
@@ -38,7 +38,7 @@ if IsServer() then
 
   function modifier_custom_armor:GetModifierIncomingPhysicalDamage_Percentage()
     self.checkArmor = true
-    local armor = self:GetParent():GetPhysicalArmorValue()
+    local armor = self:GetParent():GetPhysicalArmorValue(false)
     self.checkArmor = false
     local physicalResistance = 0.06*armor/(1+0.06*math.abs(armor))*100*-1 -- Calculate physical resistance with custom formula
     return physicalResistance
