@@ -9,9 +9,6 @@ function modifier_poison:OnCreated(event)
     CustomGameEventManager:Send_ServerToAllClients("custom_hp_reg", { value=math.max(hero.hpReg-hero.hpRegDebuff, 0),unit=hero:GetEntityIndex() })
 end
 
-function modifier_poison:OnRefresh(event)
-end
-
 function modifier_poison:OnDestroy(event)
     local hero = self:GetParent()
     DebugPrint("modifierPoison destroyed: ", hero:GetUnitName())

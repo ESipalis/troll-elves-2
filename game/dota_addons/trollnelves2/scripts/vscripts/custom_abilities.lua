@@ -632,7 +632,7 @@ function HealBuilding(event)
 		target:SetHealth(target:GetHealth() + heal)
 	end
 	target.healed = true
-	Timers:CreateTimer(ability:GetCooldown(),function()
+	Timers:CreateTimer(ability:GetCooldownTime(),function()
 		target.healed = false
 	end)
 end

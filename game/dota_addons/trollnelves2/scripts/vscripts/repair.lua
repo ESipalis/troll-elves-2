@@ -31,7 +31,7 @@ function BuildingHelper:OnRepairStarted(builder, building)
     builder:SetForwardVector(direction)
     builder:StartGesture(ACT_DOTA_ATTACK)
     builder.repair_animation_timer = Timers:CreateTimer(function()
-        if builder.state == "repairing" then
+        if not building:IsNull() and not builder:IsNull() and builder.state == "repairing" then
             local direction = (building:GetAbsOrigin()-builder:GetAbsOrigin()):Normalized()
             builder:SetForwardVector(direction)
             builder:StartGesture(ACT_DOTA_ATTACK)

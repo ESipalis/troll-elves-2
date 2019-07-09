@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="356f2973-6da9-458a-8560-82438a2f00ed" name="Default Changelist" comment="Ability's lumber cost text's font size set to 14px.">
+    <list default="true" id="356f2973-6da9-458a-8560-82438a2f00ed" name="Default Changelist" comment="ToDo #6: Fixed GetPhysicalArmorValue after latest dota patch.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_custom_armor.lua" beforeDir="false" afterPath="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_custom_armor.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/trollnelves2.lua" beforeDir="false" afterPath="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/trollnelves2.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/custom_abilities.lua" beforeDir="false" afterPath="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/custom_abilities.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_poison.lua" beforeDir="false" afterPath="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_poison.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/repair.lua" beforeDir="false" afterPath="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/repair.lua" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,28 +19,46 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/events.lua">
+        <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/addon_game_mode.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="17" column="9" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
+            <state relative-caret-position="720">
+              <caret line="129" lean-forward="true" selection-start-line="129" selection-end-line="129" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/trollnelves2.lua">
+        <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/repair.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="266" selection-start-line="266" selection-end-line="266" />
+            <state relative-caret-position="864">
+              <caret line="36" column="5" selection-start-line="36" selection-start-column="5" selection-end-line="36" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_custom_armor.lua">
+        <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_poison.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="19" column="9" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
+            <state relative-caret-position="624">
+              <caret line="26" selection-start-line="26" selection-end-line="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_building.lua">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="792">
+              <caret line="33" selection-start-line="33" selection-end-line="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/custom_abilities.lua">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15216">
+              <caret line="634" selection-start-line="634" selection-end-line="634" />
             </state>
           </provider>
         </entry>
@@ -48,7 +67,7 @@
         <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/settings.lua">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="288">
-              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+              <caret line="12" selection-start-line="12" selection-end-line="12" />
             </state>
           </provider>
         </entry>
@@ -56,17 +75,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/content/dota_addons/trollnelves2/panorama/scripts/custom_game/physical_resistance.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
+            <state relative-caret-position="696">
               <caret line="29" column="25" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/content/dota_addons/trollnelves2/panorama/scripts/custom_game/ability_tooltip.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
             </state>
           </provider>
         </entry>
@@ -92,17 +102,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/api.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="307">
-              <caret line="8078" column="35" selection-start-line="8078" selection-start-column="35" selection-end-line="8078" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/content/dota_addons/trollnelves2/panorama/styles/custom_game/setup.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="11" column="61" selection-start-line="11" selection-start-column="61" selection-end-line="11" selection-end-column="61" />
+            <state relative-caret-position="79440">
+              <caret line="3310" column="37" selection-start-line="3310" selection-start-column="26" selection-end-line="3310" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -118,9 +119,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>upgradebuildin</find>
-      <find>trollID</find>
-      <find>OnEntit</find>
       <find>OnPlayerTeam</find>
       <find>RegisterListener</find>
       <find>GiveResources</find>
@@ -148,6 +146,9 @@
       <find>GetSelec</find>
       <find>GetPhysical</find>
       <find>GetPhysicalArmorValue</find>
+      <find>.units</find>
+      <find>GetCooldown</find>
+      <find>modifier_poison</find>
     </findStrings>
     <replaceStrings>
       <replace>playerResourceStats</replace>
@@ -183,13 +184,9 @@
         <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/panorama/localization/addon_english.txt" />
         <option value="$PROJECT_DIR$/content/dota_addons/trollnelves2/panorama/scripts/custom_game/ability_tooltip.js" />
         <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/builder.lua" />
-        <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/custom_abilities.lua" />
         <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/npc/npc_units_custom.txt" />
         <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/buildinghelper.lua" />
         <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/player.lua" />
-        <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_poison.lua" />
-        <option value="$PROJECT_DIR$/ToDo.txt" />
-        <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/addon_game_mode.lua" />
         <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/events.lua" />
         <option value="$PROJECT_DIR$/content/dota_addons/trollnelves2/panorama/styles/custom_game/setup.css" />
         <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/npc/npc_abilities_custom.txt" />
@@ -202,6 +199,11 @@
         <option value="$APPLICATION_CONFIG_DIR$/scratches/api.txt" />
         <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/trollnelves2.lua" />
         <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/settings.lua" />
+        <option value="$PROJECT_DIR$/ToDo.txt" />
+        <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/custom_abilities.lua" />
+        <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/repair.lua" />
+        <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_poison.lua" />
+        <option value="$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/addon_game_mode.lua" />
       </list>
     </option>
   </component>
@@ -217,12 +219,12 @@
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
+  <component name="ProjectId" id="1Nmdxdsq1CwuGlna7xgIwvkjkZj" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -331,6 +333,27 @@
             </path>
             <path>
               <item name="troll-elves-2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="troll-elves-2" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="dota_addons" type="462c0819:PsiDirectoryNode" />
+              <item name="trollnelves2" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="vscripts" type="462c0819:PsiDirectoryNode" />
+              <item name="libraries" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="troll-elves-2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="troll-elves-2" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="dota_addons" type="462c0819:PsiDirectoryNode" />
+              <item name="trollnelves2" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="vscripts" type="462c0819:PsiDirectoryNode" />
+              <item name="libraries" type="462c0819:PsiDirectoryNode" />
+              <item name="modifiers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="troll-elves-2" type="b2602c69:ProjectViewProjectNode" />
               <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
             </path>
             <path>
@@ -342,6 +365,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -423,7 +447,20 @@
       <workItem from="1558259846124" duration="19731000" />
       <workItem from="1558718965667" duration="926000" />
       <workItem from="1558806551980" duration="276000" />
-      <workItem from="1558865920125" duration="1734000" />
+      <workItem from="1558865920125" duration="2527000" />
+      <workItem from="1559231893964" duration="12000" />
+      <workItem from="1559407212410" duration="3160000" />
+      <workItem from="1559500597139" duration="171000" />
+      <workItem from="1559752935072" duration="1000" />
+      <workItem from="1559760334490" duration="599000" />
+      <workItem from="1560077394167" duration="3297000" />
+      <workItem from="1560364612989" duration="599000" />
+      <workItem from="1560690437935" duration="599000" />
+      <workItem from="1560958263528" duration="599000" />
+      <workItem from="1561298641678" duration="599000" />
+      <workItem from="1561315912582" duration="599000" />
+      <workItem from="1561479811951" duration="19000" />
+      <workItem from="1561544206882" duration="47000" />
     </task>
     <task id="LOCAL-00001" summary="Declaration files and .idea folder.">
       <created>1556465754881</created>
@@ -572,15 +609,21 @@
       <option name="project" value="LOCAL" />
       <updated>1558289202753</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="ToDo #6: Fixed GetPhysicalArmorValue after latest dota patch.">
+      <created>1558867833365</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1558867833365</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="238700000" />
+    <option name="totallyTimeSpent" value="249794000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -679,23 +722,10 @@
     <MESSAGE value="GameRules custom game setup changes." />
     <MESSAGE value="Ability's lumber cost text's color brightened." />
     <MESSAGE value="Ability's lumber cost text's font size set to 14px." />
-    <option name="LAST_COMMIT_MESSAGE" value="Ability's lumber cost text's font size set to 14px." />
+    <MESSAGE value="ToDo #6: Fixed GetPhysicalArmorValue after latest dota patch." />
+    <option name="LAST_COMMIT_MESSAGE" value="ToDo #6: Fixed GetPhysicalArmorValue after latest dota patch." />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/content/dota_addons/trollnelves2/panorama/styles/custom_game/multiteam_flyout_scoreboard.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7008">
-          <caret line="292" selection-start-line="292" selection-end-line="292" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/content/dota_addons/trollnelves2/panorama/layout/custom_game/vote_hud.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="22" column="52" lean-forward="true" selection-start-line="22" selection-start-column="52" selection-end-line="22" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/custom_net_tables.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
@@ -841,38 +871,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/custom_abilities.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15336">
-          <caret line="639" column="20" selection-start-line="639" selection-start-column="20" selection-end-line="639" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/player.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5424">
           <caret line="226" selection-start-line="226" selection-end-line="226" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ToDo.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="34" column="15" selection-start-line="34" selection-start-column="15" selection-end-line="34" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_poison.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="17" column="27" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/builder.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="227" column="22" selection-start-line="227" selection-start-column="22" selection-end-line="227" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -914,13 +916,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/addon_game_mode.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3048">
-          <caret line="127" column="1" selection-start-line="127" selection-start-column="1" selection-end-line="127" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/npc/npc_items_custom.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
@@ -932,6 +927,104 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
           <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/panorama_api.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="903" column="38" selection-start-line="903" selection-start-column="17" selection-end-line="903" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/events.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="17" column="9" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/trollnelves2.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="383" column="26" selection-start-line="383" selection-start-column="26" selection-end-line="383" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_custom_armor.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="19" column="9" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ToDo.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/builder.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2904">
+          <caret line="121" column="21" selection-start-line="121" selection-start-column="21" selection-end-line="121" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/dota_addons/trollnelves2/panorama/styles/custom_game/setup.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="11" column="61" selection-start-line="11" selection-start-column="61" selection-end-line="11" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/addon_game_mode.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="720">
+          <caret line="129" lean-forward="true" selection-start-line="129" selection-end-line="129" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/repair.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="864">
+          <caret line="36" column="5" selection-start-line="36" selection-start-column="5" selection-end-line="36" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_poison.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="26" selection-start-line="26" selection-end-line="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_building.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="792">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/custom_abilities.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15216">
+          <caret line="634" selection-start-line="634" selection-end-line="634" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/settings.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/dota_addons/trollnelves2/panorama/scripts/custom_game/physical_resistance.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="696">
+          <caret line="29" column="25" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -949,59 +1042,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/content/dota_addons/trollnelves2/panorama/styles/custom_game/setup.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="11" column="61" selection-start-line="11" selection-start-column="61" selection-end-line="11" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/content/dota_addons/trollnelves2/panorama/scripts/custom_game/physical_resistance.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="29" column="25" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/panorama_api.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="903" column="38" selection-start-line="903" selection-start-column="17" selection-end-line="903" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/api.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="8078" column="35" selection-start-line="8078" selection-start-column="35" selection-end-line="8078" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/trollnelves2.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="266" selection-start-line="266" selection-end-line="266" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/libraries/modifiers/modifier_custom_armor.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="19" column="9" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/settings.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game/dota_addons/trollnelves2/scripts/vscripts/events.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="17" column="9" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
+        <state relative-caret-position="79440">
+          <caret line="3310" column="37" selection-start-line="3310" selection-start-column="26" selection-end-line="3310" selection-end-column="37" />
         </state>
       </provider>
     </entry>
